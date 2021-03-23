@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
  
-  TString filePath = TString::Format("/localstore/alice/hohlweger/analysis/StrangnessTracking/210322"); 
+  TString filePath = TString::Format("/localstore/alice/hohlweger/analysis/StrangnessTracking/210323"); 
   TFile *file_c = new TFile(filePath+"/omegaccc.root", "READ");
 
   //TH1D* om_evt_counter = (TH1D*)file->Get("hEventCounter"); 
@@ -43,21 +43,21 @@ int main(int argc, char **argv) {
  
   auto dfil_om_c_topo = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC").
+    Filter("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC&&fFirstCombinationCCC").
     Define("dcaDaugProd", "fOmegaCDecayDCATopo*fOmegaCCDecayDCATopo*fOmegaCCCDecayDCATopo");
   
   auto dfil_ca_c_topo = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter("!(fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC)").
+    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)").
     Define("dcaDaugProd", "fOmegaCDecayDCATopo*fOmegaCCDecayDCATopo*fOmegaCCCDecayDCATopo"); 
 
   auto dfil_om_c_stra = df_ca_c.
     Filter(HarryPlotter::StraCuts_om, {"fOmegaCPtMC", "fOmegaHitsAdded"}).
-    Filter("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC").
+    Filter("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC&&fFirstCombinationCCC").
     Define("dcaDaugProd", "fOmegaCDecayDCAStraTrack*fOmegaCCDecayDCAStraTrack*fOmegaCCCDecayDCAStraTrack");     
   auto dfil_ca_c_stra = df_ca_c.
     Filter(HarryPlotter::StraCuts_om, {"fOmegaCPtMC", "fOmegaHitsAdded"}).
-    Filter("!(fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC)").
+    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)").
     Define("dcaDaugProd", "fOmegaCDecayDCAStraTrack*fOmegaCCDecayDCAStraTrack*fOmegaCCCDecayDCAStraTrack");  
 
   //Plots 
