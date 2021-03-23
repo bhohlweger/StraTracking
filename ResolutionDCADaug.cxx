@@ -22,8 +22,9 @@ void DCADaugCuts(const char* howmanycs) {
   HarryPlotter::StyleBox(); 
 
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
-  TString filePath = TString::Format("/localstore/alice/hohlweger/analysis/StrangnessTracking/210323"); 
-  TFile *file_c = new TFile(filePath+"/omegaccc.root", "READ");
+  TString filePath = TString::Format("/data/alice/bhohlweger/test/gimmezetree.root"); 
+  // TString filePath = TString::Format("/localstore/alice/hohlweger/analysis/StrangnessTracking/210323"); 
+  TFile *file_c = new TFile(filePath, "READ");
 
   ROOT::RDataFrame df_ca_c("fTreeTripleC", file_c);
 
@@ -32,10 +33,17 @@ void DCADaugCuts(const char* howmanycs) {
   //Strangeness tracking: fOmegaHitsAdded >= 3
   std::vector<TString> out_names = {"_integrated"};  
 
-  TString selection = TString::Format("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC&&fFirstCombination%s",howmanycs); 
+  TString selection_signal = 
+    TString::Format("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC"); 
+  
+  TString selection_background = 
+    TString::Format("fFirstCombinationC&&fFirstCombinationCC&&fFirstCombinationCCC&&!fCorrectPionFromOmega%s", howmanycs); 
+  
   TString variableTopo = TString::Format("fOmega%sDecayDCATopo", howmanycs); 
   TString variableStra = TString::Format("fOmega%sDecayDCAStraTrack", howmanycs); 
-  std::cout << "Selection: " << selection.Data() << std::endl; 
+
+  std::cout << "selection_signal: " << selection_signal.Data() << std::endl;
+  std::cout << "selection_background: " << selection_background.Data() << std::endl;  
   std::cout << "variableTopo: " << variableTopo.Data() << std::endl; 
   std::cout << "variableStra: " << variableStra.Data() << std::endl; 
   
@@ -52,33 +60,35 @@ void DCADaugCuts(const char* howmanycs) {
   //define filter 
   auto dfil_om_c_topo = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter(selection.Data());
+    Filter(selection_signal.Data());
+  
   auto dfil_ca_c_topo = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)");
-
+    Filter(selection_background.Data()); 
+  
   auto dfil_om_c_stra = df_ca_c.
     Filter(HarryPlotter::StraCuts_om, {"fOmegaCPtMC", "fOmegaHitsAdded"}).
-    Filter(selection.Data()); 
+    Filter(selection_signal.Data()); 
+  
   auto dfil_ca_c_stra = df_ca_c.
     Filter(HarryPlotter::StraCuts_om, {"fOmegaCPtMC", "fOmegaHitsAdded"}).
-    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)");  
+    Filter(selection_background.Data()); 
   
   auto dfil_om_c_stra_addedHits = df_ca_c.//use the topo cuts here to keep also the ones with 1 added hit etc. 
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter(selection.Data()); 
+    Filter(selection_signal.Data()); 
+
   auto dfil_ca_c_stra_addedHits = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)");  
-
-  ca_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_topo.Histo1D({"ca_c_dca_daug_topo","#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableTopo.Data()))); 
-  om_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_topo.Histo1D({"om_c_dca_daug_topo","#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableTopo.Data()))); 
+    Filter(selection_background.Data()); 
+  ca_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_topo.Histo1D({"ca_c_dca_daug_topo","#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableTopo.Data()))); 
+  om_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_topo.Histo1D({"om_c_dca_daug_topo","#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableTopo.Data()))); 
   
-  ca_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_stra.Histo1D({"ca_c_dca_daug_stra","#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableStra.Data()))); 
-  om_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_stra.Histo1D({"om_c_dca_daug_stra","#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableStra.Data()))); 
+  ca_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_stra.Histo1D({"ca_c_dca_daug_stra","#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableStra.Data()))); 
+  om_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_stra.Histo1D({"om_c_dca_daug_stra","#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableStra.Data()))); 
   
-  ca_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_ca_c_stra_addedHits.Histo2D({"ca_c_dca_daug_stra_addedHits","#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500,0, 500}, "fOmegaHitsAdded", variableStra.Data()))); 
-  om_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_om_c_stra_addedHits.Histo2D({"om_c_dca_daug_stra_addedHits","#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500,0, 500}, "fOmegaHitsAdded", variableStra.Data()))); 
+  ca_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_ca_c_stra_addedHits.Histo2D({"ca_c_dca_daug_stra_addedHits","#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500 , 0, 250}, "fOmegaHitsAdded", variableStra.Data()))); 
+  om_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_om_c_stra_addedHits.Histo2D({"om_c_dca_daug_stra_addedHits","#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500 , 0, 250}, "fOmegaHitsAdded", variableStra.Data()))); 
     
   for (int ipt = 0; ipt < ptbins.size()-1; ++ipt) { 
     TString binstring = TString::Format("_pT_%.1f_%.1f", ptbins[ipt], ptbins[ipt+1]); 
@@ -88,20 +98,20 @@ void DCADaugCuts(const char* howmanycs) {
     auto dfil_om_c_topo_pT = dfil_om_c_topo.Filter(cutstring.Data()); 
     auto dfil_ca_c_topo_pT = dfil_ca_c_topo.Filter(cutstring.Data()); 
     
-    ca_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_topo_pT.Histo1D({"ca_c_dca_daug_topo"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableTopo.Data()))); 
-    om_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_topo_pT.Histo1D({"om_c_dca_daug_topo"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableTopo.Data()))); 
+    ca_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_topo_pT.Histo1D({"ca_c_dca_daug_topo"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableTopo.Data()))); 
+    om_c_dca_daug_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_topo_pT.Histo1D({"om_c_dca_daug_topo"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableTopo.Data()))); 
     
     auto dfil_om_c_stra_pT = dfil_om_c_stra.Filter(cutstring.Data()); 
     auto dfil_ca_c_stra_pT = dfil_ca_c_stra.Filter(cutstring.Data()); 
     
-    ca_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_stra_pT.Histo1D({"ca_c_dca_daug_stra"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableStra.Data()))); 
-    om_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_stra_pT.Histo1D({"om_c_dca_daug_stra"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500,0, 500}, variableStra.Data()))); 
+    ca_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_ca_c_stra_pT.Histo1D({"ca_c_dca_daug_stra"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableStra.Data()))); 
+    om_c_dca_daug_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_c_stra_pT.Histo1D({"om_c_dca_daug_stra"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 500 , 0, 250}, variableStra.Data()))); 
     
     auto dfil_om_c_stra_pT_addedHits = dfil_om_c_stra_addedHits.Filter(cutstring.Data()); 
     auto dfil_ca_c_stra_pT_addedHits = dfil_ca_c_stra_addedHits.Filter(cutstring.Data()); 
     
-    ca_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_ca_c_stra_pT_addedHits.Histo2D({"ca_c_dca_daug_stra_addedHits"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500,0, 500}, "fOmegaHitsAdded",variableStra.Data()))); 
-    om_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_om_c_stra_pT_addedHits.Histo2D({"om_c_dca_daug_stra_addedHits"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500,0, 500}, "fOmegaHitsAdded", variableStra.Data()))); 
+    ca_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_ca_c_stra_pT_addedHits.Histo2D({"ca_c_dca_daug_stra_addedHits"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500, 0, 250}, "fOmegaHitsAdded",variableStra.Data()))); 
+    om_c_dca_daug_stra_addedHits.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_om_c_stra_pT_addedHits.Histo2D({"om_c_dca_daug_stra_addedHits"+binstring,"#Omega_{c}#rightarrow#Omega+#pi", 10, 0, 10, 500, 0, 250}, "fOmegaHitsAdded", variableStra.Data()))); 
     
   }
   //Write histos 
