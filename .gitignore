@@ -13,3 +13,12 @@ Makefile
 \#*#
 \#*.*#
 .#*
+AddedHitPerformance
+ApplyCuts
+DCADaugCuts
+DCADaugProdCuts
+DCAProdCuts
+ResolutionDCADaug
+ResolutionDV
+ResolutionPVDCA
+Resolutions
