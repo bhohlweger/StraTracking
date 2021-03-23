@@ -31,6 +31,10 @@ public:
   
   static bool StraCut_dca(float dcaprod){return (dcaprod <  -41);}; 
   static bool TopoCut_dca(float dcaprod){return (dcaprod <  -509);}; 
+
+  static bool StraCut_ccc_dca(float dcaprod){return (dcaprod <  -41);}; 
+  static bool TopoCut_ccc_dca(float dcaprod){return (dcaprod <  -509);}; 
+
   
   static float Distance(float x1, float y1, float z1) {return (float)TMath::Sqrt(x1*x1+y1*y1+z1*z1);};  
   static float Distance_xy(float x1, float y1, float x2, float y2) {

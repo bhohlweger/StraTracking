@@ -47,6 +47,14 @@ target_link_libraries(DCADaugCuts StraTrack_Helpers)
 add_executable(ResolutionDCADaug ${PROJECT_SOURCE_DIR}/ResolutionDCADaug.cxx)
 target_link_libraries(ResolutionDCADaug StraTrack_Helpers)
 
+add_executable(ResolutionPV_C_DCA ${PROJECT_SOURCE_DIR}/ResolutionPV_C_DCA.cxx)
+target_link_libraries(ResolutionPV_C_DCA StraTrack_Helpers)
+
 add_executable(DCADaugProdCuts ${PROJECT_SOURCE_DIR}/DCADaugProdCuts.cxx)
 target_link_libraries(DCADaugProdCuts StraTrack_Helpers)
+
+add_executable(DCAProdCuts_ccc ${PROJECT_SOURCE_DIR}/DCAProdCuts_ccc.cxx)
+target_link_libraries(DCAProdCuts_ccc StraTrack_Helpers)
+
+
 
