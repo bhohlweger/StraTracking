@@ -40,24 +40,28 @@ int main(int argc, char **argv) {
   
   //Define filter 
   //Input filter
- 
+  TString selection_signal = 
+    TString::Format("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC"); 
+  
+  TString selection_background = 
+    TString::Format("fFirstCombinationC&&fFirstCombinationCC&&fFirstCombinationCCC&&!fCorrectPionFromOmegaCCC"); 
   auto dfil_om_c_topo = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC&&fFirstCombinationCCC").
+    Filter(selection_signal.Data()).
     Define("dcaDaugProd", "fOmegaCDecayDCATopo*fOmegaCCDecayDCATopo*fOmegaCCCDecayDCATopo");
   
   auto dfil_ca_c_topo = df_ca_c.
     Filter(HarryPlotter::TopoCuts_om, {"fOmegaCPtMC"}).
-    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)").
+    Filter(selection_background.Data()).
     Define("dcaDaugProd", "fOmegaCDecayDCATopo*fOmegaCCDecayDCATopo*fOmegaCCCDecayDCATopo"); 
 
   auto dfil_om_c_stra = df_ca_c.
     Filter(HarryPlotter::StraCuts_om, {"fOmegaCPtMC", "fOmegaHitsAdded"}).
-    Filter("fCorrectPionFromOmegaC&&fCorrectPionFromOmegaCC&&fCorrectPionFromOmegaCCC&&fFirstCombinationCCC").
+    Filter(selection_signal.Data()). 
     Define("dcaDaugProd", "fOmegaCDecayDCAStraTrack*fOmegaCCDecayDCAStraTrack*fOmegaCCCDecayDCAStraTrack");     
   auto dfil_ca_c_stra = df_ca_c.
     Filter(HarryPlotter::StraCuts_om, {"fOmegaCPtMC", "fOmegaHitsAdded"}).
-    Filter("!(fCorrectPionFromOmegaC||fCorrectPionFromOmegaCC||fCorrectPionFromOmegaCCC)").
+    Filter(selection_background.Data()).
     Define("dcaDaugProd", "fOmegaCDecayDCAStraTrack*fOmegaCCDecayDCAStraTrack*fOmegaCCCDecayDCAStraTrack");  
 
   //Plots 
