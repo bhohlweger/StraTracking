@@ -1,0 +1,15 @@
+*.pdf
+*.root
+backup/
+test/
+old/
+CMakeFiles/
+CMakeCache.txt
+install/
+cmake*
+Makefile
+*.*~
+*~
+\#*#
+\#*.*#
+.#*
