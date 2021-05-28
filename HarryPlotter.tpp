@@ -8,6 +8,12 @@ void HarryPlotter::CheckAndStore(TFile *out, T key) {
   }
 }
 
+template<typename T> 
+void HarryPlotter::NormToMaxCheckAndStore(TFile *out, T key) { 
+  key->Scale(1./key->GetMaximum()); 
+  HarryPlotter::CheckAndStore(out, key);
+}
+
 template <typename T> void HarryPlotter::CumulateAndStore(TFile *out, T one) { 
   TH1D* cu_one = (TH1D*)one->GetCumulative(); 
   HarryPlotter::CheckAndStore(out, cu_one); 

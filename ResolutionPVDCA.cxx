@@ -22,15 +22,15 @@ int main(int argc, char **argv) {
   HarryPlotter::StyleBox(); 
 
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
-  TString filePath = TString::Format("%s",HarryPlotter::FilePath()); 
-  TFile *file = new TFile(filePath+"/omega.root", "READ");
-  TFile *file_c = new TFile(filePath+"/omegac.root", "READ");
+  TString filePath = TString::Format("%s",HarryPlotter::FilePathPythia()); 
+  TFile *file = new TFile(filePath, "READ");
+  //TFile *file_c = new TFile(filePath+"/omegac.root", "READ");
 
-  ROOT::RDataFrame df_om("fTreeOmega", file);
-  ROOT::RDataFrame df_ca("fTreeCandidates", file);
+  ROOT::RDataFrame df_om_c("fTreeOmega", file);
+  ROOT::RDataFrame df_ca_c("fTreeCandidates", file);
 
-  ROOT::RDataFrame df_om_c("fTreeOmega", file_c);
-  ROOT::RDataFrame df_ca_c("fTreeCandidates", file_c);
+  // ROOT::RDataFrame df_om_c("fTreeOmega", file_c);
+  // ROOT::RDataFrame df_ca_c("fTreeCandidates", file_c);
 
   //add classic quality cuts ... 
   //e.g. fOmegaPtMC>1.0&&fOmegaPtMC<3.0 
@@ -44,11 +44,11 @@ int main(int argc, char **argv) {
   std::vector<ROOT::RDF::RResultPtr<::TH1D>*> res_dca_z_topo;  
   
   //define filter 
-  auto dfil_om_topo = df_om_c.Filter(HarryPlotter::TopoCuts_om_c, {"fOmegaPtMC", "fOmegacDecayRadiusTopo"});
-  auto dfil_ca_topo = df_ca_c.Filter(HarryPlotter::TopoCuts_ca_c, {"fOmegaPtMC", "fOmegacDecayRadiusTopo"}).Filter("!fTrueOmegac"); 
+  auto dfil_om_topo = df_om_c.Filter(HarryPlotter::TopoCuts_om, {"fOmegaPtMC"});
+  //auto dfil_ca_topo = df_ca_c.Filter(HarryPlotter::TopoCuts_ca, {"fOmegaPtMC", "fOmegacDecayRadiusTopo"}).Filter("!fTrueOmegac"); 
 
-  auto dfil_om_stra = df_om_c.Filter(HarryPlotter::StraCuts_om_c, {"fOmegaPtMC", "fOmegaHitsAdded", "fOmegacDecayRadiusStraTrack"}); 
-  auto dfil_ca_stra = df_ca_c.Filter(HarryPlotter::StraCuts_ca_c, {"fOmegaPtMC", "fOmegaHitsAdded", "fOmegacDecayRadiusStraTrack"}).Filter("!fTrueOmegac"); 
+  auto dfil_om_stra = df_om_c.Filter(HarryPlotter::TopoCuts_om, {"fOmegaPtMC"}); 
+  //auto dfil_ca_stra = df_ca_c.Filter(HarryPlotter::StraCuts_ca_c, {"fOmegaPtMC", "fOmegaHitsAdded", "fOmegacDecayRadiusStraTrack"}).Filter("!fTrueOmegac"); 
   
   auto pv_res = dfil_om_stra.Define("delta_pv", HarryPlotter::Distance, {"fPrimaryVertexX", "fPrimaryVertexY", "fPrimaryVertexZ"});  
   auto res_pv = pv_res.Histo1D({"res_pv", "res_pv", 400, 0, 200}, "delta_pv");  
@@ -56,8 +56,8 @@ int main(int argc, char **argv) {
   res_dca_xy_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_om_stra.Histo2D({"dca_xy_vs_AddedHits_stra", "dca_xy_vs_AddedHits_stra", 10, 0, 10, 400, -200, 200 }, "fOmegaHitsAdded", "fOmegaDCAxyToPVStraTrack"))); 
   res_dca_z_stra.emplace_back(new ROOT::RDF::RResultPtr<::TH2D>(dfil_om_stra.Histo2D({"dca_z_vs_AddedHits_stra", "dca_z_vs_AddedHits_stra", 10, 0 , 10, 400, -200, 200 }, "fOmegaHitsAdded", "fOmegaDCAzToPVStraTrack"))); 
   
-  res_dca_xy_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_topo.Histo1D({"dcay_xy_topo", "dca_xy_topo", 400, -200, 200} , "fOmegaDCAxyToPVTopo"))); 
-  res_dca_z_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_topo.Histo1D({"dcay_z_topo", "dca_z_topo", 400, -200, 200} , "fOmegaDCAzToPVTopo"))); 
+  res_dca_xy_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_topo.Histo1D({"dca_xy_topo", "dca_xy_topo", 400, -200, 200} , "fOmegaDCAxyToPVTopo"))); 
+  res_dca_z_topo.emplace_back(new ROOT::RDF::RResultPtr<::TH1D>(dfil_om_topo.Histo1D({"dca_z_topo", "dca_z_topo", 400, -200, 200} , "fOmegaDCAzToPVTopo"))); 
   
   
   for (int ipt = 0; ipt < ptbins.size()-1; ++ipt) { 
@@ -84,8 +84,8 @@ int main(int argc, char **argv) {
     TH1F* width_dca_z = new TH1F("width_dca_z" + out_names[ipt], "Width DCA_{z}", 11, -1, 10);  
     width_dca_z->GetYaxis()->SetTitle("#sigma_{DCAz} (#mum)"); 
     
-    HarryPlotter::Normalize2DBinByBin(res_dca_xy_stra[ipt]->GetPtr()); 
-    HarryPlotter::Normalize2DBinByBin(res_dca_z_stra[ipt]->GetPtr()); 
+    // HarryPlotter::Normalize2DBinByBin(res_dca_xy_stra[ipt]->GetPtr()); 
+    // HarryPlotter::Normalize2DBinByBin(res_dca_z_stra[ipt]->GetPtr()); 
 
     HarryPlotter::CheckAndStore(out, res_dca_xy_stra[ipt]->GetPtr()); 
     HarryPlotter::CheckAndStore(out, res_dca_z_stra[ipt]->GetPtr()); 

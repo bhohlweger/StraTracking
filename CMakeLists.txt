@@ -29,11 +29,17 @@ add_library(StraTrack_Helpers STATIC ${SRCS})
 set_target_properties(StraTrack_Helpers PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 target_link_libraries(StraTrack_Helpers ${ROOT_LIBRARIES})
 
+add_executable(ResolutionPVDCAXi  ${PROJECT_SOURCE_DIR}/ResolutionPVDCAXi.cxx)
+target_link_libraries(ResolutionPVDCAXi StraTrack_Helpers)
+
 add_executable(ResolutionPVDCA  ${PROJECT_SOURCE_DIR}/ResolutionPVDCA.cxx)
 target_link_libraries(ResolutionPVDCA StraTrack_Helpers)
 
 add_executable(AddedHitPerformance ${PROJECT_SOURCE_DIR}/AddedHitPerformance.cxx)
 target_link_libraries(AddedHitPerformance StraTrack_Helpers)
+
+add_executable(AddedHitPerformanceXi ${PROJECT_SOURCE_DIR}/AddedHitPerformanceXi.cxx)
+target_link_libraries(AddedHitPerformanceXi StraTrack_Helpers)
 
 add_executable(ResolutionDV ${PROJECT_SOURCE_DIR}/ResolutionDV.cxx)
 target_link_libraries(ResolutionDV StraTrack_Helpers)
@@ -55,6 +61,12 @@ target_link_libraries(DCADaugProdCuts StraTrack_Helpers)
 
 add_executable(DCAProdCuts_ccc ${PROJECT_SOURCE_DIR}/DCAProdCuts_ccc.cxx)
 target_link_libraries(DCAProdCuts_ccc StraTrack_Helpers)
+
+add_executable(HitStudiesXi ${PROJECT_SOURCE_DIR}/HitStudiesXi.cxx)
+target_link_libraries(HitStudiesXi StraTrack_Helpers)
+
+add_executable(xiccSelector ${PROJECT_SOURCE_DIR}/xiccSelector.cxx)
+target_link_libraries(xiccSelector StraTrack_Helpers)
 
 
 
