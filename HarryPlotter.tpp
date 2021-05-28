@@ -1,7 +1,7 @@
 
 template<typename T> 
 void HarryPlotter::CheckAndStore(TFile *out, T key) { 
-  TObject* obj = out->FindKey(key->GetName());
+  TKey* obj = out->FindKey(key->GetName());
   if (!obj) { 
     out->cd(); 
     key->Write(); 
