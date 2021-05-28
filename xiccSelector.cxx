@@ -378,6 +378,7 @@ int main(int argc, char **argv) {
   //xi_cc selected
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c2); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c3); 
 
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
 
