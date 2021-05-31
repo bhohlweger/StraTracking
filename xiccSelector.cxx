@@ -60,9 +60,10 @@ int main(int argc, char **argv) {
   }
  
   TChain input("fTreeCandidates"); 
- 
+  int inputFiles = 0; 
   if (filePath.Contains(".root")) { 
     input.Add(filePath); 
+    inputFiles++;
   } else { 
     std::cout << "Input seems not to be a file, trying to build a chain from sudirs...\n"; 
     // if file does not exist, loop over subdirs to find TFiles 
@@ -70,15 +71,14 @@ int main(int argc, char **argv) {
     auto files = dir.GetListOfFiles();
     for (auto fileObj : *files)  {
       auto file = (TSystemFile*) fileObj;
-      TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath, file->GetName()).Data(); 
-      std::cout << "Trying " << inSubDirFile.Data() << std::endl; 
-      if (gSystem->AccessPathName(inSubDirFile)) { 
-	std::cout << "Adding " << inSubDirFile.Data() << std::endl; 
+      TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
+      if (!gSystem->AccessPathName(inSubDirFile)) { 
 	input.Add(inSubDirFile);
+	inputFiles++;
       }
     }
   }
-  return 0; 
+  std::cout << "Added " << inputFiles << " to the chain \n"; 
   ROOT::RDataFrame df(input);
   
   auto df_in = forceXic?df.Filter("fTrueXic"):df.Filter("fTrueXic||!fTrueXic"); 
