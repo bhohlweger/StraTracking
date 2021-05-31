@@ -2,6 +2,9 @@
 
 #include "TFile.h"
 #include "TTree.h"
+#include "TChain.h"
+#include "TSystemDirectory.h"
+#include "TSystemFile.h"
 #include "ROOT/RDataFrame.hxx"
 #include "ROOT/RResultPtr.hxx"
 
@@ -46,18 +49,39 @@ int main(int argc, char **argv) {
   const char* fileName = argv[1]; 
   const char* outAddon = (argv[2])?argv[2]:""; 
   HarryPlotter::StyleBox(); 
-
+ 
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
   TString filePath = TString::Format("%s", fileName); 
-
+ 
   bool forceXic = false; 
   if ( filePath.Contains("xic.root")) {
     forceXic = true;
   }
-
+ 
+  TChain input("fTreeCandidates"); 
+ 
   TFile *file = new TFile(filePath, "READ");
-  
-  ROOT::RDataFrame df("fTreeCandidates", file);
+ 
+  if (file) { 
+    input.Add(filePath); 
+  } else { 
+    std::cout << "Input seems not to be a file, trying to build a chain from sudirs...\n"; 
+    // if file does not exist, loop over subdirs to find TFiles 
+    TSystemDirectory dir("ZeDirectory", filePath);
+    auto files = dir.GetListOfFiles();
+    for (auto fileObj : *files)  {
+      auto file = (TSystemFile*) fileObj;
+      std::cout << file->GetName() << std::endl;
+      TString inSubDirFile = TString::Format("%s/treeoutput.root", file->GetName()).Data(); 
+      TFile* inFile = TFile::Open(inSubDirFile,"read"); 
+      if (inFile) { 
+	input.Add(inSubDirFile);
+      }
+      inFile->Close(); 
+    }
+  }
+  return 0; 
+  ROOT::RDataFrame df(input);
   
   auto df_in = forceXic?df.Filter("fTrueXic"):df.Filter("fTrueXic||!fTrueXic"); 
   
