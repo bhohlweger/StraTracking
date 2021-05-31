@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
       }
     }
   }
-  std::cout << "Added " << inputFiles << " to the chain \n"; 
+  std::cout << "Added " << inputFiles << " files to the chain \n"; 
   ROOT::RDataFrame df(input);
   
   auto df_in = forceXic?df.Filter("fTrueXic"):df.Filter("fTrueXic||!fTrueXic"); 
