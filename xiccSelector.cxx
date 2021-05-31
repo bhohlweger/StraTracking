@@ -283,6 +283,25 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c3", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   
+  auto df_xi_cc_im_c4 = df_xi_c
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("fXicDecayRadiusStraTrack>0.005")
+    .Filter("fXiccDecayRadiusStraTrack>0.005")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack)>10")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack)>10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack)>10")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack)>10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 20")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 20")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 20")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
+    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20")
+    ;
+  
+  //Fill some final histograms  
+  auto h_df_xi_cc_im_xi_cc_mass_stra_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+
   auto counter = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0").Count(); 
   
   auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
@@ -379,6 +398,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c2); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c3); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c4); 
 
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
 
