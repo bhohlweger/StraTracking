@@ -5,6 +5,7 @@
 #include "TChain.h"
 #include "TSystemDirectory.h"
 #include "TSystemFile.h"
+#include "TSystem.h"
 #include "ROOT/RDataFrame.hxx"
 #include "ROOT/RResultPtr.hxx"
 
@@ -60,9 +61,7 @@ int main(int argc, char **argv) {
  
   TChain input("fTreeCandidates"); 
  
-  TFile *file = new TFile(filePath, "READ");
- 
-  if (file) { 
+  if (filePath.Contains(".root")) { 
     input.Add(filePath); 
   } else { 
     std::cout << "Input seems not to be a file, trying to build a chain from sudirs...\n"; 
@@ -71,13 +70,12 @@ int main(int argc, char **argv) {
     auto files = dir.GetListOfFiles();
     for (auto fileObj : *files)  {
       auto file = (TSystemFile*) fileObj;
-      std::cout << file->GetName() << std::endl;
-      TString inSubDirFile = TString::Format("%s/treeoutput.root", file->GetName()).Data(); 
-      TFile* inFile = TFile::Open(inSubDirFile,"read"); 
-      if (inFile) { 
+      TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath, file->GetName()).Data(); 
+      std::cout << "Trying " << inSubDirFile.Data() << std::endl; 
+      if (gSystem->AccessPathName(inSubDirFile)) { 
+	std::cout << "Adding " << inSubDirFile.Data() << std::endl; 
 	input.Add(inSubDirFile);
       }
-      inFile->Close(); 
     }
   }
   return 0; 
