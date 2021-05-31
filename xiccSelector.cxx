@@ -113,10 +113,14 @@ int main(int argc, char **argv) {
     .Define("DCAProdMult", "DCAxyProd*DCAzProd")
     .Define("DCAxyProdXicPi", "fPicDCAxyToPVStraTrack*fXicDCAxyToPVStraTrack")
     .Define("DCAzProdXicPi", "fPicDCAzToPVStraTrack*fXicDCAzToPVStraTrack")
-    .Define("fXicInvDecayLengthTopo", decLengthXic, {"fXicDecayDistanceFromPVTopo", "lPXiCTopo"})
-    .Define("fXiccInvDecayLengthTopo", decLengthXicc, {"fXiccDecayDistanceFromPVTopo", "lPXiCCTopo"})
-    .Define("fXicInvDecayLengthStra", decLengthXic, {"fXicDecayDistanceFromPVStraTrack", "lPXiCStraTrack"})
-    .Define("fXiccInvDecayLengthStra", decLengthXicc, {"fXiccDecayDistanceFromPVStraTrack", "lPXiCCStraTrack"})
+    .Define("fXicInvDecayLengthToPVTopo", decLengthXic, {"fXicDecayDistanceFromPVTopo", "lPXiCTopo"})
+    .Define("fXiccInvDecayLengthToPVTopo", decLengthXicc, {"fXiccDecayDistanceFromPVTopo", "lPXiCCTopo"})
+    .Define("fXicInvDecayLengthToPVStra", decLengthXic, {"fXicDecayDistanceFromPVStraTrack", "lPXiCStraTrack"})
+    .Define("fXiccInvDecayLengthToPVStra", decLengthXicc, {"fXiccDecayDistanceFromPVStraTrack", "lPXiCCStraTrack"})
+    .Define("fXicInvDecayLengthToDVTopo", decLengthXic, {"fXiCtoXiLengthTopo", "lPXiCTopo"})
+    .Define("fXiccInvDecayLengthToDVTopo", decLengthXicc, {"fXiCCtoXiCLengthTopo", "lPXiCCTopo"})
+    .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCtoXiLengthStraTrack", "lPXiCStraTrack"})
+    .Define("fXiccInvDecayLengthToDVStra", decLengthXicc, {"fXiCCtoXiCLengthStraTrack", "lPXiCCStraTrack"})    
     .Filter(hitsCut, {"fXiHitsAdded"})
     .Filter(pTCut, {"fXiPtMC"})
     .Filter(radCut, {"XiV0DecayRadDiff"})
@@ -141,7 +145,8 @@ int main(int argc, char **argv) {
   auto h_df_xi_xi_c_mass_topo = df_xi.Histo1D({"df_xi_xi_c_mass_topo", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassTopo"); 
   
   auto h_df_xi_xi_c_ddca_topo = df_xi.Histo1D({"df_xi_xi_c_ddca_topo", "xi_c prong dca", 500, 0, 700}, "fXicDaughterDCATopo"); 
-  auto h_df_xi_xi_c_ddist_topo = df_xi.Histo1D({"df_xi_xi_c_dist_topo", "xi_c decay dist", 1500, 0, 0.60}, "fXicInvDecayLengthTopo"); 
+  auto h_df_xi_xi_c_ddist_pv_topo = df_xi.Histo1D({"df_xi_xi_c_dist_pv_topo", "xi_c decay dist", 1500, 0, 0.60}, "fXicInvDecayLengthToPVTopo"); 
+  auto h_df_xi_xi_c_ddist_dv_topo = df_xi.Histo1D({"df_xi_xi_c_dist_dv_topo", "xi_c decay dist", 1500, 0, 0.60}, "fXicInvDecayLengthToDVTopo"); 
   auto h_df_xi_xi_c_trad_topo = df_xi.Histo1D({"df_xi_xi_c_trad_topo", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusTopo"); 
 
   auto h_df_xi_xi_dca_xy_topo = df_xi.Histo1D({"df_xi_xi_dca_xy_topo", "xi dca xy topo", 1000, -500, 500}, "fXiDCAxyToPVTopo");  
@@ -154,7 +159,8 @@ int main(int argc, char **argv) {
   auto h_df_xi_xi_c_mass_stra = df_xi.Histo1D({"df_xi_xi_c_mass_stra", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassStraTrack"); 
    
   auto h_df_xi_xi_c_ddca_stra = df_xi.Histo1D({"df_xi_xi_c_ddca_stra", "xi_c prong dca", 500, 0, 700}, "fXicDaughterDCAStraTrack"); 
-  auto h_df_xi_xi_c_ddist_stra = df_xi.Histo1D({"df_xi_xi_c_dist_stra", "xi_c decay dist", 1500, 0, 0.60}, "fXicInvDecayLengthStra"); //redefine as mL/p 
+  auto h_df_xi_xi_c_ddist_pv_stra = df_xi.Histo1D({"df_xi_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.60}, "fXicInvDecayLengthToPVStra"); //redefine as mL/p 
+  auto h_df_xi_xi_c_ddist_dv_stra = df_xi.Histo1D({"df_xi_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.60}, "fXicInvDecayLengthToDVStra"); //redefine as mL/p 
   auto h_df_xi_xi_c_trad_stra = df_xi.Histo1D({"df_xi_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack"); 
   
   auto h_df_xi_xi_dca_xy_stra = df_xi.Histo1D({"df_xi_xi_dca_xy_stra", "xi dca xy stra", 1000, -500, 500}, "fXiDCAxyToPVStraTrack");  
@@ -191,7 +197,8 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_trad_diff_xi_xi_c_topo = df_xi_c.Histo1D({"df_xi_c_trad_diff_xi_xi_c_topo", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffTopo") ;
 
   auto h_df_xi_c_xi_cc_ddca_topo = df_xi_c.Histo1D({"df_xi_c_xi_cc_ddca_topo", "xi_cc prong dca", 500, 0, 500}, "fXiccDaughterDCATopo"); 
-  auto h_df_xi_c_xi_cc_ddist_topo = df_xi_c.Histo1D({"df_xi_c_xi_cc_dist_topo", "xi_cc decay dist", 1500, 0, 0.5}, "fXiccInvDecayLengthTopo"); 
+  auto h_df_xi_c_xi_cc_ddist_pv_topo = df_xi_c.Histo1D({"df_xi_c_xi_cc_dist_pv_topo", "xi_cc decay dist", 1500, 0, 0.5}, "fXiccInvDecayLengthToPVTopo"); 
+  auto h_df_xi_c_xi_cc_ddist_dv_topo = df_xi_c.Histo1D({"df_xi_c_xi_cc_dist_dv_topo", "xi_cc decay dist", 1500, 0, 0.5}, "fXiccInvDecayLengthToDVTopo"); 
   auto h_df_xi_c_xi_cc_trad_topo = df_xi_c.Histo1D({"df_xi_c_xi_cc_trad_topo", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusTopo"); 
 
   auto h_df_xi_c_xi_c_dca_xy_topo = df_xi_c.Histo1D({"df_xi_c_xi_c_dca_xy_topo", "xi_c dca xy topo", 1000, -500, 500}, "fXicDCAxyToPVTopo");  
@@ -205,7 +212,8 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_trad_diff_xi_xi_c_stra = df_xi_c.Histo1D({"df_xi_c_trad_diff_xi_xi_c_stra", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffStra") ;
 
   auto h_df_xi_c_xi_cc_ddca_stra = df_xi_c.Histo1D({"df_xi_c_xi_cc_ddca_stra", "xi_cc prong dca", 500, 0, 500}, "fXiccDaughterDCAStraTrack"); 
-  auto h_df_xi_c_xi_cc_ddist_stra = df_xi_c.Histo1D({"df_xi_c_xi_cc_dist_stra", "xi_cc decay dist", 1500, 0, 0.50}, "fXiccInvDecayLengthStra"); 
+  auto h_df_xi_c_xi_cc_ddist_pv_stra = df_xi_c.Histo1D({"df_xi_c_xi_cc_dist_pv_stra", "xi_cc decay dist", 1500, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
+  auto h_df_xi_c_xi_cc_ddist_dv_stra = df_xi_c.Histo1D({"df_xi_c_xi_cc_dist_dv_stra", "xi_cc decay dist", 1500, 0, 0.50}, "fXiccInvDecayLengthToDVStra"); 
   auto h_df_xi_c_xi_cc_trad_stra = df_xi_c.Histo1D({"df_xi_c_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusStraTrack"); 
   
   auto h_df_xi_c_xi_c_dca_xy_stra = df_xi_c.Histo1D({"df_xi_c_xi_c_dca_xy_stra", "xi_c dca xy stra", 1000, -500, 500}, "fXicDCAxyToPVStraTrack");  
@@ -335,7 +343,8 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_trad_diff_xi_xi_c_topo);
  
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddca_topo); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddist_topo); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddist_pv_topo); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddist_dv_topo); 
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_trad_topo); 
     
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_dca_xy_topo);
@@ -345,7 +354,8 @@ int main(int argc, char **argv) {
   
   HarryPlotter::CheckAndStore(out, h_df_xi_trad_diff_xi_xi_c_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddca_stra); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddist_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddist_pv_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_ddist_dv_stra); 
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_trad_stra); 
 
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_dca_xy_stra);
@@ -361,7 +371,8 @@ int main(int argc, char **argv) {
   //to xi_cc
   HarryPlotter::CheckAndStore(out,h_df_xi_c_trad_diff_xi_xi_c_topo);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddca_topo);
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddist_topo);
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddist_pv_topo);
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddist_dv_topo);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_trad_topo);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_c_dca_xy_topo);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_c_dca_z_topo);
@@ -371,7 +382,8 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out,h_df_xi_c_trad_diff_xi_xi_c_stra);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddca_stra);
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddist_stra);
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddist_pv_stra);
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_ddist_dv_stra);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_trad_stra);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_c_dca_xy_stra);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_c_dca_z_stra);
