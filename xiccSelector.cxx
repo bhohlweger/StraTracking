@@ -73,8 +73,14 @@ int main(int argc, char **argv) {
       auto file = (TSystemFile*) fileObj;
       TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
       if (!gSystem->AccessPathName(inSubDirFile)) { 
+	TFile *inFile = TFile::Open(inSubDirFile);
+	if (inFile->IsZombie()) { 
+	  inFile->Close();
+	  continue; 
+	} 
 	input.Add(inSubDirFile);
 	inputFiles++;
+	inFile->Close();
       }
     }
   }
