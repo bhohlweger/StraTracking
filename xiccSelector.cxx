@@ -58,7 +58,9 @@ int main(int argc, char **argv) {
   if ( filePath.Contains("xic.root")) {
     forceXic = true;
   }
- 
+  
+  auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
+   
   TChain input("fTreeCandidates"); 
   int inputFiles = 0; 
   if (filePath.Contains(".root")) { 
@@ -81,6 +83,8 @@ int main(int argc, char **argv) {
 	  inFile->Close();
 	  continue; 
 	} 
+	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
+	h_cand_counter->Add(evtCounter); 
 	input.Add(inSubDirFile);
 	inputFiles++;
 	inFile->Close();
@@ -404,12 +408,6 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_stra_c7 = df_xi_cc_im_c7.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c7", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   
   
-
-  auto counter = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0").Count(); 
-  
-  auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
-  h_cand_counter->SetBinContent(1, *counter); 
-
   TString outName = TString::Format("outxiccSelector_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
