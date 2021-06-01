@@ -84,6 +84,9 @@ int main(int argc, char **argv) {
 	  continue; 
 	} 
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
+	if (!evtCounter) { 
+	  continue; 
+	}
 	h_cand_counter->Add(evtCounter); 
 	input.Add(inSubDirFile);
 	inputFiles++;
