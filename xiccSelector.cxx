@@ -74,6 +74,9 @@ int main(int argc, char **argv) {
       TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
       if (!gSystem->AccessPathName(inSubDirFile)) { 
 	TFile *inFile = TFile::Open(inSubDirFile);
+	if (!inFile) { 
+	  continue;
+	}
 	if (inFile->IsZombie()) { 
 	  inFile->Close();
 	  continue; 
