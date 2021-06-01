@@ -1,11 +1,11 @@
-void comparator() { 
+void comparator(TString addon) { 
   double xiccMass = 3.596; //3.621; 
   double xiccWindow = 0.08;
-
-  TFile* xi = TFile::Open("outxiccSelector_xi.root", "read"); 
-  TFile* xic = TFile::Open("outxiccSelector_xic.root", "read"); 
-  TFile* xicc = TFile::Open("outxiccSelector_xicc.root", "read"); 
-  TFile* output = TFile::Open("outComp_cut.root", "recreate"); 
+  
+  TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
+  TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
+  TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_xicc%s.root", addon.Data()), "read"); 
+  TFile* output = TFile::Open(TString::Format("outComp_cut%s.root"         , addon.Data()), "recreate"); 
 
   TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
   double normXi = 1/(9.25e-7*h_xiCounter->GetBinContent(1)); //4 for the production cross section, 20 for the BR
