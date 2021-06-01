@@ -102,8 +102,8 @@ int main(int argc, char **argv) {
   //Towards the Xi for Xic->Xi+2pi 
   //Fill some Histograms
   auto h_df_in_lmb_ddca = df_in.Histo1D({"df_in_lmb_ddca", "lmb prong dca", 500, 0, 500}, "fXiV0DauDCA"); 
-  auto h_df_in_lmb_trad = df_in.Histo1D({"df_in_lmb_trad", "lmb trad", 500, 0, 10}, "fV0DecayRadius"); 
-  auto h_df_in_lmb_trad_mc = df_in.Histo1D({"df_in_lmb_trad_mc", "lmb trad", 500, 0, 10}, "fV0DecayRadiusMC"); 
+  auto h_df_in_lmb_trad = df_in.Histo1D({"df_in_lmb_trad", "lmb trad", 600, 0, 30}, "fV0DecayRadius"); 
+  auto h_df_in_lmb_trad_mc = df_in.Histo1D({"df_in_lmb_trad_mc", "lmb trad", 600, 0, 30}, "fV0DecayRadiusMC"); 
   auto h_df_in_lmb_trad_diff = df_in.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_lmb_trad_diff", "lmb trad", 500, 0, 2}, "XiV0DecayRadDiff"); 
   
   auto h_df_in_xi_ddca = df_in.Histo1D({"df_in_xi_ddca", "xi prong dca", 500, 0, 2000}, "fXiCascDauDCA"); 
@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
 
   auto h_df_xi_xi_c_mass_topo = df_xi.Histo1D({"df_xi_xi_c_mass_topo", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassTopo"); 
   
-  auto h_df_xi_xi_c_ddca_topo = df_xi.Histo1D({"df_xi_xi_c_ddca_topo", "xi_c prong dca", 500, 0, 700}, "fXicDaughterDCATopo"); 
+  auto h_df_xi_xi_c_ddca_topo = df_xi.Histo1D({"df_xi_xi_c_ddca_topo", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCATopo"); 
   auto h_df_xi_xi_c_ddist_pv_topo = df_xi.Histo1D({"df_xi_xi_c_dist_pv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVTopo"); 
   auto h_df_xi_xi_c_ddist_dv_topo = df_xi.Histo1D({"df_xi_xi_c_dist_dv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVTopo");   
   auto h_df_xi_xi_c_trad_topo = df_xi.Histo1D({"df_xi_xi_c_trad_topo", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusTopo"); 
@@ -200,7 +200,7 @@ int main(int argc, char **argv) {
 
   auto h_df_xi_xi_c_mass_stra = df_xi.Histo1D({"df_xi_xi_c_mass_stra", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassStraTrack"); 
    
-  auto h_df_xi_xi_c_ddca_stra = df_xi.Histo1D({"df_xi_xi_c_ddca_stra", "xi_c prong dca", 500, 0, 700}, "fXicDaughterDCAStraTrack"); 
+  auto h_df_xi_xi_c_ddca_stra = df_xi.Histo1D({"df_xi_xi_c_ddca_stra", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCAStraTrack"); 
   auto h_df_xi_xi_c_ddist_pv_stra = df_xi.Histo1D({"df_xi_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); //redefine as mL/p 
   auto h_df_xi_xi_c_ddist_dv_stra = df_xi.Histo1D({"df_xi_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
   auto h_df_xi_xi_c_trad_stra = df_xi.Histo1D({"df_xi_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack"); 
