@@ -216,6 +216,19 @@ int main(int argc, char **argv) {
   auto h_df_xi_pi_two_dca_xy = df_xi.Histo1D({"df_xi_pi_two_dca_xy", "pi2 dca xy stra", 1000, -500, 500}, "fXicPionDCAxyToPV2");  
   auto h_df_xi_pi_two_dca_z = df_xi.Histo1D({"df_xi_pi_two_dca_z", "pi2 dca z stra", 1000, -500, 500}, "fXicPionDCAzToPV2");  
   
+  //study a bit decay length + trad 
+  //cut on Trad > 0.006 and check decay lengths to pv and to dv 
+  auto h_df_xi_trad_xi_c_ddist_pv_stra = df_xi.Filter("fXicDecayRadiusStraTrack > 0.006").Histo1D({"df_xi_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
+  auto h_df_xi_trad_xi_c_ddist_dv_stra = df_xi.Filter("fXicDecayRadiusStraTrack > 0.006").Histo1D({"df_xi_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
+  
+  //cut on dl to pv 
+  auto h_df_xi_dl_pv_xi_c_ddist_dv_stra =  df_xi.Filter("fXicInvDecayLengthToPVStra > 0.006").Histo1D({"df_xi_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
+  auto h_df_xi_dl_pv_xi_c_trad_stra = df_xi.Filter("fXicInvDecayLengthToPVStra > 0.006").Histo1D({"df_xi_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  
+  //cut on dl to dv 
+  auto h_df_xi_dl_dv_xi_c_ddist_dv_stra =  df_xi.Filter("fXicInvDecayLengthToDVStra > 0.001").Histo1D({"df_xi_dl_dv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
+  auto h_df_xi_dl_dv_xi_c_trad_stra = df_xi.Filter("fXicInvDecayLengthToDVStra > 0.001").Histo1D({"df_xi_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+
   //Select the Xi_c 
   float invMassDiffXic = 0.08; //8 MeV/c2 mass window 
    
@@ -465,6 +478,13 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_pi_one_dca_z);
   HarryPlotter::CheckAndStore(out, h_df_xi_pi_two_dca_xy);
   HarryPlotter::CheckAndStore(out, h_df_xi_pi_two_dca_z);
+
+  HarryPlotter::CheckAndStore(out, h_df_xi_trad_xi_c_ddist_pv_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_trad_xi_c_ddist_dv_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_dl_pv_xi_c_ddist_dv_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_dl_pv_xi_c_trad_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_dl_dv_xi_c_ddist_dv_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_dl_dv_xi_c_trad_stra);
   
   HarryPlotter::CheckAndStore(out, h_df_xi_c_im_xi_c_mass_stra); 
   
