@@ -8,10 +8,10 @@ void comparator() {
   TFile* output = TFile::Open("outComp_cut.root", "recreate"); 
 
   TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
-  double normXi = (30*20*4*20)/(h_xiCounter->GetBinContent(1)); //4 for the production cross section, 20 for the BR
+  double normXi = 1/(9.25e-7*h_xiCounter->GetBinContent(1)); //4 for the production cross section, 20 for the BR
   
   TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
-  double normXic = (30*20.)/(h_xicCounter->GetBinContent(1)); //30 for production cross section, 20 for the BR
+  double normXic = 1/(1.24e-4*h_xicCounter->GetBinContent(1)); //30 for production cross section, 20 for the BR
   
   TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
   double normXicc = (1.)/(h_xiccCounter->GetBinContent(1)); 
