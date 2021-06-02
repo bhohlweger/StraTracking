@@ -126,23 +126,36 @@ int main(int argc, char **argv) {
   float radDiffMax = 1.; //cm 
   float invMassDiff = 0.008; //8 MeV/c2 mass window 
   float lmbMass = 1.116; 
+  auto invMassLmbCut = [&invMassDiff, &lmbMass](float invMass) { return (TMath::Abs(invMass-lmbMass) < invMassDiff); }; 
+  auto radCut = [&radDiffMax](float radDiff) { return (radDiff < radDiffMax);};
+  auto decLengthLmb = [&lmbMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*lmbMass/mom:-999; }; 
+  
+  //Xi cuts
   float xiMass = 1.322; 
   float xipTmin = 1.0; 
   float xipTmax = 6.0; 
   int addedHitsMin = 1; 
   
-  float xicMass = 2.468; 
-  float xiccMass = 3.621; 
-  
-  auto radCut = [&radDiffMax](float radDiff) { return (radDiff < radDiffMax);};
-  auto invMassLmbCut = [&invMassDiff, &lmbMass](float invMass) { return (TMath::Abs(invMass-lmbMass) < invMassDiff); }; 
   auto invMassXiCut = [&invMassDiff, &xiMass](float invMass) { return (TMath::Abs(invMass-xiMass) < invMassDiff); }; 
   auto pTCut = [&xipTmin, &xipTmax](float pT) { return (xipTmin < pT)&&(pT < xipTmax); }; 
   auto hitsCut = [&addedHitsMin](int AddedHits) { return (AddedHits >= addedHitsMin); }; 
   
   auto decLengthXi = [&xiMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiMass/mom:-999; }; 
+
+  //Xic cuts
+  float xicMass = 2.468; 
+  float invMassDiffXic = 0.08; //8 MeV/c2 mass window 
   auto decLengthXic = [&xicMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xicMass/mom:-999; }; 
+  
+  auto invMassXicCut = [&invMassDiffXic, &xicMass](float invMass) { return (TMath::Abs(invMass-xicMass) < invMassDiffXic); }; 
+  
+
+  //Xicc cuts
+  float xiccMass = 3.621; 
   auto decLengthXicc = [&xiccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiccMass/mom:-999; }; 
+  auto invMassXiccCut = [&invMassDiffXic, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXic); }; 
+  
+  ROOT::RDataFrame df(input);
   
   auto df_xi_im = df_in
     .Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
@@ -236,9 +249,6 @@ int main(int argc, char **argv) {
   auto h_df_xi_dl_dv_xi_c_trad_stra = df_xi.Filter("fXicInvDecayLengthToDVStra > 0.001").Histo1D({"df_xi_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
 
   //Select the Xi_c 
-  float invMassDiffXic = 0.08; //8 MeV/c2 mass window 
-   
-  auto invMassXicCut = [&invMassDiffXic, &xicMass](float invMass) { return (TMath::Abs(invMass-xicMass) < invMassDiffXic); }; 
 
   auto df_xi_c_im = df_xi
     .Define("XicXiccDecayRadDiffTopo", "fXicDecayRadiusTopo-fXiccDecayRadiusTopo")
@@ -249,7 +259,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_im_xi_c_mass_stra = df_xi_c_im.Histo1D({"df_xi_c_im_xi_c_mass_stra", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassStraTrack"); 
 
   auto df_xi_c = df_xi_c_im.Filter(invMassXicCut, {"fXicMassStraTrack"});
-
+  
   //Towards the actual Xi_cc
   //Fill some histograms 
   
@@ -308,7 +318,6 @@ int main(int argc, char **argv) {
   
   //Select the Xi_cc
    
-  auto invMassXiccCut = [&invMassDiffXic, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXic); }; 
   
   
   auto df_xi_cc_im_c1 = df_xi_c
