@@ -49,15 +49,12 @@ int main(int argc, char **argv) {
   
   const char* fileName = argv[1]; 
   const char* outAddon = (argv[2])?argv[2]:""; 
+  bool ForceNoXi = (argv[3])?true:false; 
+  
   HarryPlotter::StyleBox(); 
  
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
   TString filePath = TString::Format("%s", fileName); 
- 
-  bool forceXic = false; 
-  if ( filePath.Contains("xic.root")) {
-    forceXic = true;
-  }
   
   auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
   auto h_gen_xi_c_counter = new TH1D("ptXicGen", "candCounter", 100, 0, 10); 
@@ -138,7 +135,11 @@ int main(int argc, char **argv) {
   
   ROOT::RDataFrame df(input);
   
-  auto df_in = forceXic?df.Filter("fTrueXic"):df.Filter("fTrueXic||!fTrueXic"); 
+  if (ForceNoXi) { 
+    std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
+  }
+  
+  auto df_in = ForceNoXi?df.Filter("!fTrueXi"):df.Filter("fTrueXi||!fTrueXi"); 
   
   auto df_in_qa = df_in.Filter("fFirstCandidateXiCC"); 
   
