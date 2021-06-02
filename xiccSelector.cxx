@@ -209,9 +209,13 @@ int main(int argc, char **argv) {
     //.Filter(radCut, {"XiV0DecayRadDiff"})
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000")
-    .Filter("fXiV0DauDCA > 5 && fXiV0DauDCA < 500")
-    .Filter("fV0DecayRadius > 0.3")
-    .Filter("fLmbInvDecayLengthToPV > 0.04")
+    // .Filter("fXiV0DauDCA > 5 && fXiV0DauDCA < 500")
+    // .Filter("fV0DecayRadius > 0.3")
+    // .Filter("fLmbInvDecayLengthToPV > 0.04")
+    .Filter("TMath::Abs(fPositiveDCAxy) > 50")
+    .Filter("TMath::Abs(fPositiveDCAz) > 40")
+    .Filter("TMath::Abs(fNegativeDCAxy) > 100")
+    .Filter("TMath::Abs(fNegativeDCAz) > 50")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
@@ -249,9 +253,11 @@ int main(int argc, char **argv) {
   //Select Xis excluding hits to avoid cheating 
   auto df_xi_sel = df_lmb
     .Filter(pTCut, {"fXiPtMC"})
-    .Filter("fXiDecayRadius > 0.04")
-    .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
-    .Filter("fXiDecayLength > 0.04")
+    // .Filter("fXiDecayRadius > 0.04")
+    // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
+    // .Filter("fXiDecayLength > 0.04")
+    .Filter("TMath::Abs(fBachelorDCAxy) > 40")
+    .Filter("TMath::Abs(fBachelorDCAz) > 40")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 

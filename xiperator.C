@@ -38,7 +38,7 @@ void xiperator(TString addon) {
     auto p = (TPad*)gROOT->FindObject(TString::Format("p%s",obj->GetName()).Data()); 
     p->cd(); 
     
-    xiHist->SetTitle("#Xi injected in Pythia"); 
+    xiHist->SetTitle("#Xi injected Pythia"); 
     mbHist->SetTitle("Pythia MB"); 
 
     if (!(objName.Contains("mass"))) { 
