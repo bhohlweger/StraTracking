@@ -26,6 +26,10 @@ void comparator(TString addon) {
     if (objName.Contains("Counter")) { 
       continue; 
     }
+    if (obj->IsA() == TH2D::Class()) { 
+      continue; 
+    }
+    
     if (sumHist) { 
       sumHist = nullptr;
     }
@@ -111,6 +115,7 @@ void comparator(TString addon) {
     output->cd();     
     c->Write();
   }
+  c->Close(); 
   output->Close(); 
   xi->Close(); 
   xic->Close(); 

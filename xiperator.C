@@ -25,6 +25,9 @@ void xiperator(TString addon) {
     if (sumHist) { 
       sumHist = nullptr;
     }
+    if (obj->IsA() == TH2D::Class()) { 
+      continue; 
+    }
     TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
     xiHist->GetXaxis()->SetTitle(obj->GetName()); 
     xiHist->SetLineColor(kPink+7); 
@@ -94,6 +97,7 @@ void xiperator(TString addon) {
     output->cd();     
     c->Write();
   }
+  c->Close();
   output->Close(); 
   xi->Close(); 
   mb->Close(); 
