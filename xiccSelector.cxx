@@ -100,29 +100,10 @@ int main(int argc, char **argv) {
       }
     }
   }
+  
   std::cout << "Added " << inputFiles << " files to the chain \n"; 
-  ROOT::RDataFrame df(input);
-  
-  auto df_in = forceXic?df.Filter("fTrueXic"):df.Filter("fTrueXic||!fTrueXic"); 
-  
-  //Towards the Xi for Xic->Xi+2pi 
-  //Fill some Histograms
-  auto h_df_in_lmb_ddca = df_in.Histo1D({"df_in_lmb_ddca", "lmb prong dca", 500, 0, 500}, "fXiV0DauDCA"); 
-  auto h_df_in_lmb_trad = df_in.Histo1D({"df_in_lmb_trad", "lmb trad", 600, 0, 30}, "fV0DecayRadius"); 
-  auto h_df_in_lmb_trad_mc = df_in.Histo1D({"df_in_lmb_trad_mc", "lmb trad", 600, 0, 30}, "fV0DecayRadiusMC"); 
-  auto h_df_in_lmb_trad_diff = df_in.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_lmb_trad_diff", "lmb trad", 500, 0, 2}, "XiV0DecayRadDiff"); 
-  
-  auto h_df_in_xi_ddca = df_in.Histo1D({"df_in_xi_ddca", "xi prong dca", 500, 0, 2000}, "fXiCascDauDCA"); 
-  auto h_df_in_xi_trad = df_in.Histo1D({"df_in_xi_trad", "xi trad", 250, 0, 10}, "fXiDecayRadius"); 
-  auto h_df_in_xi_trad_mc = df_in.Histo1D({"df_in_xi_trad_mc", "xi trad", 250, 0, 10}, "fXiDecayRadiusMC"); 
-  auto h_df_in_xi_trad_diff = df_in.Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)").Histo1D({"df_in_xi_trad_diff", "xi trad", 250, 0, 2}, "XiDecayRadDiff"); 
 
-  auto h_df_in_trad_diff_lmb_xi = df_in.Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius").Histo1D({"df_in_trad_diff_lmb_xi", "lmb-xi trad", 500, -100, 150}, "XiLmbDecayRadDiff"); 
-
-  auto h_df_in_lmb_mass = df_in.Histo1D({"df_in_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
-  auto h_df_in_xi_mass = df_in.Histo1D({"df_in_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
-  
-  //Select Xi
+  //Lmb cuts
   float radDiffMax = 1.; //cm 
   float invMassDiff = 0.008; //8 MeV/c2 mass window 
   float lmbMass = 1.116; 
@@ -157,8 +138,70 @@ int main(int argc, char **argv) {
   
   ROOT::RDataFrame df(input);
   
-  auto df_xi_im = df_in
+  auto df_in = forceXic?df.Filter("fTrueXic"):df.Filter("fTrueXic||!fTrueXic"); 
+  
+  //towards the Lambda for the Xi 
+  auto h_df_in_pos_pt = df_in.Histo1D({"df_in_pos_pt", "pos pt", 100, 0, 10}, "fPositivePt"); 
+  auto h_df_in_pos_dca_xy = df_in.Histo1D({"df_in_pos_dca_xy", "pos dca xy pv", 1000, -1e4, 1e4}, "fPositiveDCAxy"); 
+  auto h_df_in_pos_dca_z = df_in.Histo1D({"df_in_pos_dca_z", "pos dca z pv", 1000, -1e4, 1e4}, "fPositiveDCAz"); 
+  auto h_df_in_pos_hits = df_in.Histo1D({"df_in_pos_hits", "pos hits", 15, 0, 15}, "fPositiveClusters"); 
+  auto h_df_in_pos_chisq = df_in.Histo1D({"df_in_pos_chisq", "pos chisq", 100, 0, 100}, "fPositiveChisquare"); 
+  auto h_df_in_pos_chisqhits = df_in.Define("fPositiveChisquareOverHits", "fPositiveChisquare/fPositiveClusters").Histo1D({"df_in_pos_chisqhits", "pos chisq over hits", 100, 0, 50}, "fPositiveChisquareOverHits"); 
+
+  auto h_df_in_neg_pt = df_in.Histo1D({"df_in_neg_pt", "neg pt", 100, 0, 10}, "fNegativePt"); 
+  auto h_df_in_neg_dca_xy = df_in.Histo1D({"df_in_neg_dca_xy", "neg dca xy pv", 1000, -1e4, 1e4}, "fNegativeDCAxy"); 
+  auto h_df_in_neg_dca_z = df_in.Histo1D({"df_in_neg_dca_z", "neg dca z pv", 1000, -1e4, 1e4}, "fNegativeDCAz"); 
+  auto h_df_in_neg_hits = df_in.Histo1D({"df_in_neg_hits", "neg hits", 15, 0, 15}, "fNegativeClusters"); 
+  auto h_df_in_neg_chisq = df_in.Histo1D({"df_in_neg_chisq", "neg chisq", 100, 0, 100}, "fNegativeChisquare"); 
+  auto h_df_in_neg_chisqhits = df_in.Define("fNegativeChisquareOverHits", "fNegativeChisquare/fNegativeClusters").Histo1D({"df_in_neg_chisqhits", "neg chisq over hits", 100, 0, 50}, "fNegativeChisquareOverHits"); 
+  
+  auto h_df_in_lmb_dca_xy = df_in.Histo1D({"df_in_lmb_dca_xy", "lmb dca xy pv", 1000, -1e4, 1e4}, "fV0DCAxyToPV");
+  auto h_df_in_lmb_dca_z = df_in.Histo1D({"df_in_lmb_dca_z", "lmb dca z pv", 1000, -1e4, 1e4}, "fV0DCAzToPV");
+  
+  auto h_df_in_lmb_ddist_pv = df_in.Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"}).Histo1D({"h_df_in_lmb_ddist_pv", "lmb ddist to pv", 1000, 0, 100}, "fLmbInvDecayLengthToPV");
+  auto h_df_in_lmb_ddca = df_in.Histo1D({"df_in_lmb_ddca", "lmb prong dca", 500, 0, 500}, "fXiV0DauDCA"); 
+  auto h_df_in_lmb_trad = df_in.Histo1D({"df_in_lmb_trad", "lmb trad", 600, 0, 30}, "fV0DecayRadius"); 
+  auto h_df_in_lmb_trad_mc = df_in.Histo1D({"df_in_lmb_trad_mc", "lmb trad", 600, 0, 30}, "fV0DecayRadiusMC"); 
+  auto h_df_in_lmb_trad_diff = df_in.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_lmb_trad_diff", "lmb trad", 500, 0, 2}, "XiV0DecayRadDiff"); 
+  
+  auto h_df_in_lmb_mass = df_in.Histo1D({"df_in_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
+
+  //Select Lambdas 
+
+  auto df_lmb_im = df_in
     .Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
+    //.Filter(radCut, {"XiV0DecayRadDiff"})
+    ;
+
+  auto h_df_lmb_im_lmb_mass = df_lmb_im.Histo1D({"df_xi_im_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
+
+  auto df_lmb =  df_lmb_im
+    .Filter(invMassLmbCut, {"fLambdaMass"})
+    ;
+
+  //Towards the Xi for Xic->Xi+2pi 
+  //Fill some Histograms
+  
+  auto h_df_lmb_bach_pt = df_lmb.Histo1D({"df_lmb_bach_pt", "bach pt", 100, 0, 10}, "fBachelorPt"); 
+  auto h_df_lmb_bach_dca_xy = df_lmb.Histo1D({"df_lmb_bach_dca_xy", "bach dca xy pv", 1000, -1e4, 1e4}, "fBachelorDCAxy"); 
+  auto h_df_lmb_bach_dca_z = df_lmb.Histo1D({"df_lmb_bach_dca_z", "bach dca z pv", 1000, -1e4, 1e4}, "fBachelorDCAz"); 
+  auto h_df_lmb_bach_hits = df_lmb.Histo1D({"df_lmb_bach_hits", "bach hits", 15, 0, 15}, "fBachelorClusters"); 
+  auto h_df_lmb_bach_chisq = df_lmb.Histo1D({"df_lmb_bach_chisq", "bach chisq", 100, 0, 100}, "fBachelorChisquare"); 
+  auto h_df_lmb_bach_chisqhits = df_lmb.Define("fBachelorChisquareOverHits", "fBachelorChisquare/fBachelorClusters").Histo1D({"df_lmb_bach_chisqhits", "bach chisq over hits", 100, 0, 50}, "fBachelorChisquareOverHits"); 
+
+  auto h_df_lmb_xi_ddist_pv = df_lmb.Define("fXiInvDecayLengthToPV", decLengthXi, {"fXiDecayLength", "fXiTotalMomentum"}).Histo1D({"h_df_lmb_xi_ddist_pv", "xi ddist to pv", 1000, 0, 100}, "fXiInvDecayLengthToPV");
+  auto h_df_lmb_xi_ddca = df_lmb.Histo1D({"df_lmb_xi_ddca", "xi prong dca", 500, 0, 2000}, "fXiCascDauDCA"); 
+  auto h_df_lmb_xi_trad = df_lmb.Histo1D({"df_lmb_xi_trad", "xi trad", 250, 0, 10}, "fXiDecayRadius"); 
+  auto h_df_lmb_xi_trad_mc = df_lmb.Histo1D({"df_lmb_xi_trad_mc", "xi trad", 250, 0, 10}, "fXiDecayRadiusMC"); 
+  auto h_df_lmb_xi_trad_diff = df_lmb.Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)").Histo1D({"df_lmb_xi_trad_diff", "xi trad", 250, 0, 2}, "XiDecayRadDiff"); 
+
+  auto h_df_lmb_trad_diff_lmb_xi = df_lmb.Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius").Histo1D({"df_lmb_trad_diff_lmb_xi", "lmb-xi trad", 500, -100, 150}, "XiLmbDecayRadDiff"); 
+
+  auto h_df_lmb_xi_mass = df_lmb.Histo1D({"df_lmb_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
+  
+  //Select Xi
+  
+  auto df_xi_im = df_lmb
     .Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
     .Define("XiXicDecayRadDiffTopo", "fXiDecayRadius-fXicDecayRadiusTopo")
@@ -181,19 +224,16 @@ int main(int argc, char **argv) {
     .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
     .Filter(hitsCut, {"fXiHitsAdded"})
     .Filter(pTCut, {"fXiPtMC"})
-    .Filter(radCut, {"XiV0DecayRadDiff"})
     .Filter(radCut, {"XiDecayRadDiff"})
-    .Filter("XiLmbDecayRadDiff > 0")
+    //.Filter("XiLmbDecayRadDiff > 0")
     ; 
   
-  auto h_df_xi_im_lmb_mass = df_xi_im.Histo1D({"df_xi_im_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
   auto h_df_xi_im_xi_mass = df_xi_im.Histo1D({"df_xi_im_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
   
   auto h_df_xi_im_xi_ddist_dv_topo = df_xi_im.Histo1D({"df_xi_im_xi_dist_dv_topo", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVTopo"); 
   auto h_df_xi_im_xi_ddist_dv_stra = df_xi_im.Histo1D({"df_xi_im_xi_dist_dv_stra", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVStra"); 
 
   auto df_xi = df_xi_im
-    .Filter(invMassLmbCut, {"fLambdaMass"})
     .Filter(invMassXiCut, {"fXiMass"})
     ;
   
@@ -478,27 +518,55 @@ int main(int argc, char **argv) {
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
   out->cd(); 
-  //to xi 
+  //to the lmb
+  HarryPlotter::CheckAndStore(out, h_df_in_pos_pt);
+  HarryPlotter::CheckAndStore(out, h_df_in_pos_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_in_pos_dca_z);
+  HarryPlotter::CheckAndStore(out, h_df_in_pos_hits);
+  HarryPlotter::CheckAndStore(out, h_df_in_pos_chisq);
+  HarryPlotter::CheckAndStore(out, h_df_in_pos_chisqhits);
+
+  HarryPlotter::CheckAndStore(out, h_df_in_neg_pt);
+  HarryPlotter::CheckAndStore(out, h_df_in_neg_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_in_neg_dca_z);
+  HarryPlotter::CheckAndStore(out, h_df_in_neg_hits);
+  HarryPlotter::CheckAndStore(out, h_df_in_neg_chisq);
+  HarryPlotter::CheckAndStore(out, h_df_in_neg_chisqhits);
+  
+  HarryPlotter::CheckAndStore(out, h_df_in_lmb_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_in_lmb_dca_z);
+
+  HarryPlotter::CheckAndStore(out, h_df_in_lmb_ddist_pv);
   HarryPlotter::CheckAndStore(out, h_df_in_lmb_ddca);
   HarryPlotter::CheckAndStore(out, h_df_in_lmb_trad); 
   HarryPlotter::CheckAndStore(out, h_df_in_lmb_trad_mc);
   HarryPlotter::CheckAndStore(out, h_df_in_lmb_trad_diff);
   HarryPlotter::CheckAndStore(out, h_df_in_lmb_mass);
   
-  HarryPlotter::CheckAndStore(out, h_df_in_xi_ddca);
-  HarryPlotter::CheckAndStore(out, h_df_in_xi_trad); 
-  HarryPlotter::CheckAndStore(out, h_df_in_xi_trad_mc);
-  HarryPlotter::CheckAndStore(out, h_df_in_xi_trad_diff);
+  //to xi 
+  HarryPlotter::CheckAndStore(out, h_df_lmb_im_lmb_mass);
+ 
+  HarryPlotter::CheckAndStore(out, h_df_lmb_bach_pt);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_bach_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_bach_dca_z);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_bach_hits);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_bach_chisq);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_bach_chisqhits);
+    
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_ddist_pv);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_ddca);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_trad); 
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_trad_mc);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_trad_diff);
   
-  HarryPlotter::CheckAndStore(out, h_df_in_xi_mass);
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_mass);
 
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_topo); 
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_stra); 
 
-  HarryPlotter::CheckAndStore(out, h_df_in_trad_diff_lmb_xi); 
+  HarryPlotter::CheckAndStore(out, h_df_lmb_trad_diff_lmb_xi); 
   
   //to xi_c
-  HarryPlotter::CheckAndStore(out, h_df_xi_im_lmb_mass);
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_mass);
 
   HarryPlotter::CheckAndStore(out, h_df_xi_xi_c_mass_topo); 
