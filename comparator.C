@@ -23,10 +23,7 @@ void comparator(TString addon) {
 
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
-    if (objName.Contains("Counter")) { 
-      continue; 
-    }
-    if (obj->IsA() == TH2D::Class()) { 
+    if (objName.Contains("Counter")  || objName.Contains("_vs_") ) { 
       continue; 
     }
     
@@ -114,8 +111,8 @@ void comparator(TString addon) {
     leg->Draw("same"); 
     output->cd();     
     c->Write();
+    c->Close(); 
   }
-  c->Close(); 
   output->Close(); 
   xi->Close(); 
   xic->Close(); 

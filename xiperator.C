@@ -19,15 +19,13 @@ void xiperator(TString addon) {
 
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
-    if (objName.Contains("Counter")) { 
+    if (objName.Contains("Counter") || objName.Contains("_vs_")) { 
       continue; 
     }
     if (sumHist) { 
       sumHist = nullptr;
     }
-    if (obj->IsA() == TH2D::Class()) { 
-      continue; 
-    }
+
     TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
     xiHist->GetXaxis()->SetTitle(obj->GetName()); 
     xiHist->SetLineColor(kPink+7); 
@@ -50,6 +48,7 @@ void xiperator(TString addon) {
       xiHist->GetYaxis()->SetTitle("Count Normalized to Maximum"); 
     } else { 
       if (objName.Contains("xi_cc") || objName.Contains("xi_c")) { 
+	c->Close();
 	continue;
       }
 
@@ -96,8 +95,8 @@ void xiperator(TString addon) {
     leg->Draw("same"); 
     output->cd();     
     c->Write();
+    c->Close();
   }
-  c->Close();
   output->Close(); 
   xi->Close(); 
   mb->Close(); 
