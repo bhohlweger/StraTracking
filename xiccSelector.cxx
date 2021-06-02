@@ -152,6 +152,8 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_pos_chisq = df_in_qa.Histo1D({"df_in_qa_pos_chisq", "pos chisq", 100, 0, 100}, "fPositiveChisquare"); 
   auto h_df_in_qa_pos_chisqhits = df_in_qa.Define("fPositiveChisquareOverHits", "fPositiveChisquare/fPositiveClusters").Histo1D({"df_in_qa_pos_chisqhits", "pos chisq over hits", 100, 0, 50}, "fPositiveChisquareOverHits"); 
 
+  auto h_df_in_qa_pos_dca_xy_vs_hits = df_in_qa.Histo2D({"df_in_qa_pos_dca_xy_vs_hits", "pos dca xy pv vs hits", 1000, -1e4, 1e4, 15, -0.5, -14.5}, "fPositiveDCAxy", "fPositiveClusters"); 
+
   auto h_df_in_qa_neg_pt = df_in_qa.Histo1D({"df_in_qa_neg_pt", "neg pt", 100, 0, 10}, "fNegativePt"); 
   auto h_df_in_qa_neg_dca_xy = df_in_qa.Histo1D({"df_in_qa_neg_dca_xy", "neg dca xy pv", 1000, -1e4, 1e4}, "fNegativeDCAxy"); 
   auto h_df_in_qa_neg_dca_z = df_in_qa.Histo1D({"df_in_qa_neg_dca_z", "neg dca z pv", 1000, -1e4, 1e4}, "fNegativeDCAz"); 
@@ -161,6 +163,8 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_neg_chisq = df_in_qa.Histo1D({"df_in_qa_neg_chisq", "neg chisq", 100, 0, 100}, "fNegativeChisquare"); 
   auto h_df_in_qa_neg_chisqhits = df_in_qa.Define("fNegativeChisquareOverHits", "fNegativeChisquare/fNegativeClusters").Histo1D({"df_in_qa_neg_chisqhits", "neg chisq over hits", 100, 0, 50}, "fNegativeChisquareOverHits"); 
   
+  auto h_df_in_qa_neg_dca_xy_vs_hits = df_in_qa.Histo2D({"df_in_qa_neg_dca_xy_vs_hits", "neg dca xy pv vs hits", 1000, -1e4, 1e4, 15, -0.5, -14.5}, "fNegativeDCAxy", "fNegativeClusters"); 
+
   auto h_df_in_qa_lmb_dca_xy = df_in_qa.Histo1D({"df_in_qa_lmb_dca_xy", "lmb dca xy pv", 1000, -1e4, 1e4}, "fV0DCAxyToPV");
   auto h_df_in_qa_lmb_dca_z = df_in_qa.Histo1D({"df_in_qa_lmb_dca_z", "lmb dca z pv", 1000, -1e4, 1e4}, "fV0DCAzToPV");
   auto h_df_in_qa_lmb_dca_xy_wide = df_in_qa.Histo1D({"df_in_qa_lmb_dca_xy_wide", "lmb dca xy pv", 1000, -1e5, 1e5}, "fV0DCAxyToPV");
@@ -229,6 +233,8 @@ int main(int argc, char **argv) {
   auto h_df_lmb_qa_bach_chisq = df_lmb_qa.Histo1D({"df_lmb_qa_bach_chisq", "bach chisq", 100, 0, 100}, "fBachelorChisquare"); 
   auto h_df_lmb_qa_bach_chisqhits = df_lmb_qa.Define("fBachelorChisquareOverHits", "fBachelorChisquare/fBachelorClusters").Histo1D({"df_lmb_qa_bach_chisqhits", "bach chisq over hits", 100, 0, 50}, "fBachelorChisquareOverHits"); 
 
+  auto h_df_in_qa_bach_dca_xy_vs_hits = df_in_qa.Histo2D({"df_in_qa_bach_dca_xy_vs_hits", "bach dca xy pv vs hits", 1000, -1e4, 1e4, 15, -0.5, -14.5}, "fBachelorDCAxy", "fBachelorClusters"); 
+
   auto h_df_lmb_qa_xi_ddist_pv = df_lmb_qa.Histo1D({"df_lmb_qa_xi_ddist_pv", "xi ddist to pv", 1000, 0, 20}, "fXiInvDecayLengthToPV");
   auto h_df_lmb_qa_xi_ddca = df_lmb_qa.Histo1D({"df_lmb_qa_xi_ddca", "xi prong dca", 500, 0, 2000}, "fXiCascDauDCA"); 
   auto h_df_lmb_qa_xi_trad = df_lmb_qa.Histo1D({"df_lmb_qa_xi_trad", "xi trad", 250, 0, 10}, "fXiDecayRadius"); 
@@ -261,7 +267,7 @@ int main(int argc, char **argv) {
 
   auto df_xi = df_xi_im
     .Filter(invMassXiCut, {"fXiMass"})
-    ;
+    ;\
   
   //Towards the Xi_c for Xi_cc->Xi_c+pi: 
   //Fill some histograms 
@@ -704,6 +710,10 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
+  
+  HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy_vs_hits);   
+  HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_hits);   
+  HarryPlotter::CheckAndStore(out, h_df_in_qa_bach_dca_xy_vs_hits);   
   
   out->Close(); 
   return 0; 
