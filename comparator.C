@@ -2,15 +2,11 @@ void comparator(TString addon) {
   double xiccMass = 3.596; //3.621; 
   double xiccWindow = 0.08;
   
-  TFile* mb = TFile::Open(    TString::Format("outxiccSelector_mb%s.root"  , addon.Data()), "read"); 
   TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
   TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
   TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_xicc%s.root", addon.Data()), "read"); 
   TFile* output = TFile::Open(TString::Format("outComp_cut%s.root"         , addon.Data()), "recreate"); 
   
-  TH1D* h_mbCounter = (TH1D*)mb->Get("df_xi_c_candCounter");
-  double normMb = 1/(h_mbCounter->GetBinContent(1)); //4 for the production cross section, 20 for the BR
-    
   TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
   double normXi = 1/(9.25e-7*h_xiCounter->GetBinContent(1)); //4 for the production cross section, 20 for the BR
   
@@ -43,9 +39,6 @@ void comparator(TString addon) {
     TH1D* xiccHist = (TH1D*)xicc->Get(obj->GetName()); 
     xiccHist->SetLineColor(kGreen+3); 
     xiccHist->SetMarkerColor(kGreen+3); 
-    TH1D* mbHist = (TH1D*)mb->Get(obj->GetName()); 
-    mbHist->SetLineColor(42); 
-    mbHist->SetMarkerColor(42); 
     
     auto c = c11(obj->GetName()); 
     auto p = (TPad*)gROOT->FindObject(TString::Format("p%s",obj->GetName()).Data()); 
@@ -55,12 +48,10 @@ void comparator(TString addon) {
       xiHist->SetTitle("#Xi + Pythia #pi"); 
       xicHist->SetTitle("#Xi_{c} + Pythia #pi"); 
       xiccHist->SetTitle("#Xi_{cc}"); 
-      mbHist->SetTitle("Pythia MB"); 
 
       xiHist->Scale(1./xiHist->GetMaximum()); 
       xicHist->Scale(1./xicHist->GetMaximum()); 
       xiccHist->Scale(1./xiccHist->GetMaximum()); 
-      mbHist->Scale(1./mbHist->GetMaximum()); 
       
       xiHist->GetYaxis()->SetTitle("Count Normalized to Maximum"); 
     } else { 
@@ -113,7 +104,6 @@ void comparator(TString addon) {
       xiHist->Draw("hist"); 
       xicHist->Draw("histsame"); 
       xiccHist->Draw("histsame"); 
-      mbHist->Draw("histsame"); 
     }
     auto leg = p->BuildLegend(0.59, 0.4, 0.9, 0.82, "Injected:", "l");
     leg->SetFillStyle(0); 
