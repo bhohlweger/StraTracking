@@ -86,9 +86,9 @@ void massFitter() {
   double xiccWindow = 0.08;
 
 
-  TFile* xicc = TFile::Open("outxiccSelector_xicc-fulltracker.root", "read"); 
+  TFile* xicc = TFile::Open("outxiccSelector_xicc_fulltracker.root", "read"); 
   
-  TH1D* lambda_mass = (TH1D*)xicc->Get("df_xi_im_lmb_mass"); 
+  TH1D* lambda_mass = (TH1D*)xicc->Get("df_lmb_im_lmb_mass"); 
   TH1D* xi_mass = (TH1D*)xicc->Get("df_xi_im_xi_mass"); 
   TH1D* xic_mass = (TH1D*)xicc->Get("df_xi_c_im_xi_c_mass_stra"); 
   TH1D* xicc_mass = (TH1D*)xicc->Get("df_xi_cc_im_xi_cc_mass_stra_c1"); 
