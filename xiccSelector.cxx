@@ -325,15 +325,15 @@ int main(int argc, char **argv) {
   
   //study a bit decay length + trad 
   //cut on Trad and check decay lengths to pv and to dv 
-  auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.006").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
-  auto h_df_xi_qa_trad_xi_c_ddist_dv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.006").Histo1D({"df_xi_qa_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_dv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004").Histo1D({"df_xi_qa_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
   
   //cut on dl to pv 
-  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.006").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
-  auto h_df_xi_qa_dl_pv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.006").Histo1D({"df_xi_qa_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.004").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
+  auto h_df_xi_qa_dl_pv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.004").Histo1D({"df_xi_qa_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
   
   //cut on dl to dv 
-  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra > 0.001").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
+  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra > 0.001").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
   auto h_df_xi_qa_dl_dv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToDVStra > 0.001").Histo1D({"df_xi_qa_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
 
   //Select the Xi_c 
@@ -387,10 +387,10 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_qa_pi_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_z", "xi_c dca z stra", 1000, -500, 500}, "fPicDCAzToPVStraTrack");  
 
   //cut on Trad and check decay lengths 
-  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.003").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
+  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.004").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
   
   //cut on dl to pv 
-  auto h_df_xi_c_qa_dl_pv_xi_cc_trad_stra = df_xi_c_qa.Filter("fXiccInvDecayLengthToPVStra > 0.003").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadiusStraTrack");
+  auto h_df_xi_c_qa_dl_pv_xi_cc_trad_stra = df_xi_c_qa.Filter("fXiccInvDecayLengthToPVStra > 0.004").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadiusStraTrack");
   
   //some product magic .. 
 
