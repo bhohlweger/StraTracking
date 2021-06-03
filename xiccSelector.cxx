@@ -209,6 +209,7 @@ int main(int argc, char **argv) {
     .Define("fXiInvDecayLengthToDVStra", decLengthXi, {"fXiCtoXiLengthStraTrack", "fXiTotalMomentum"}) //this is the Xi decay length 
     .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
     //.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
+    .Filter(pTCut, {"lPtMCXiCC"})
     //.Filter(radCut, {"XiV0DecayRadDiff"})
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000")
