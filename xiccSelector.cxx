@@ -188,7 +188,8 @@ int main(int argc, char **argv) {
   //Define future variables and select Lambdas 
 
   auto df_lmb_im = df_in
-    //.Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
+    //.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
+    .Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
     .Define("XiXicDecayRadDiffTopo", "fXiDecayRadius-fXicDecayRadiusTopo")
     .Define("XiXicDecayRadDiffStra", "fXiDecayRadius-fXicDecayRadiusStraTrack")
@@ -210,7 +211,6 @@ int main(int argc, char **argv) {
     .Define("fXicInvDecayLengthToDVTopo", decLengthXic, {"fXiCCtoXiCLengthTopo", "lPXiCTopo"}) //this is the Xi_c decay length 
     .Define("fXiInvDecayLengthToDVStra", decLengthXi, {"fXiCtoXiLengthStraTrack", "fXiTotalMomentum"}) //this is the Xi decay length 
     .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
-    //.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
     .Filter(pTCut, {"fXiPtStraTrack"})
     //.Filter(radCut, {"XiV0DecayRadDiff"})
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000")
