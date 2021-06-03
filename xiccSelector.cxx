@@ -590,6 +590,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_in_qa_lmb_trad_mc);
   HarryPlotter::CheckAndStore(out, h_df_in_qa_lmb_trad_diff);
   HarryPlotter::CheckAndStore(out, h_df_in_qa_lmb_mass);
+  HarryPlotter::CheckAndStore(out, h_df_in_qa_xi_mass);
   
   //to xi 
   HarryPlotter::CheckAndStore(out, h_df_lmb_im_lmb_mass);
