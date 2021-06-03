@@ -28,8 +28,9 @@ void comparator(TString addon) {
       continue; 
     }
     
-    if (sumHist) { 
+    if (sumHist || sumHistBkg) { 
       sumHist = nullptr;
+      sumHistBkg = nullptr;
     }
     TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
     xiHist->GetXaxis()->SetTitle(obj->GetName()); 

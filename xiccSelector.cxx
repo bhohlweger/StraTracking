@@ -430,7 +430,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c1 = df_xi_cc_im_c1.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c1", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c1 = df_xi_cc_im_c1.Histo1D({"df_xi_cc_im_xi_cc_pt_c1", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
 
   //soft selection all cuts 
   auto df_xi_cc_im_c2 = df_xi_c
@@ -455,7 +455,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c2 = df_xi_cc_im_c2.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c2", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c2 = df_xi_cc_im_c2.Histo1D({"df_xi_cc_im_xi_cc_pt_c2", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
 
   //soft selection all cuts expereimental xicc dca cuts
   auto df_xi_cc_im_c3 = df_xi_c
@@ -482,7 +482,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c3", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_pt_c3", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
 
   //harsh selection all cuts
   auto df_xi_cc_im_c4 = df_xi_c
@@ -507,7 +507,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_pt_c4", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
     
   auto df_xi_cc_im_c5 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
@@ -532,7 +532,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c5", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_pt_c5", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
   
   auto df_xi_cc_im_c6 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
@@ -559,7 +559,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c6 = df_xi_cc_im_c6.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c6", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c6 = df_xi_cc_im_c6.Histo1D({"df_xi_cc_im_xi_cc_pt_c6", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c6 = df_xi_cc_im_c6.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c6 = df_xi_cc_im_c6.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
 
   auto df_xi_cc_im_c7 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
@@ -568,7 +568,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c7 = df_xi_cc_im_c7.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c7", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c7 = df_xi_cc_im_c7.Histo1D({"df_xi_cc_im_xi_cc_pt_c7", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c7 = df_xi_cc_im_c7.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c7 = df_xi_cc_im_c7.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
 
   auto df_xi_cc_im_c8 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
@@ -577,7 +577,7 @@ int main(int argc, char **argv) {
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c8 = df_xi_cc_im_c8.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c8", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c8 = df_xi_cc_im_c8.Histo1D({"df_xi_cc_im_xi_cc_pt_c8", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
-  auto out_counter_c8 = df_xi_cc_im_c8.Filter(invMassXiccCut, "fXiccMassStraTrack").Count(); 
+  auto out_counter_c8 = df_xi_cc_im_c8.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
   
   auto cutCounter  = new TH1D("cutCounter", "cutCounter", 10, 0, 10); 
   double inputCounter = *in_counter; 
