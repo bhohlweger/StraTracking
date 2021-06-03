@@ -179,7 +179,8 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_lmb_trad_diff = df_in_qa.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_qa_lmb_trad_diff", "lmb trad", 500, 0, 2}, "XiV0DecayRadDiff"); 
   
   auto h_df_in_qa_lmb_mass = df_in_qa.Histo1D({"df_in_qa_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
-
+  auto h_df_in_qa_xi_mass = df_in_qa.Histo1D({"df_in_qa_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
+  
   //Define future variables and select Lambdas 
 
   auto df_lmb_im = df_in
@@ -210,7 +211,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000")
     // .Filter("fXiV0DauDCA > 5 && fXiV0DauDCA < 500")
-    // .Filter("fV0DecayRadius > 0.3")
+    .Filter("fV0DecayRadius > 0.5")
     // .Filter("fLmbInvDecayLengthToPV > 0.04")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50")
     .Filter("TMath::Abs(fPositiveDCAz) > 40")
@@ -253,7 +254,7 @@ int main(int argc, char **argv) {
   //Select Xis excluding hits to avoid cheating 
   auto df_xi_sel = df_lmb
     .Filter(pTCut, {"fXiPtMC"})
-    // .Filter("fXiDecayRadius > 0.04")
+    .Filter("fXiDecayRadius > 0.5")
     // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
     // .Filter("fXiDecayLength > 0.04")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40")
