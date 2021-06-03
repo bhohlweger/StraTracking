@@ -71,15 +71,15 @@ void HarryPlotter::Normalize2DBinByBin(TH2D* hist) {
 double HarryPlotter::FitDCA(TH1* hist) { 
   
   auto mydGauss = [] (double *x, double *par) double { 
-    return par[0]*TMath::Gaus(x[0], par[1], par[2], true) + par[3]*TMath::Gaus(x[0], par[4], par[5], true);
+    return par[0]*TMath::Gaus(x[0], par[1], par[2], false) + par[3]*TMath::Gaus(x[0], par[4], par[5], false);
   };
   
   auto myxdGauss = [] (double *x, double *par) double { 
-    return x[0]*(par[0]*TMath::Gaus(x[0], par[1], par[2], true) + par[3]*TMath::Gaus(x[0], par[4], par[5], true));
+    return x[0]*(par[0]*TMath::Gaus(x[0], par[1], par[2], false) + par[3]*TMath::Gaus(x[0], par[4], par[5], false));
   };
   
   auto myxsqdGauss = [] (double *x, double *par) double { 
-    return (x[0]-par[6])*(x[0]-par[6])*(par[0]*TMath::Gaus(x[0], par[1], par[2], true) + par[3]*TMath::Gaus(x[0], par[4], par[5], true));
+    return (x[0]-par[6])*(x[0]-par[6])*(par[0]*TMath::Gaus(x[0], par[1], par[2], false) + par[3]*TMath::Gaus(x[0], par[4], par[5], false));
   };
   
   
@@ -93,27 +93,28 @@ double HarryPlotter::FitDCA(TH1* hist) {
   doubleGauss->SetNpx(10000); 
   
 
-  //std::cout << "For " << hist->GetName() << std::endl; 
-  
+  std::cout << "For " << hist->GetName() << std::endl; 
+  std::cout << " maximum: " << hist->GetBinContent(hist->FindBin(0)) << std::endl;
+
   hist->Scale(1./hist->Integral()); 
   
-  doubleGauss->SetParameter(0, 0.9*hist->GetMaximum()); //norm 1
-  doubleGauss->SetParLimits(0, 1e-6, hist->GetMaximum()); //norm 1
-
+  doubleGauss->SetParameter(0, 0.9*hist->GetBinContent(hist->FindBin(0))); //norm 1
+  doubleGauss->SetParLimits(0, 1e-6, 100*hist->GetBinContent(hist->FindBin(0))); //norm 1
+			    
   doubleGauss->SetParameter(1, hist->GetMean()); //mu 1 
-  doubleGauss->SetParLimits(1, 0.98*hist->GetMean(), 1.02*hist->GetMean()); //mu 1 
+  doubleGauss->SetParLimits(1, -10, 10); //mu 1 
   
   doubleGauss->SetParameter(2, 0.5*hist->GetStdDev(1)); //sig 1 
-  doubleGauss->SetParLimits(2, hist->GetStdDev(1)*1e-1, hist->GetStdDev(1)*10); //sig 1 
-
-  doubleGauss->SetParameter(3, 0.1*hist->GetMaximum()); //norm 2
-  doubleGauss->SetParLimits(3, 1e-6, hist->GetMaximum()); //norm 2
-
+  doubleGauss->SetParLimits(2, hist->GetStdDev(1)*1e-2, hist->GetStdDev(1)*1e2); //sig 1 
+  
+  doubleGauss->SetParameter(3, 0.9*hist->GetBinContent(hist->FindBin(0))); //norm 2
+  doubleGauss->SetParLimits(3, 1e-6, 100*hist->GetBinContent(hist->FindBin(0))); //norm 2
+			    
   doubleGauss->SetParameter(4, hist->GetMean()); //mu 2 
-  doubleGauss->SetParLimits(4, 0.98*hist->GetMean(), 1.02*hist->GetMean()); //mu 2 
+  doubleGauss->SetParLimits(4, -10, 10); //mu 2 
 
   doubleGauss->SetParameter(5,1.5*hist->GetStdDev(1)); //sig 2  
-  doubleGauss->SetParLimits(5,hist->GetStdDev(1)*1e-1, hist->GetStdDev(1)*10); //sig 2 
+  doubleGauss->SetParLimits(5,hist->GetStdDev(1)*1e-2, hist->GetStdDev(1)*1e2); //sig 2 
   
   hist->Fit(doubleGauss, "MBR+");
   
