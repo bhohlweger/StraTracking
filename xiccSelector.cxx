@@ -222,8 +222,8 @@ int main(int argc, char **argv) {
     .Filter("fLmbInvDecayLengthToPV > 0.04")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50")
     .Filter("TMath::Abs(fPositiveDCAz) > 40")
-    .Filter("TMath::Abs(fNegativeDCAxy) > 80")
-    .Filter("TMath::Abs(fNegativeDCAz) > 60")
+    .Filter("TMath::Abs(fNegativeDCAxy) > 100")
+    .Filter("TMath::Abs(fNegativeDCAz) > 50")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
