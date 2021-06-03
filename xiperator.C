@@ -1,6 +1,6 @@
 void xiperator(TString addon) { 
   double xiMass = 1.322; //3.621; 
-  double xiWindow = 0.008;
+  double xiWindow = 0.012;
 
   TFile* mb = TFile::Open(    TString::Format("outxiccSelector_mb%s.root"  , addon.Data()), "read"); 
   TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
