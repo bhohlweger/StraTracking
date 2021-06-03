@@ -102,20 +102,19 @@ int main(int argc, char **argv) {
 
   //Lmb cuts
   float radDiffMax = 1.; //cm 
-  float invMassDiff = 0.008; //8 MeV/c2 mass window 
+
   float lmbMass = 1.116; 
-  auto invMassLmbCut = [&invMassDiff, &lmbMass](float invMass) { return (TMath::Abs(invMass-lmbMass) < invMassDiff); }; 
+  float invMassDiffLmb = 0.012; //8 MeV/c2 mass window 
+  auto invMassLmbCut = [&invMassDiffLmb, &lmbMass](float invMass) { return (TMath::Abs(invMass-lmbMass) < invMassDiffLmb); }; 
   auto radCut = [&radDiffMax](float radDiff) { return (radDiff < radDiffMax);};
   auto decLengthLmb = [&lmbMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*lmbMass/mom:-999; }; 
   
   //Xi cuts
   float xiMass = 1.322; 
-  float xipTmin = 1.0; 
-  float xipTmax = 6.0; 
+  float invMassDiffXi = 0.012; 
   int addedHitsMin = 1; 
   
-  auto invMassXiCut = [&invMassDiff, &xiMass](float invMass) { return (TMath::Abs(invMass-xiMass) < invMassDiff); }; 
-  auto pTCut = [&xipTmin, &xipTmax](float pT) { return (xipTmin < pT)&&(pT < xipTmax); }; 
+  auto invMassXiCut = [&invMassDiffXi, &xiMass](float invMass) { return (TMath::Abs(invMass-xiMass) < invMassDiffXi); }; 
   auto hitsCut = [&addedHitsMin](int AddedHits) { return (AddedHits >= addedHitsMin); }; 
   
   auto decLengthXi = [&xiMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiMass/mom:-999; }; 
