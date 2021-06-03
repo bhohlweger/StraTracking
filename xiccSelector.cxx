@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
     //.Filter(radCut, {"XiV0DecayRadDiff"})
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000")
-    .Filter("ffXiV0DauDCA < 2000")
+    .Filter("fXiV0DauDCA < 2000")
     .Filter("fV0DecayRadius > 0.5")
     .Filter("fLmbInvDecayLengthToPV > 0.04")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50")
