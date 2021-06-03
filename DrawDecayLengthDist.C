@@ -65,20 +65,20 @@ void DrawDecayLengthDist() {
   d1->GetXaxis()->SetNdivisions(504); 
   d1->GetYaxis()->SetNdivisions(506); 
   d1->GetYaxis()->SetTitleOffset(1.4); 
-  f_dcLngth_Xi->SetTitle("#Xi^{#minus} (#it{c}#tau=4.9cm)");
+  f_dcLngth_Xi->SetTitle("#Xi^{#minus} (#it{c}#tau = 4.9cm)");
   f_dcLngth_Xi->SetParameters(tau_xi, mass_xi, momentum); 
   f_dcLngth_Xi->SetLineColor(kPink+7); 
-  f_dcLngth_Xi->SetLineWidth(3);
+  f_dcLngth_Xi->SetLineWidth(2);
   f_dcLngth_Xi->DrawCopy("same");
   
   p->cd(); 
-  f_dcLngth_Om->SetTitle("#Omega^{#minus} (#it{c}#tau=2.5cm)");
+  f_dcLngth_Om->SetTitle("#Omega^{#minus} (#it{c}#tau = 2.5cm)");
   f_dcLngth_Om->SetParameters(tau_omega, mass_omega, momentum); 
   f_dcLngth_Om->SetLineColor(38); 
-  f_dcLngth_Om->SetLineWidth(3);
+  f_dcLngth_Om->SetLineWidth(2);
   f_dcLngth_Om->DrawCopy("same");
   
-  auto leg = p->BuildLegend( 0.62, 0.59, 0.92, 0.82, TString::Format("p = %.1f GeV/#it{c}", momentum).Data(), "l"); 
+  auto leg = p->BuildLegend( 0.57, 0.59, 0.87, 0.82, TString::Format("p = %.1f GeV/#it{c}", momentum).Data(), "l"); 
   leg->SetFillStyle(0); 
 
   TArrow layers; 
