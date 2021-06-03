@@ -70,15 +70,15 @@ void HarryPlotter::Normalize2DBinByBin(TH2D* hist) {
 
 double HarryPlotter::FitDCA(TH1* hist) { 
   
-  auto mydGauss = [] (double *x, double *par) double { 
+  auto mydGauss = [] (double *x, double *par) { 
     return par[0]*TMath::Gaus(x[0], par[1], par[2], false) + par[3]*TMath::Gaus(x[0], par[4], par[5], false);
   };
   
-  auto myxdGauss = [] (double *x, double *par) double { 
+  auto myxdGauss = [] (double *x, double *par) { 
     return x[0]*(par[0]*TMath::Gaus(x[0], par[1], par[2], false) + par[3]*TMath::Gaus(x[0], par[4], par[5], false));
   };
   
-  auto myxsqdGauss = [] (double *x, double *par) double { 
+  auto myxsqdGauss = [] (double *x, double *par) { 
     return (x[0]-par[6])*(x[0]-par[6])*(par[0]*TMath::Gaus(x[0], par[1], par[2], false) + par[3]*TMath::Gaus(x[0], par[4], par[5], false));
   };
   
