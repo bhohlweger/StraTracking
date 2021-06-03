@@ -579,21 +579,30 @@ int main(int argc, char **argv) {
   auto out_counter_c8 = df_xi_cc_im_c8.Count(); 
   
   auto cutCounter  = new TH1D("cutCounter", "cutCounter", 10, 0, 10); 
-  double reduction = *out_counter_c1/(*in_counter); 
+  double inputCounter = *in_counter; 
+  double reduction = *out_counter_c1/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(1, reduction);
-  reduction = *out_counter_c2/(*in_counter);
+  reduction = *out_counter_c2/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(2, reduction);
-  reduction = *out_counter_c3/(*in_counter);
+  reduction = *out_counter_c3/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(3, reduction);
-  reduction = *out_counter_c4/(*in_counter);
+  reduction = *out_counter_c4/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(4, reduction);
-  reduction = *out_counter_c5/(*in_counter);
+  reduction = *out_counter_c5/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(5, reduction);
-  reduction = *out_counter_c6/(*in_counter);
+  reduction = *out_counter_c6/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(6, reduction);
-  reduction = *out_counter_c7/(*in_counter);
+  reduction = *out_counter_c7/inputCounter;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(7, reduction);
-  reduction = *out_counter_c2/(*in_counter) ;
+  reduction = *out_counter_c2/inputCounter ;
+  std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(7, reduction);
 
   TString outName = TString::Format("outxiccSelector_%s.root",outAddon )  ; 
