@@ -182,8 +182,8 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_lmb_trad_mc = df_in_qa.Histo1D({"df_in_qa_lmb_trad_mc", "lmb trad", 600, 0, 30}, "fV0DecayRadiusMC"); 
   auto h_df_in_qa_lmb_trad_diff = df_in_qa.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_qa_lmb_trad_diff", "lmb trad", 500, 0, 2}, "XiV0DecayRadDiff"); 
   
-  auto h_df_in_qa_lmb_mass = df_in_qa.Histo1D({"df_in_qa_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
-  auto h_df_in_qa_xi_mass = df_in_qa.Histo1D({"df_in_qa_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
+  auto h_df_in_qa_lmb_mass = df_in_qa.Histo1D({"df_in_qa_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
+  auto h_df_in_qa_xi_mass = df_in_qa.Histo1D({"df_in_qa_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
   
   //Define future variables and select Lambdas 
 
@@ -211,20 +211,20 @@ int main(int argc, char **argv) {
     .Define("fXicInvDecayLengthToDVTopo", decLengthXic, {"fXiCCtoXiCLengthTopo", "lPXiCTopo"}) //this is the Xi_c decay length 
     .Define("fXiInvDecayLengthToDVStra", decLengthXi, {"fXiCtoXiLengthStraTrack", "fXiTotalMomentum"}) //this is the Xi decay length 
     .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
-    .Filter(pTCut, {"fXiPtStraTrack"})
+    .Filter(pTCut, {"lPtXiCCStraTrack"})
     //.Filter(radCut, {"XiV0DecayRadDiff"})
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000")
-    // .Filter("fXiV0DauDCA > 5 && fXiV0DauDCA < 500")
+    .Filter("ffXiV0DauDCA < 2000")
     .Filter("fV0DecayRadius > 0.5")
-    // .Filter("fLmbInvDecayLengthToPV > 0.04")
+    .Filter("fLmbInvDecayLengthToPV > 0.04")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50")
     .Filter("TMath::Abs(fPositiveDCAz) > 40")
-    .Filter("TMath::Abs(fNegativeDCAxy) > 100")
-    .Filter("TMath::Abs(fNegativeDCAz) > 50")
+    .Filter("TMath::Abs(fNegativeDCAxy) > 80")
+    .Filter("TMath::Abs(fNegativeDCAz) > 60")
     ;
 
-  auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 500, 1., 2.3}, "fLambdaMass"); 
+  auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
 
   auto df_lmb =  df_lmb_im
     .Filter(invMassLmbCut, {"fLambdaMass"})
@@ -255,26 +255,26 @@ int main(int argc, char **argv) {
 
   auto h_df_lmb_qa_trad_diff_lmb_xi = df_lmb_qa.Histo1D({"df_lmb_qa_trad_diff_lmb_xi", "lmb-xi trad", 500, -100, 150}, "XiLmbDecayRadDiff"); 
 
-  auto h_df_lmb_qa_xi_mass = df_lmb_qa.Histo1D({"df_lmb_qa_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
+  auto h_df_lmb_qa_xi_mass = df_lmb_qa.Histo1D({"df_lmb_qa_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
   
   //Select Xis excluding hits to avoid cheating 
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5")
     .Filter("XiLmbDecayRadDiff > 0")
     // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
-    // .Filter("fXiDecayLength > 0.04")
-    //.Filter("TMath::Abs(fBachelorDCAxy) > 40")
-    //.Filter("TMath::Abs(fBachelorDCAz) > 40")
+    .Filter("fXiDecayLength > 0.02")
+    .Filter("TMath::Abs(fBachelorDCAxy) > 40")
+    .Filter("TMath::Abs(fBachelorDCAz) > 40")
     ;
 
-  auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
+  auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
 
   //Select Xis including Hits
   auto df_xi_im = df_xi_sel
     .Filter(hitsCut, {"fXiHitsAdded"})
     ; 
   
-  auto h_df_xi_im_xi_mass = df_xi_im.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_im_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
+  auto h_df_xi_im_xi_mass = df_xi_im.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_im_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
   
   auto h_df_xi_im_xi_ddist_dv_topo = df_xi_im.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_im_xi_dist_dv_topo", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVTopo"); 
   auto h_df_xi_im_xi_ddist_dv_stra = df_xi_im.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_im_xi_dist_dv_stra", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVStra"); 
