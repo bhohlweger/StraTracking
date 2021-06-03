@@ -131,7 +131,10 @@ int main(int argc, char **argv) {
   float xiccMass = 3.621; 
   auto decLengthXicc = [&xiccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiccMass/mom:-999; }; 
   auto invMassXiccCut = [&invMassDiffXic, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXic); }; 
-  
+  float xiccpTmin = 2.0; 
+  float xiccpTmax = 6.0; 
+  auto pTCut = [&xiccpTmin, &xiccpTmax](float pT) { return (xiccpTmin < pT)&&(pT < xiccpTmax); }; 
+
   ROOT::RDataFrame df(input);
   
   if (ForceNoXi) { 
@@ -185,7 +188,7 @@ int main(int argc, char **argv) {
   //Define future variables and select Lambdas 
 
   auto df_lmb_im = df_in
-    .Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
+    //.Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
     .Define("XiXicDecayRadDiffTopo", "fXiDecayRadius-fXicDecayRadiusTopo")
     .Define("XiXicDecayRadDiffStra", "fXiDecayRadius-fXicDecayRadiusStraTrack")
@@ -257,6 +260,7 @@ int main(int argc, char **argv) {
   //Select Xis excluding hits to avoid cheating 
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5")
+    .Filter("XiLmbDecayRadDiff > 0")
     // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
     // .Filter("fXiDecayLength > 0.04")
     //.Filter("TMath::Abs(fBachelorDCAxy) > 40")
