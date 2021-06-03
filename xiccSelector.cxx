@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
   //Xi cuts
   float xiMass = 1.322; 
   float invMassDiffXi = 0.012; 
-  int addedHitsMin = 1; 
+  int addedHitsMin = ForceNoXi?0:1; 
   
   auto invMassXiCut = [&invMassDiffXi, &xiMass](float invMass) { return (TMath::Abs(invMass-xiMass) < invMassDiffXi); }; 
   auto hitsCut = [&addedHitsMin](int AddedHits) { return (AddedHits >= addedHitsMin); }; 
@@ -278,8 +278,8 @@ int main(int argc, char **argv) {
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
 
   //Select Xis including Hits
-  auto df_xi_im = df_xi_sel
-    .Filter(hitsCut, {"fXiHitsAdded"})
+  auto df_xi_im = df_xi_sel.
+    Filter(hitsCut, {"fXiHitsAdded"})
     ; 
   
   auto h_df_xi_im_xi_mass = df_xi_im.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_im_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 

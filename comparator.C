@@ -20,6 +20,7 @@ void comparator(TString addon) {
   TIter next(inList); 
   TObject* obj = nullptr; 
   TH1D* sumHist = nullptr;
+  TH1D* sumHistBkg = nullptr;
 
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
@@ -95,8 +96,8 @@ void comparator(TString addon) {
       TLine one; 
       one.SetLineColor(kBlack); 
       one.SetLineStyle(4);
-      one.DrawLine(xiccMass-xiccWindow, 0, xiccMass-xiccWindow, sumHist->GetMaximum()); 
-      one.DrawLine(xiccMass+xiccWindow, 0, xiccMass+xiccWindow, sumHist->GetMaximum()); 
+      //one.DrawLine(xiccMass-xiccWindow, 0, xiccMass-xiccWindow, sumHist->GetMaximum()); 
+      //one.DrawLine(xiccMass+xiccWindow, 0, xiccMass+xiccWindow, sumHist->GetMaximum()); 
       
     } else { 
       xiHist->GetYaxis()->SetTitleOffset(1.2); 
@@ -106,7 +107,7 @@ void comparator(TString addon) {
       xicHist->Draw("histsame"); 
       xiccHist->Draw("histsame"); 
     }
-    auto leg = p->BuildLegend(0.59, 0.4, 0.9, 0.82, "Injected:", "l");
+    auto leg = p->BuildLegend(0.59, 0.4, 0.9, 0.82, "", "l");
     leg->SetFillStyle(0); 
     leg->Draw("same"); 
     output->cd();     
