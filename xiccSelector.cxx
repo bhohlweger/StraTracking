@@ -367,7 +367,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_qa_xi_cc_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_xy_topo", "xi_cc dca xy topo", 1000, -500, 500}, "fXiccDCAxyToPVTopo");  
   auto h_df_xi_c_qa_xi_cc_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_z_topo", "xi_cc dca z topo", 1000, -500, 500}, "fXiccDCAzToPVTopo");  
   
-5D  //Stra
+  //Stra
 
   auto h_df_xi_c_qa_trad_diff_xi_xi_c_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_xi_c_stra", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffStra") ;
 
@@ -472,21 +472,21 @@ int main(int argc, char **argv) {
   //harsh selection all cuts
   auto df_xi_cc_im_c4 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
-    .Filter("fXicDaughterDCAStraTrack < 10")
-    .Filter("fXicDecayRadiusStraTrack > 0.006")
-    .Filter("fXicInvDecayLengthToPVStra > 0.004")
-    .Filter("fXiccDaughterDCAStraTrack < 10")
-    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
-    .Filter("fXiccDecayDistanceFromPVStraTrack > 0.003")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 10")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 15")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 10")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 5")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 15")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 20")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 15")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
-    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 15")    
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.01")
+    .Filter("fXicInvDecayLengthToPVStra > 0.01")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.003")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.003")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 15")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 10")
     ;
   
   //Fill some final histograms  
@@ -495,6 +495,22 @@ int main(int argc, char **argv) {
     
   auto df_xi_cc_im_c5 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.004")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
     ;
   
   //Fill some final histograms  
@@ -503,6 +519,24 @@ int main(int argc, char **argv) {
   
   auto df_xi_cc_im_c6 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.004")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 200")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 200")    
     ;
   
   //Fill some final histograms  
