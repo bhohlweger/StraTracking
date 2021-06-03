@@ -257,12 +257,11 @@ int main(int argc, char **argv) {
   
   //Select Xis excluding hits to avoid cheating 
   auto df_xi_sel = df_lmb
-    .Filter(pTCut, {"fXiPtMC"})
     .Filter("fXiDecayRadius > 0.5")
     // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
     // .Filter("fXiDecayLength > 0.04")
-    .Filter("TMath::Abs(fBachelorDCAxy) > 40")
-    .Filter("TMath::Abs(fBachelorDCAz) > 40")
+    //.Filter("TMath::Abs(fBachelorDCAxy) > 40")
+    //.Filter("TMath::Abs(fBachelorDCAz) > 40")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 500, 1.2, 2.5}, "fXiMass"); 
