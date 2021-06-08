@@ -87,19 +87,23 @@ void invariantMassXicc(TString addon) {
       avgBkg->SetBinContent(iBin,myavgBkg->GetBinContent(1)); 
     }
 
-    auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    auto leg = new TLegend(0.16, 0.38, 0.56, 0.65);//, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
     leg->SetFillStyle(0); 
     
     
-    auto leg2 = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    auto leg2 = new TLegend(0.16, 0.38, 0.56, 0.65);//, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
 
     auto c1 = c11(TString::Format("%s1",obj->GetName()).Data()); 
     auto p1 = (TPad*)gROOT->FindObject(TString::Format("p%s1",obj->GetName()).Data()); 
     
     auto c2 = c11(TString::Format("%s2",obj->GetName()).Data()); 
     auto p2 = (TPad*)gROOT->FindObject(TString::Format("p%s2",obj->GetName()).Data()); 
-   
     
+    TLine *HoldTheLine = new TLine();
+    HoldTheLine->SetLineColor(kGray); 
+    HoldTheLine->SetLineWidth(4); 
+    HoldTheLine->SetLineStyle(2); 
+        
     xiHist->SetLineColor(kPink+7); 
     xiHist->SetMarkerColor(kPink+7); 
     xicHist->SetLineColor(38); 
@@ -171,32 +175,35 @@ void invariantMassXicc(TString addon) {
     xiHist->Draw("same"); 
     sumHist->Draw("samehist"); 
     leg->Draw("same"); 
-    
+    HoldTheLine->DrawLine(xiccMass-xiccWindow, 0, xiccMass-xiccWindow, xiccHist->GetMaximum()*3); 
+    HoldTheLine->DrawLine(xiccMass+xiccWindow, 0, xiccMass+xiccWindow, xiccHist->GetMaximum()*3); 
     
     TLatex* myTex = GenTex(); 
-    //myTex->DrawLatex(0.63, 0.55, TString::Format("Cut Variation %d", counter).Data());
-    myTex->DrawLatex(0.63, 0.55, TString::Format("Reduction Factors:").Data());
+    //myTex->DrawLatex(0.61, 0.55, TString::Format("Cut Variation %d", counter).Data());
+    myTex->DrawLatex(0.61, 0.55, TString::Format("Reduction Factors:").Data());
     if (redXi > 0) {
-      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  %1.2e", redXi).Data());
+      myTex->DrawLatex(0.61, 0.48, TString::Format("#Xi^{-}:  %1.2e", redXi).Data());
     } else { 
-      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  Complete Red.").Data()); 
+      myTex->DrawLatex(0.61, 0.48, TString::Format("#Xi^{-}:  Complete Red.").Data()); 
     }
     if (redXic > 0) {
-      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: %1.2e", redXic).Data());
+      myTex->DrawLatex(0.61, 0.41, TString::Format("#Xi_{c}^{+}: %1.2e", redXic).Data());
     } else { 
-      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: Complete Red.").Data()); 
+      myTex->DrawLatex(0.61, 0.41, TString::Format("#Xi_{c}^{+}: Complete Red.").Data()); 
     }
     if (redXicc > 0) {
-      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
+      myTex->DrawLatex(0.61, 0.34, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
     } else { 
-      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
+      myTex->DrawLatex(0.61, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
     }
-      
-     p2->cd(); 
+    
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+  
+    p2->cd(); 
     avgBkg->Draw("hist"); 
     xiccHist->Draw("sameHist"); 
     leg2->Draw("same"); 
-    
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
     
 
     c1->Write();
