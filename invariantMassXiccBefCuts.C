@@ -53,12 +53,14 @@ void invariantMassXiccBefCuts(TString addon) {
 
   sumHistBkg = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
   sumHistBkg->Add(xicHist); 
-    
-  auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+  
+  
+  auto leg = new TLegend(0.1, 0.22, 0.66, 0.68);
   leg->SetFillStyle(0); 
    
-  auto c1 = c11("1"); 
-  auto p1 = (TPad*)gROOT->FindObject("p1"); 
+  auto c1 = c11Leg("1"); 
+  auto p1 = (TPad*)gROOT->FindObject("p11"); 
+  auto p2 = (TPad*)gROOT->FindObject("p21"); 
 
   mbHist->SetTitle("Pythia MB");   
   mbHist->SetLineColor(kAzure-3); 
@@ -85,7 +87,7 @@ void invariantMassXiccBefCuts(TString addon) {
   sumHist->SetLineStyle(2);
     
   sumHist->GetXaxis()->SetRangeUser(3., 4.); 
-  sumHist->GetYaxis()->SetRangeUser(0, sumHist->GetMaximum()*6); 
+  sumHist->GetYaxis()->SetRangeUser(1e-6, 1e2); 
   sumHist->GetYaxis()->SetTitleOffset(1.4); 
   sumHist->GetXaxis()->SetNdivisions(506); 
   sumHist->GetXaxis()->SetMaxDigits(3); 
@@ -102,7 +104,7 @@ void invariantMassXiccBefCuts(TString addon) {
   leg->AddEntry(sumHist, sumHist->GetTitle(), "l");      
    
   p1->cd(); 
-    
+  p1->SetLogy();
   sumHist->Draw("hist"); 
   xiccHist->Draw("same"); 
   xiccHist->Draw("histsame"); 
@@ -110,8 +112,12 @@ void invariantMassXiccBefCuts(TString addon) {
   xiHist->Draw("same"); 
   mbHist->Draw("same"); 
   sumHist->Draw("samehist"); 
+  
+  p2->cd();
   leg->Draw("same"); 
-    
+  auto myTex = GenTex(); 
+  myTex->DrawLatex(0.12,0.78,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+
   c1->Write();
   c1->Close(); 
   
