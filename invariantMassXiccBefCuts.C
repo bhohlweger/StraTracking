@@ -29,7 +29,7 @@ void invariantMassXiccBefCuts(TString addon) {
   TH1D* avgBkg; 
   int counter = 0; 
   
-  TString histName = "df_xi_c_xi_cc_mass_stra"; 
+  TString histName = "h_df_in_im_xi_cc_mass_stra";
 
   TH1D* mbHist = (TH1D*)mb->Get(histName.Data()); 
   TH1D* xiHist = (TH1D*)xi->Get(histName.Data()); 
