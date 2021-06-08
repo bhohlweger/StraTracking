@@ -144,6 +144,8 @@ int main(int argc, char **argv) {
   
   auto df_in = ForceNoXi?df.Filter("!fTrueXi"):df.Filter("fTrueXi||!fTrueXi"); 
   
+  auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+
   auto df_in_qa = df_in.Filter("fFirstCandidateXiCC"); 
   auto in_counter = df_in_qa.Count(); 
   //towards the Lambda for the Xi 
@@ -715,6 +717,8 @@ int main(int argc, char **argv) {
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
   out->cd(); 
+  //this is my start
+  HarryPlotter::CheckAndStore(out, h_df_in_im_xi_cc_mass_stra);
   //to the lmb
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_pt);
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy);
