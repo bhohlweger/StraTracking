@@ -55,13 +55,18 @@ void invariantMassXiccBefCuts(TString addon) {
   sumHistBkg->Add(xicHist); 
   
   
-  auto leg = new TLegend(0.1, 0.22, 0.66, 0.68);
+  auto leg = new TLegend(0., 0.29, 0.56, 0.68);
   leg->SetFillStyle(0); 
    
   auto c1 = c11Leg("1"); 
   auto p1 = (TPad*)gROOT->FindObject("p11"); 
   auto p2 = (TPad*)gROOT->FindObject("p21"); 
-
+  p2->SetLeftMargin(0); 
+  p2->SetRightMargin(p2->GetRightMargin()*2); 
+  c1->cd(); 
+  p1->Draw(); 
+  p2->Draw(); 
+  
   mbHist->SetTitle("Pythia MB");   
   mbHist->SetLineColor(kAzure-3); 
   mbHist->SetMarkerColor(kAzure-3); 
@@ -87,11 +92,11 @@ void invariantMassXiccBefCuts(TString addon) {
   sumHist->SetLineStyle(2);
     
   sumHist->GetXaxis()->SetRangeUser(3., 4.); 
-  sumHist->GetYaxis()->SetRangeUser(1e-6, 1e2); 
+  sumHist->GetYaxis()->SetRangeUser(1e-5, 1e6); 
   sumHist->GetYaxis()->SetTitleOffset(1.4); 
   sumHist->GetXaxis()->SetNdivisions(506); 
   sumHist->GetXaxis()->SetMaxDigits(3); 
-  sumHist->GetYaxis()->SetNdivisions(504); 
+  //  sumHist->GetYaxis()->SetNdivisions(504); 
       
   sumHistBkg->SetTitle("Sum Background"); 
   sumHistBkg->GetYaxis()->SetTitle("Counts relative to #Xi_{cc}^{++}");       
@@ -116,7 +121,7 @@ void invariantMassXiccBefCuts(TString addon) {
   p2->cd();
   leg->Draw("same"); 
   auto myTex = GenTex(); 
-  myTex->DrawLatex(0.12,0.78,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+  myTex->DrawLatex(0.02,0.78,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
 
   c1->Write();
   c1->Close(); 
