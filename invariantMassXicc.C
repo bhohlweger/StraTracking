@@ -25,10 +25,11 @@ void invariantMassXicc(TString addon) {
   TH1D* sumHist = nullptr;
   TH1D* sumHistBkg = nullptr;
   TH1D* avgBkg; 
-  int counter = 0; 
+  int counter = -1;  // two non tracked histos
   double redXi; 
   double redXic;
   double redXicc; 
+
 
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
