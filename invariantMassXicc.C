@@ -1,0 +1,217 @@
+void invariantMassXicc(TString addon) { 
+  double xiccMass = 3.596; //3.621; 
+  double xiccWindow = 0.08;
+  
+  TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
+  TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
+  TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_xicc%s.root", addon.Data()), "read"); 
+  TFile* output = TFile::Open(TString::Format("outIMXicc%s.root"         , addon.Data()), "recreate"); 
+  
+  TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
+  TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
+  double normXi = 1/(9.25e-7*h_xiCounter->GetBinContent(1)); 
+
+  TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
+  TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
+  double normXic = 1/(1.24e-4*h_xicCounter->GetBinContent(1)); 
+  
+  TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
+  TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
+  double normXicc = (1.)/(h_xiccCounter->GetBinContent(1)); 
+  
+  TList* inList = xi->GetListOfKeys(); 
+  TIter next(inList); 
+  TObject* obj = nullptr; 
+  TH1D* sumHist = nullptr;
+  TH1D* sumHistBkg = nullptr;
+  TH1D* avgBkg; 
+  int counter = 0; 
+  double redXi; 
+  double redXic;
+  double redXicc; 
+
+  while ((obj = next())) {
+    TString objName = TString::Format("%s",obj->GetName()); 
+    if (objName.Contains("Counter")  || objName.Contains("_vs_")|| !(objName.Contains("mass") && objName.Contains("xi_cc"))) { 
+      continue; 
+    }
+    
+    if (sumHist || sumHistBkg) { 
+      sumHist = nullptr;
+      sumHistBkg = nullptr;
+      avgBkg = nullptr;
+    }
+    TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
+    TH1D* xicHist = (TH1D*)xic->Get(obj->GetName()); 
+    TH1D* xiccHist = (TH1D*)xicc->Get(obj->GetName()); 
+    
+    xiHist->Rebin(4);       
+    xicHist->Rebin(4); 
+    xiccHist->Rebin(4); 
+      
+    xiHist->Scale(normXi); 
+    xicHist->Scale(normXic); 
+    xiccHist->Scale(normXicc); 
+    
+    redXi = h_xiRedCounter->GetBinContent(counter); 
+    redXi = TMath::Abs(redXi) > 1e-30?1./redXi:-99; 
+    redXic = h_xicRedCounter->GetBinContent(counter);
+    redXic = TMath::Abs(redXic) > 1e-30?1./redXic:-99; 
+    redXicc = h_xiccRedCounter->GetBinContent(counter); 
+    redXicc = TMath::Abs(redXicc) > 1e-30?1./redXicc:-99; 
+    
+    sumHist = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
+    sumHist->Add(xicHist); 
+    sumHist->Add(xiccHist); 
+    
+    sumHistBkg = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
+    sumHistBkg->Add(xicHist); 
+    
+    avgBkg = (TH1D*)sumHistBkg->Clone(TString::Format("avg%s", sumHistBkg->GetName()).Data()); 
+    
+    int whiteBins = 0; 
+    TH1D* myavgBkg = (TH1D*)sumHistBkg->Clone(TString::Format("myavg%s", sumHistBkg->GetName()).Data()); 
+    for (int iBin = 1; iBin < myavgBkg->GetNbinsX(); ++iBin) { 
+      double cent = myavgBkg->GetBinCenter(iBin); 
+      if (cent < 3 || cent > 4) { 
+	myavgBkg->SetBinContent(iBin,0); 
+      } else { 
+	whiteBins++; 
+      }
+    }
+    myavgBkg->Rebin(myavgBkg->GetNbinsX()); 
+    myavgBkg->Scale(1./whiteBins); 
+      
+    for (int iBin = 1; iBin < avgBkg->GetNbinsX(); ++iBin) { 
+      avgBkg->SetBinContent(iBin,myavgBkg->GetBinContent(1)); 
+    }
+
+    auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    leg->SetFillStyle(0); 
+    
+    
+    auto leg2 = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+
+    auto c1 = c11(TString::Format("%s1",obj->GetName()).Data()); 
+    auto p1 = (TPad*)gROOT->FindObject(TString::Format("p%s1",obj->GetName()).Data()); 
+    
+    auto c2 = c11(TString::Format("%s2",obj->GetName()).Data()); 
+    auto p2 = (TPad*)gROOT->FindObject(TString::Format("p%s2",obj->GetName()).Data()); 
+   
+    
+    xiHist->SetLineColor(kPink+7); 
+    xiHist->SetMarkerColor(kPink+7); 
+    xicHist->SetLineColor(38); 
+    xicHist->SetMarkerColor(38); 
+    xiccHist->SetLineColor(kGreen+3); 
+    xiccHist->SetMarkerColor(kGreen+3); 
+    
+    sumHist->SetTitle("Sum");     
+    sumHist->GetXaxis()->SetTitle("IM(#Xi_{c}^{+},#pi^{+}) (GeV/#it{c}^{2})");
+    sumHist->GetYaxis()->SetTitle("Counts relative to #Xi_{cc}^{++}");       
+    sumHist->SetLineColor(kOrange+7); 
+    sumHist->SetLineStyle(2);
+    
+    sumHist->GetXaxis()->SetRangeUser(3., 4.); 
+    sumHist->GetYaxis()->SetRangeUser(0, sumHist->GetMaximum()*6); 
+    sumHist->GetYaxis()->SetTitleOffset(1.4); 
+    sumHist->GetXaxis()->SetNdivisions(506); 
+    sumHist->GetXaxis()->SetMaxDigits(3); 
+    sumHist->GetYaxis()->SetNdivisions(504); 
+      
+    sumHistBkg->SetTitle("Sum Background"); 
+    sumHistBkg->GetYaxis()->SetTitle("Counts relative to #Xi_{cc}^{++}");       
+    sumHistBkg->SetLineColor(kAzure-3); 
+          
+    avgBkg->SetTitle("Average Background"); 
+    avgBkg->GetXaxis()->SetTitle("IM(#Xi_{c}^{+},#pi^{+}) (GeV/#it{c}^{2})");
+    avgBkg->GetYaxis()->SetTitle("Counts relative to #Xi_{cc}^{++}");       
+      
+    avgBkg->GetXaxis()->SetRangeUser(3., 4.); 
+    avgBkg->GetYaxis()->SetRangeUser(0, avgBkg->GetMaximum()*6); 
+    avgBkg->GetYaxis()->SetTitleOffset(1.4); 
+    avgBkg->GetXaxis()->SetNdivisions(506); 
+    avgBkg->GetYaxis()->SetNdivisions(504); 
+      
+    avgBkg->SetLineColor(kOrange+7); 
+    avgBkg->SetLineStyle(2);
+
+    xiHist->SetTitle("#Xi^{#minus} + 3#times#pi_{Pythia}"); 
+    xicHist->SetTitle("#Xi^{+}_{c} + #pi_{Pythia}"); 
+    xiccHist->SetTitle("#Xi_{cc}^{++}");
+    xiccHist->SetFillColor(kGreen+3);
+    xiccHist->SetFillStyle(1001); 
+
+    leg->AddEntry(xiccHist, xiccHist->GetTitle(), "l");
+    leg->AddEntry(xicHist, xicHist->GetTitle(), "l");
+    leg->AddEntry(xiHist, xiHist->GetTitle(), "l");
+    leg->AddEntry(sumHist, sumHist->GetTitle(), "l");      
+
+    leg2->SetFillStyle(0); 
+    leg2->AddEntry(xiccHist, xiccHist->GetTitle(), "l");
+    leg2->AddEntry(avgBkg, avgBkg->GetTitle(), "l");
+
+    //get some number bby 
+    double nxi = xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow),xiHist->FindBin(xiccMass+xiccWindow)); 
+    double nxic = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow),xicHist->FindBin(xiccMass+xiccWindow)); 
+    double nxicc = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow),xiccHist->FindBin(xiccMass+xiccWindow)); 
+    double nbkgavg = avgBkg->Integral(avgBkg->FindBin(xiccMass-xiccWindow),avgBkg->FindBin(xiccMass+xiccWindow)); 
+    std::cout <<"For " << obj->GetName() << ": \n nxi=" << nxi << " nxic="<< nxic << " nxicc=" << nxicc << " S/B=" << nxicc/(nxi+nxic) << std::endl;
+    std::cout <<" Average Bakcground values: " << nxicc/nbkgavg << std::endl; 
+    counter++; 
+     
+    p1->cd(); 
+    
+    sumHist->Draw("hist"); 
+    //sumHistBkg->Draw("histsame"); 
+    xiccHist->Draw("same"); 
+    xiccHist->Draw("histsame"); 
+    xicHist->Draw("same"); 
+    xiHist->Draw("same"); 
+    sumHist->Draw("samehist"); 
+    leg->Draw("same"); 
+    
+    
+    TLatex* myTex = GenTex(); 
+    //myTex->DrawLatex(0.63, 0.55, TString::Format("Cut Variation %d", counter).Data());
+    myTex->DrawLatex(0.63, 0.55, TString::Format("Reduction Factors:").Data());
+    if (redXi > 0) {
+      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  %1.2e", redXi).Data());
+    } else { 
+      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  Complete Red.").Data()); 
+    }
+    if (redXic > 0) {
+      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: %1.2e", redXic).Data());
+    } else { 
+      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: Complete Red.").Data()); 
+    }
+    if (redXicc > 0) {
+      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
+    } else { 
+      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
+    }
+      
+     p2->cd(); 
+    avgBkg->Draw("hist"); 
+    xiccHist->Draw("sameHist"); 
+    leg2->Draw("same"); 
+    
+    
+
+    c1->Write();
+    c1->Close(); 
+    c2->Write();      
+    c2->Close();
+    output->cd();     
+    myavgBkg->Write();
+    avgBkg->Write(); 
+    xiccHist->Write(TString::Format("xicc_%s",xiccHist->GetName())); 
+    xicHist->Write(TString::Format("xic_%s",xiccHist->GetName())); 
+    xiHist->Write(TString::Format("xi_%s",xiccHist->GetName())); 
+
+  }
+  output->Close(); 
+  xi->Close(); 
+  xic->Close(); 
+  xicc->Close(); 
+}
