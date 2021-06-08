@@ -563,7 +563,25 @@ int main(int argc, char **argv) {
 
   auto df_xi_cc_im_c7 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
-    ;
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.004")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 200")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 200")    
+        ;
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c7 = df_xi_cc_im_c7.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c7", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
@@ -572,14 +590,96 @@ int main(int argc, char **argv) {
 
   auto df_xi_cc_im_c8 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.004")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
+    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 200")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 200")    
     ;
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c8 = df_xi_cc_im_c8.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c8", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c8 = df_xi_cc_im_c8.Histo1D({"df_xi_cc_im_xi_cc_pt_c8", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
   auto out_counter_c8 = df_xi_cc_im_c8.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
+
+    auto df_xi_cc_im_c9 = df_xi_c
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.004")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
+    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50")    
+    ;
   
-  auto cutCounter  = new TH1D("cutCounter", "cutCounter", 10, 0, 10); 
+  //Fill some final histograms  
+  auto h_df_xi_cc_im_xi_cc_mass_stra_c9 = df_xi_cc_im_c9.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c9", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c9 = df_xi_cc_im_c9.Histo1D({"df_xi_cc_im_xi_cc_pt_c9", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
+  auto out_counter_c9 = df_xi_cc_im_c9.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
+ 
+    auto df_xi_cc_im_c10 = df_xi_c
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("XicXiccDecayRadDiffStra > 0")
+    .Filter("fXicDaughterDCAStraTrack < 20")
+    .Filter("fXicDecayRadiusStraTrack > 0.004")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1")
+    .Filter("fXiccDaughterDCAStraTrack < 20")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20")
+    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50")    
+    ;
+  
+  //Fill some final histograms  
+  auto h_df_xi_cc_im_xi_cc_mass_stra_c10 = df_xi_cc_im_c10.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c10", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c10 = df_xi_cc_im_c10.Histo1D({"df_xi_cc_im_xi_cc_pt_c10", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
+  auto out_counter_c10 = df_xi_cc_im_c10.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
+ 
+  
+  auto cutCounter  = new TH1D("cutCounter", "cutCounter", 20, 0, 20); 
   double inputCounter = *in_counter; 
   double reduction = *out_counter_c1/inputCounter;
   std::cout << reduction << std::endl; 
@@ -602,10 +702,15 @@ int main(int argc, char **argv) {
   reduction = *out_counter_c7/inputCounter;
   std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(7, reduction);
-  reduction = *out_counter_c2/inputCounter ;
+  reduction = *out_counter_c8/inputCounter ;
   std::cout << reduction << std::endl; 
-  cutCounter->SetBinContent(7, reduction);
-
+  cutCounter->SetBinContent(8, reduction);
+  reduction = *out_counter_c9/inputCounter ;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(9, reduction);
+    reduction = *out_counter_c10/inputCounter ;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(10, reduction);
   TString outName = TString::Format("outxiccSelector_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
@@ -767,7 +872,11 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c7); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c8); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c8); 
-
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c10); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c10); 
+  
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
