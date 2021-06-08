@@ -42,6 +42,7 @@ void invariantMassXicc(TString addon) {
       sumHistBkg = nullptr;
       avgBkg = nullptr;
     }
+    std::cout <<"=========================================\n" << obj->GetName() << "\n=========================================\n"; 
     TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
     TH1D* xicHist = (TH1D*)xic->Get(obj->GetName()); 
     TH1D* xiccHist = (TH1D*)xicc->Get(obj->GetName()); 
@@ -49,17 +50,30 @@ void invariantMassXicc(TString addon) {
     xiHist->Rebin(4);       
     xicHist->Rebin(4); 
     xiccHist->Rebin(4); 
-      
+
+    double signalCounts = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow), xiccHist->FindBin(xiccMass+xiccWindow)); 
+    double bkgCounts = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow), xicHist->FindBin(xiccMass+xiccWindow)) + xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow), xiHist->FindBin(xiccMass+xiccWindow)); 
+    
+    double relErrSignal = TMath::Sqrt(signalCounts)/signalCounts; 
+    double relErrBkg = TMath::Sqrt(bkgCounts)/bkgCounts; 
+    
     xiHist->Scale(normXi); 
     xicHist->Scale(normXic); 
     xiccHist->Scale(normXicc); 
+
+    double signalCountsScaled = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow), xiccHist->FindBin(xiccMass+xiccWindow)); 
+    double bkgCountsScaled = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow), xicHist->FindBin(xiccMass+xiccWindow)) + xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow), xiHist->FindBin(xiccMass+xiccWindow)); 
     
+    std::cout << "Signal counts = " << signalCounts << " rel. Err. = " << relErrSignal << "\nSignal counts after scaling = " << signalCountsScaled << " Abs. Err. = " << relErrSignal*signalCountsScaled << std::endl; 
+    std::cout << "Bkg counts = " << bkgCounts << " rel. Err. = " << relErrBkg << "\nBkg counts after scaling = " << bkgCountsScaled << " Abs Err. = " << relErrBkg*bkgCountsScaled << std::endl; 
+
     redXi = h_xiRedCounter->GetBinContent(counter); 
     redXi = TMath::Abs(redXi) > 1e-30?1./redXi:-99; 
     redXic = h_xicRedCounter->GetBinContent(counter);
     redXic = TMath::Abs(redXic) > 1e-30?1./redXic:-99; 
     redXicc = h_xiccRedCounter->GetBinContent(counter); 
     redXicc = TMath::Abs(redXicc) > 1e-30?1./redXicc:-99; 
+    counter++; 
     
     sumHist = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
     sumHist->Add(xicHist); 
@@ -161,10 +175,9 @@ void invariantMassXicc(TString addon) {
     double nxic = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow),xicHist->FindBin(xiccMass+xiccWindow)); 
     double nxicc = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow),xiccHist->FindBin(xiccMass+xiccWindow)); 
     double nbkgavg = avgBkg->Integral(avgBkg->FindBin(xiccMass-xiccWindow),avgBkg->FindBin(xiccMass+xiccWindow)); 
-    std::cout <<"For " << obj->GetName() << ": \n nxi=" << nxi << " nxic="<< nxic << " nxicc=" << nxicc << " S/B=" << nxicc/(nxi+nxic) << std::endl;
-    std::cout <<" Average Bakcground values: " << nxicc/nbkgavg << std::endl; 
-    counter++; 
-     
+    std::cout <<"nxi = " << nxi << " nxic = "<< nxic << " nxicc = " << nxicc << " S/B = " << nxicc/(nxi+nxic) << std::endl;
+    std::cout <<"Average Bakcground values: " << nxicc/nbkgavg << std::endl; 
+
     p1->cd(); 
     
     sumHist->Draw("hist"); 
