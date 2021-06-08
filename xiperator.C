@@ -17,6 +17,9 @@ void xiperator(TString addon) {
   TObject* obj = nullptr; 
   TH1D* sumHist = nullptr;
 
+  double nxi; 
+  double nmb; 
+  
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
     if (objName.Contains("Counter") || objName.Contains("_vs_")) { 
@@ -34,21 +37,20 @@ void xiperator(TString addon) {
     mbHist->SetLineColor(42); 
     mbHist->SetMarkerColor(42); 
     
-    auto c = c11(obj->GetName()); 
-    auto p = (TPad*)gROOT->FindObject(TString::Format("p%s",obj->GetName()).Data()); 
-    p->cd(); 
-    
-    xiHist->SetTitle("#Xi injected Pythia"); 
-    mbHist->SetTitle("Pythia MB"); 
+    xiHist->SetTitle("Pure #Xi^{#minus}"); 
+    mbHist->SetTitle("Pythia MB w/o #Xi^{#minus}"); 
 
     if (!(objName.Contains("mass"))) { 
+      xiHist->GetYaxis()->SetTitleOffset(1.2); 
+      xiHist->GetXaxis()->SetNdivisions(506); 
+      xiHist->GetYaxis()->SetNdivisions(504); 
+
       xiHist->Scale(1./xiHist->GetMaximum()); 
       mbHist->Scale(1./mbHist->GetMaximum()); 
       
       xiHist->GetYaxis()->SetTitle("Count Normalized to Maximum"); 
     } else { 
       if (objName.Contains("xi_cc") || objName.Contains("xi_c")) { 
-	c->Close();
 	continue;
       }
 
@@ -57,41 +59,48 @@ void xiperator(TString addon) {
       
       sumHist = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
       sumHist->Add(mbHist); 
-      sumHist->SetTitle("Sum"); 
+      sumHist->SetTitle("Sum scaled #Xi^{#minus} and Pythia MB"); 
       sumHist->GetYaxis()->SetTitle("Counts relative to #Xi");       
-      //get some number bby 
-      double nxi = xiHist->Integral(xiHist->FindBin(xiMass-xiWindow),xiHist->FindBin(xiMass+xiWindow)); 
-      double nmb = mbHist->Integral(mbHist->FindBin(xiMass-xiWindow),mbHist->FindBin(xiMass+xiWindow)); 
-      std::cout <<"For " << obj->GetName() << ": \n nxi=" << nxi << " nmb="<< nmb << " S/B=" << nxi/(nmb) << std::endl;
-    }
-
-    if (sumHist) {
-      sumHist->GetYaxis()->SetTitleOffset(1.2); 
+      sumHist->GetYaxis()->SetRangeUser(0, sumHist->GetMaximum()*3); 
+      sumHist->GetXaxis()->SetRangeUser(1.15, 1.5); 
+      sumHist->GetXaxis()->SetTitle("IM(#Lambda,#pi^{-}) (GeV/#it{c}^{2})");
+            
+      sumHist->GetYaxis()->SetTitleOffset(1.4); 
       sumHist->GetXaxis()->SetNdivisions(506); 
       sumHist->GetYaxis()->SetNdivisions(504); 
       
+      xiHist->SetFillColor(kPink+7); 
+      xiHist->SetFillStyle(1001);
+      
       sumHist->SetLineColor(kOrange+7); 
-      
-      sumHist->Draw("hist"); 
-      xiHist->GetYaxis()->SetRangeUser(0, sumHist->GetMaximum()*1.2); 
-      xiHist->Draw("histsame");
-      mbHist->Draw("histsame"); 
+      sumHist->SetLineStyle(2);
 
-      TLine one; 
-      one.SetLineColor(kBlack); 
-      one.SetLineStyle(4);
-      one.DrawLine(xiMass-xiWindow, 0, xiMass-xiWindow, sumHist->GetMaximum()); 
-      one.DrawLine(xiMass+xiWindow, 0, xiMass+xiWindow, sumHist->GetMaximum()); 
-      
+      //get some number bby 
+      nxi = xiHist->Integral(xiHist->FindBin(xiMass-xiWindow),xiHist->FindBin(xiMass+xiWindow)); 
+      nmb = mbHist->Integral(mbHist->FindBin(xiMass-xiWindow),mbHist->FindBin(xiMass+xiWindow)); 
+      std::cout <<"For " << obj->GetName() << ": \n nxi=" << nxi << " nmb="<< nmb << " S/B=" << nxi/(nmb) << std::endl;
+    }
+    auto c = c11(obj->GetName()); 
+    auto p = (TPad*)gROOT->FindObject(TString::Format("p%s",obj->GetName()).Data()); 
+    p->cd(); 
+    
+    auto leg = new TLegend(0.15, 0.51, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    leg->SetFillStyle(0); 
+        
+    if (sumHist) {
+      sumHist->Draw("hist"); 
+      xiHist->Draw("histsame");
+      // mbHist->Draw("histsame"); 
+      leg->AddEntry(xiHist, xiHist->GetTitle(), "l"); 
+      leg->AddEntry(sumHist, sumHist->GetTitle(), "l"); 
+      TLatex* myTex = GenTex(); 
+      myTex->DrawLatex(0.17, 0.45, TString::Format("#Xi^{#minus} S/B = %.1f",nxi/nmb).Data());
     } else { 
-      xiHist->GetYaxis()->SetTitleOffset(1.2); 
-      xiHist->GetXaxis()->SetNdivisions(506); 
-      xiHist->GetYaxis()->SetNdivisions(504); 
       xiHist->Draw("hist"); 
       mbHist->Draw("histsame"); 
+      leg->AddEntry(xiHist, xiHist->GetTitle(), "l"); 
+      leg->AddEntry(mbHist, mbHist->GetTitle(), "l"); 
     }
-    auto leg = p->BuildLegend(0.59, 0.4, 0.9, 0.82, "Injected:", "l");
-    leg->SetFillStyle(0); 
     leg->Draw("same"); 
     output->cd();     
     c->Write();
