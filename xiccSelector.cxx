@@ -942,7 +942,11 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c10); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c10); 
-  
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c10_2Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c10_2Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c10_3Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c10_3Hit); 
+
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
