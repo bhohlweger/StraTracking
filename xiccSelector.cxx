@@ -833,9 +833,22 @@ int main(int argc, char **argv) {
   reduction = *out_counter_c9/inputCounter ;
   std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(9, reduction);
-  reduction = *out_counter_c10/inputCounter ;
+  reduction = *out_counter_c9_2Hit/inputCounter ;
   std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(10, reduction);
+  reduction = *out_counter_c9_3Hit/inputCounter ;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(11, reduction);
+  reduction = *out_counter_c10/inputCounter;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(12, reduction);
+  reduction = *out_counter_c10_2Hit/inputCounter;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(13, reduction);
+  reduction = *out_counter_c10_3Hit/inputCounter;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(14, reduction);
+
   TString outName = TString::Format("outxiccSelector_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
