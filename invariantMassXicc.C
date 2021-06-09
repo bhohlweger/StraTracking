@@ -1,6 +1,6 @@
 void invariantMassXicc(TString addon) { 
   double xiccMass = 3.596; //3.621; 
-  double xiccWindow = 0.08;
+  double xiccWindow = 0.12;
   
   TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
   TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
@@ -63,7 +63,7 @@ void invariantMassXicc(TString addon) {
 
     double signalCountsScaled = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow), xiccHist->FindBin(xiccMass+xiccWindow)); 
     double bkgCountsScaled = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow), xicHist->FindBin(xiccMass+xiccWindow)) + xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow), xiHist->FindBin(xiccMass+xiccWindow)); 
-    
+    std::cout << "Signal Efficiency pT integrated = " << TString::Format("%.3e",signalCounts*normXicc).Data() << std::endl; 
     std::cout << "Signal counts = " << signalCounts << " rel. Err. = " << relErrSignal << "\nSignal counts after scaling = " << signalCountsScaled << " Abs. Err. = " << relErrSignal*signalCountsScaled << std::endl; 
     std::cout << "Bkg counts = " << bkgCounts << " rel. Err. = " << relErrBkg << "\nBkg counts after scaling = " << bkgCountsScaled << " Abs Err. = " << relErrBkg*bkgCountsScaled << std::endl; 
 
@@ -193,21 +193,21 @@ void invariantMassXicc(TString addon) {
     
     TLatex* myTex = GenTex(); 
     //myTex->DrawLatex(0.61, 0.55, TString::Format("Cut Variation %d", counter).Data());
-    myTex->DrawLatex(0.61, 0.55, TString::Format("Reduction Factors:").Data());
+    myTex->DrawLatex(0.63, 0.55, TString::Format("Reduction Factors:").Data());
     if (redXi > 0) {
-      myTex->DrawLatex(0.61, 0.48, TString::Format("#Xi^{-}:  %1.2e", redXi).Data());
+      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  %1.2e", redXi).Data());
     } else { 
-      myTex->DrawLatex(0.61, 0.48, TString::Format("#Xi^{-}:  Complete Red.").Data()); 
+      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  Complete Red.").Data()); 
     }
     if (redXic > 0) {
-      myTex->DrawLatex(0.61, 0.41, TString::Format("#Xi_{c}^{+}: %1.2e", redXic).Data());
+      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: %1.2e", redXic).Data());
     } else { 
-      myTex->DrawLatex(0.61, 0.41, TString::Format("#Xi_{c}^{+}: Complete Red.").Data()); 
+      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: Complete Red.").Data()); 
     }
     if (redXicc > 0) {
-      myTex->DrawLatex(0.61, 0.34, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
+      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
     } else { 
-      myTex->DrawLatex(0.61, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
+      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
     }
     
     myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
