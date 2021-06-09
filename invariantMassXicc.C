@@ -114,7 +114,7 @@ void invariantMassXicc(TString addon) {
     auto p2 = (TPad*)gROOT->FindObject(TString::Format("p%s2",obj->GetName()).Data()); 
     
     TLine *HoldTheLine = new TLine();
-    HoldTheLine->SetLineColor(kGray); 
+    HoldTheLine->SetLineColor(kBlack); 
     HoldTheLine->SetLineWidth(4); 
     HoldTheLine->SetLineStyle(2); 
         
@@ -135,7 +135,7 @@ void invariantMassXicc(TString addon) {
     sumHist->GetYaxis()->SetRangeUser(0, sumHist->GetMaximum()*6); 
     sumHist->GetYaxis()->SetTitleOffset(1.4); 
     sumHist->GetXaxis()->SetNdivisions(506); 
-    sumHist->GetXaxis()->SetMaxDigits(3); 
+    sumHist->GetYaxis()->SetMaxDigits(3); 
     sumHist->GetYaxis()->SetNdivisions(504); 
       
     sumHistBkg->SetTitle("Sum Background"); 
