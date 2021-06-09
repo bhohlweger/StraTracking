@@ -664,8 +664,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccInvDecayLengthToPVStra > 0.004")
     .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
     .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
     .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
@@ -685,7 +685,6 @@ int main(int argc, char **argv) {
     .Filter("fXiHitsAdded > 2")
     .Filter("XicXiccDecayRadDiffStra > 0")
     .Filter("XicXiccDecayRadDiffStra > 0")
-    .Filter("XicXiccDecayRadDiffStra > 0")
     .Filter("fXicDaughterDCAStraTrack < 20")
     .Filter("fXicDecayRadiusStraTrack > 0.004")
     .Filter("fXicInvDecayLengthToPVStra > 0.002")
@@ -695,8 +694,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccInvDecayLengthToPVStra > 0.004")
     .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5")
     .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10")
     .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10")
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
@@ -711,8 +710,6 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_stra_c9_3Hit = df_xi_cc_im_c9_3Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c9_3Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto h_df_xi_cc_im_xi_cc_pt_c9_3Hit = df_xi_cc_im_c9_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_cc_im_xi_cc_pt_c9_3Hit", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
   auto out_counter_c9_3Hit = df_xi_cc_im_c9_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
-
-    
 
   auto df_xi_cc_im_c10 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0")
@@ -1004,7 +1001,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c8); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9_2Hit); 
+  oHarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9_2Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9_2Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9_3Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9_3Hit); 
