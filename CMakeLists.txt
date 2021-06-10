@@ -10,7 +10,7 @@ endif()
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 set(CMAKE_MODULE_PATH $ENV{ROOTSYS}/etc/cmake)
-find_package(ROOT REQUIRED COMPONENTS MathCore RIO Hist Tree Net EG)
+find_package(ROOT REQUIRED COMPONENTS MathCore RIO Hist Tree TreePlayer Net EG)
 include(${ROOT_USE_FILE})
 
 include_directories(${CMAKE_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src ${ROOT_INCLUDE_DIRS})
@@ -69,6 +69,6 @@ add_executable(xiccSelector ${PROJECT_SOURCE_DIR}/xiccSelector.cxx)
 target_link_libraries(xiccSelector StraTrack_Helpers)
 
 add_executable(pionDCAStudy ${PROJECT_SOURCE_DIR}/pionDCAStudy.cxx)
-target_link_libraries(pionDCAStudy StraTrack_Helpers)
+target_link_libraries(pionDCAStudy StraTrack_Helpers ROOT::ROOTVecOps)
 
 
