@@ -62,12 +62,14 @@ int main(int argc, char **argv) {
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
 	TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
 	TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
+	/*
 	if (!evtCounter||!ptXicGen||!ptXiccGen) { 
 	  continue; 
 	}
 	h_cand_counter->Add(evtCounter); 
 	h_gen_xi_c_counter->Add(ptXicGen); 
 	h_gen_xi_cc_counter->Add(ptXiccGen); 
+	*/
 	input.Add(inSubDirFile);
 	inputFiles++;
 	inFile->Close();
