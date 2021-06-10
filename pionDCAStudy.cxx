@@ -184,13 +184,17 @@ int main(int argc, char **argv) {
 
 
   auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
-
+  auto givemyintback = [] (int value) {return (int)value;}; 
+  auto givemyfloatback = [] (float value) {return (float)value;}; 
   ROOT::RDataFrame df(input);
   
   auto PDGLead = [](int motherPDGs) {return motherPDGs;}; 
 
   auto df_in_qa = df
-    .Filter("fFirstCandidateXiCC")
+    .Define("fPiccMotherPDG", givemyintback, {"fPionMotherPDG"})
+    .Define("fPicDCAxyToPVTopo", givemyfloatback, {"fPionDCAxy"})
+    .Define("fPicDCAzToPVTopo", givemyfloatback, {"fPionDCAz"})
+    .Define("fPiCCPt", givemyfloatback, {"fPionPt"})
     .Define("absfPiccMotherPDG", makeMeAbsolute, {"fPiccMotherPDG"})
     ; 
   auto in_counter = df_in_qa.Count(); 
