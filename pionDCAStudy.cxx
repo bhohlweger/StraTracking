@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
     for (auto fileObj : *files)  {
       auto file = (TSystemFile*) fileObj;
       TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
+      std::cout << inSubDirFile.Data() << std::endl; 
       if (!gSystem->AccessPathName(inSubDirFile)) { 
 	TFile *inFile = TFile::Open(inSubDirFile);
 	if (!inFile) { 
