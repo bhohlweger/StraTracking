@@ -101,11 +101,11 @@ void invariantMassXicc(TString addon) {
       avgBkg->SetBinContent(iBin,myavgBkg->GetBinContent(1)); 
     }
 
-    auto leg = new TLegend(0.16, 0.38, 0.56, 0.65);//, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    auto leg = new TLegend(0.16, 0.38, 0.56, 0.65);//, "#splitline{ALICE 3 Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
     leg->SetFillStyle(0); 
     
     
-    auto leg2 = new TLegend(0.16, 0.38, 0.56, 0.65);//, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    auto leg2 = new TLegend(0.16, 0.38, 0.56, 0.65);//, "#splitline{ALICE 3 Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
 
     auto c1 = c11(TString::Format("%s1",obj->GetName()).Data()); 
     auto p1 = (TPad*)gROOT->FindObject(TString::Format("p%s1",obj->GetName()).Data()); 
@@ -210,13 +210,13 @@ void invariantMassXicc(TString addon) {
       myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
     }
     
-    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simulation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
   
     p2->cd(); 
     avgBkg->Draw("hist"); 
     xiccHist->Draw("sameHist"); 
     leg2->Draw("same"); 
-    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simulation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
     
 
     c1->Write();

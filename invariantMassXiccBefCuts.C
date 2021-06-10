@@ -121,7 +121,7 @@ void invariantMassXiccBefCuts(TString addon) {
   p2->cd();
   leg->Draw("same"); 
   auto myTex = GenTex(); 
-  myTex->DrawLatex(0.02,0.78,"#splitline{ALICE 3 Full Simluation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+  myTex->DrawLatex(0.02,0.78,"#splitline{ALICE 3 Full Simulation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
 
   c1->Write();
   c1->Close(); 
