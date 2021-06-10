@@ -197,6 +197,15 @@ int main(int argc, char **argv) {
   
   auto h_PDGCode = df_in_qa.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCodeWide = df_in_qa.Histo1D({"PDGCodeWide", "PDGCodeWide", 20000, -1e8, 1e8}, "fPiccMotherPDG"); 
+  
+  auto h_dca_xy = df_in_qa.Histo1D({"dca_xy", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z = df_in_qa.Histo1D({"dca_z", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  
+  auto h_dca_xy_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"dca_xy", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"dca_z", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  
+  auto h_dca_xy_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"dca_xy", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"dca_z", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_meson_ud = df_in_qa.Filter(Mesons_u_d, {"absfPiccMotherPDG"}); 
   auto dca_xy_meson_ud = df_meson_ud.Histo1D({"dca_xy_meson_ud", "dca_xy_meson_ud", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
@@ -246,6 +255,15 @@ int main(int argc, char **argv) {
    
   HarryPlotter::CheckAndStore(out, h_PDGCode); 
   HarryPlotter::CheckAndStore(out, h_PDGCodeWide); 
+
+  HarryPlotter::CheckAndStore(out, h_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_dca_z);
+
+  HarryPlotter::CheckAndStore(out, h_dca_xy_pion_310);
+  HarryPlotter::CheckAndStore(out, h_dca_xy_pion_310);
+
+  HarryPlotter::CheckAndStore(out, h_dca_xy_pion_421);
+  HarryPlotter::CheckAndStore(out, h_dca_xy_pion_421);
 
   HarryPlotter::CheckAndStore(out, dca_xy_meson_ud);
   HarryPlotter::CheckAndStore(out, dca_z_meson_ud);
