@@ -105,10 +105,14 @@ int main(int argc, char **argv) {
   */
   ROOT::RDataFrame df(input);
   
-  auto df_in_qa = df.Filter("fFirstCandidateXiCC"); 
+  auto PDGLead = [](int motherPDGs) {return motherPDGs;}; 
+
+  auto df_in_qa = df
+    .Filter("fFirstCandidateXiCC")
+    ; 
   auto in_counter = df_in_qa.Count(); 
   
-  auto h_PDGCodeDCAxy = df_in_qa.Histo1D({"PDGCodeDCAxy", "PDGCodeDCAxy", 10000000, 0, 10000000}, "fPiccMotherPDG[0]"); 
+  auto h_PDGCodeDCAxy = df_in_qa.Histo2D({"PDGCodeDCAxy", "PDGCodeDCAxy", 10000, 0, 10000, 600, -300, 300}, "fPiccMotherPDG", "fPicDCAxyToPVTopo"); 
 
   TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
