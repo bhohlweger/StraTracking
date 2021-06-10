@@ -268,7 +268,54 @@ int main(int argc, char **argv) {
   auto h_dca_z_pion_5132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5132").Histo1D({"dca_z_5132", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
   auto h_dca_xy_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_xy_5232", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_z_5232", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_z_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_z_5232", "dca_z", 100, 0, 10}, {"fPicDCAzToPVTopo"}); 
+ 
+
+  auto h_pT_pion_130 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 130").Histo1D({"pT_130", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"pT_310", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_321 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 321").Histo1D({"pT_321", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_411 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 411").Histo1D({"pT_411", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"pT_421", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_431 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 431").Histo1D({"pT_431", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_511 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 511").Histo1D({"pT_511", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_521 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 521").Histo1D({"pT_521", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_531 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 531").Histo1D({"pT_531", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_541 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 541").Histo1D({"pT_541", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_3122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3122").Histo1D({"pT_3122", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_3112 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3112").Histo1D({"pT_3112", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_3222 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3222").Histo1D({"pT_3222", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_3322 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3322").Histo1D({"pT_3322", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_3312 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3312").Histo1D({"pT_3312", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_3334 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3334").Histo1D({"pT_3334", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_4122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4122").Histo1D({"pT_4122", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_4132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4132").Histo1D({"pT_4132", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_4232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4232").Histo1D({"pT_4232", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_4332 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4332").Histo1D({"pT_4332", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_5122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5122").Histo1D({"pT_5122", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+
+  auto h_pT_pion_5132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5132").Histo1D({"pT_5132", "pT", 100, 0, 10}, {"fPiCCPt"}); 
+  
+  auto h_pT_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"pT_5232", "pT", 100, 0, 10}, {"fPiCCPt"}); 
  
 
   auto df_meson_ud = df_in_qa.Filter(Mesons_u_d, {"absfPiccMotherPDG"}); 
@@ -394,6 +441,56 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out, h_dca_xy_pion_5232);
   HarryPlotter::CheckAndStore(out, h_dca_z_pion_5232);
+  
+  
+  HarryPlotter::CheckAndStore(out, h_pT_pion_130);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_310);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_321);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_411);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_421);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_431);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_411);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_511);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_521);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_531);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_541);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_3122);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_3112);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_3222);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_3322);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_3312);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_3334);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_4122);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_4132);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_4232);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_4332);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_5122);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_5132);
+
+  HarryPlotter::CheckAndStore(out, h_pT_pion_5232);
+
 
   HarryPlotter::CheckAndStore(out, dca_xy_meson_ud);
   HarryPlotter::CheckAndStore(out, dca_z_meson_ud);
