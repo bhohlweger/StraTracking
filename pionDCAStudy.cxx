@@ -21,29 +21,6 @@
 std::vector<float> ptbins = {1.,6.};//HarryPlotter::Getptbins(); 
 std::vector<float> layerPos = HarryPlotter::GetposLayers();
 
-/* 
-   workflow: 
-   1) take the xis for kind of granted -> QA cuts
-   -> additional hits + pT cut 
-   -> transverse Radius (difference between truth and reco, causality) + Daughter DCA (?)
-   -> invariant Mass cut (?)
-	  
-   2) Ultimately: Select the Xi_c from Xi_cc 
-   -> QA Cuts: transverse radius, dca among daughters, dca to PV ... invariant mass
-   -> Pion DCA distribution... 
-	  
-   3) Select the Xi_cc 
-   -> Xi_c from Xi_cc Cuts: DCA to PV 
-   What this needs to be able: 
-   1) process signal + background files 
-
-   Some random documentation: 
-
-   Things to think about: 
-   1) Do we compare Topo & Strangeness Tracking? 
-   2) Switch between signal and background
-*/ 
-
 
 int main(int argc, char **argv) {
   
@@ -98,22 +75,165 @@ int main(int argc, char **argv) {
   }
   
   std::cout << "Added " << inputFiles << " files to the chain \n"; 
-  /*
-  auto Baryons = [](float PDGCode) { 
+  
+  auto Baryons_u_d = [](int PDGCode) { 
+    if((PDGCode > 1000) && (PDGCode < 3000)){
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
+  
+  auto Baryons_s = [](int PDGCode) { 
+    if(PDGCode == 3122){ //Lambda
+      return true; 
+    } else if(PDGCode == 3222){ //Sigma+ 
+      return true; 
+    } else if(PDGCode == 3112){ //Sigma-
+      return true; 
+    } else if(PDGCode == 3322){ //Xi0
+      return true; 
+    } else if(PDGCode == 3312){ //Xi-
+      return true; 
+    } else if(PDGCode == 3334){ //Omega
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
 
+  auto Baryons_c = [](int PDGCode) { 
+    if(PDGCode == 4122){ //Lambda c
+      return true; 
+    } else if(PDGCode == 4132){ //Xi0 c
+      return true; 
+    } else if(PDGCode == 4232){ //Xi- c
+      return true; 
+    } else if(PDGCode == 4332){ //Omega c
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
+  
+  auto Baryons_b = [](int PDGCode) { 
+    if(PDGCode == 5122){ //Lambda b 
+      return true; 
+    } else if(PDGCode == 5132){ //Xi- b
+      return true; 
+    } else if(PDGCode == 5232){ //Xi0 b
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
+  
+  auto Mesons_u_d = [](int PDGCode) { 
+    if((PDGCode > 100) && (PDGCode < 300) && !PDGCode == 130){
+      return true; 
+    } else if (PDGCode == 333) { //Phi
+      return true; 
+    } else if (PDGCode == 130){ //K0L
+      return false; 
+    } else {
+      return true; 
+    }
+  };
+  
+  auto Mesons_s = [](int PDGCode) { 
+    if(PDGCode == 130){ //K0L
+      return true; 
+    } else if(PDGCode == 310){ //K0S
+      return true; 
+    } else if(PDGCode == 321){ //K+
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
+
+  auto Mesons_c = [](int PDGCode) { 
+    if(PDGCode == 411){ //D+
+      return true; 
+    } else if(PDGCode == 421){ //D0
+      return true; 
+    } else if(PDGCode == 431){ //Ds+
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
+
+  auto Mesons_b = [](int PDGCode) { 
+    if(PDGCode == 511){ //B0
+      return true; 
+    } else if(PDGCode == 521){ //B+
+      return true; 
+    } else if(PDGCode == 531){ //B0s
+      return true; 
+    } else if(PDGCode == 541){ //B+c
+      return true; 
+    } else { 
+      return false; 
+    }
+  };
+  
+  auto nonOfTheAbove = [&Mesons_u_d, &Mesons_s, &Mesons_b, &Baryons_u_d, &Baryons_s, &Baryons_c, &Baryons_b] (int PDGCode) { 
+    return !(Mesons_u_d(PDGCode)||&Mesons_s||Mesons_b||Baryons_u_d||Baryons_s||Baryons_c||Baryons_b); 
   }; 
-  */
+
+
+  auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
+
   ROOT::RDataFrame df(input);
   
   auto PDGLead = [](int motherPDGs) {return motherPDGs;}; 
 
   auto df_in_qa = df
     .Filter("fFirstCandidateXiCC")
+    .Define("absfPiccMotherPDG", makeMeAbsolute, {"fPiccMotherPDG"})
     ; 
   auto in_counter = df_in_qa.Count(); 
   
-  auto h_PDGCodeDCAxy = df_in_qa.Histo2D({"PDGCodeDCAxy", "PDGCodeDCAxy", 10000, 0, 10000, 600, -300, 300}, "fPiccMotherPDG", "fPicDCAxyToPVTopo"); 
+  auto h_PDGCode = df_in_qa.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  auto h_PDGCodeWide = df_in_qa.Histo1D({"PDGCodeWide", "PDGCodeWide", 20000, -1e8, 1e8}, "fPiccMotherPDG"); 
 
+  auto df_meson_ud = df_in_qa.Filter(Mesons_u_d, {"absfPiccMotherPDG"}); 
+  auto dca_xy_meson_ud = df_meson_ud.Histo1D({"dca_xy_meson_ud", "dca_xy_meson_ud", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_ud = df_meson_ud.Histo1D({"dca_z_meson_ud", "dca_z_meson_ud", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_meson_s = df_in_qa.Filter(Mesons_s, {"absfPiccMotherPDG"}); 
+  auto dca_xy_meson_s = df_meson_s.Histo1D({"dca_xy_meson_s", "dca_xy_meson_s", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_s = df_meson_s.Histo1D({"dca_z_meson_s", "dca_z_meson_s", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_meson_c = df_in_qa.Filter(Mesons_c, {"absfPiccMotherPDG"}); 
+  auto dca_xy_meson_c = df_meson_c.Histo1D({"dca_xy_meson_c", "dca_xy_meson_c", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_c = df_meson_c.Histo1D({"dca_z_meson_c", "dca_z_meson_c", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_meson_b = df_in_qa.Filter(Mesons_b, {"absfPiccMotherPDG"}); 
+  auto dca_xy_meson_b = df_meson_b.Histo1D({"dca_xy_meson_b", "dca_xy_meson_b", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_b = df_meson_b.Histo1D({"dca_z_meson_b", "dca_z_meson_b", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  
+  auto df_baryon_ud = df_in_qa.Filter(Baryons_u_d, {"absfPiccMotherPDG"});
+  auto dca_xy_baryon_ud = df_baryon_ud.Histo1D({"dca_xy_baryon_ud", "dca_xy_baryon_ud", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_ud = df_baryon_ud.Histo1D({"dca_z_baryon_ud", "dca_z_baryon_ud", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_baryon_s = df_in_qa.Filter(Baryons_s, {"absfPiccMotherPDG"}); 
+  auto dca_xy_baryon_s = df_baryon_s.Histo1D({"dca_xy_baryon_s", "dca_xy_baryon_s", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_s = df_baryon_s.Histo1D({"dca_z_baryon_s", "dca_z_baryon_s", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_baryon_c = df_in_qa.Filter(Baryons_c, {"absfPiccMotherPDG"}); 
+  auto dca_xy_baryon_c = df_baryon_c.Histo1D({"dca_xy_baryon_c", "dca_xy_baryon_c", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_c = df_baryon_c.Histo1D({"dca_z_baryon_c", "dca_z_baryon_c", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_baryon_b = df_in_qa.Filter(Baryons_b, {"absfPiccMotherPDG"}); 
+  auto dca_xy_baryon_b = df_baryon_b.Histo1D({"dca_xy_baryon_b", "dca_xy_baryon_b", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_b = df_baryon_b.Histo1D({"dca_z_baryon_b", "dca_z_baryon_b", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+
+  auto df_other = df_in_qa.Filter(nonOfTheAbove, {"absfPiccMotherPDG"}); 
+  auto dca_xy_other = df_other.Histo1D({"dca_xy_other", "dca_xy_other", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_other = df_other.Histo1D({"dca_z_other", "dca_z_other", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  
   TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
@@ -124,7 +244,35 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
    
-  HarryPlotter::CheckAndStore(out, h_PDGCodeDCAxy); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode); 
+  HarryPlotter::CheckAndStore(out, h_PDGCodeWide); 
+
+  HarryPlotter::CheckAndStore(out, dca_xy_meson_ud);
+  HarryPlotter::CheckAndStore(out, dca_z_meson_ud);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_meson_s);
+  HarryPlotter::CheckAndStore(out, dca_z_meson_s);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_meson_c);
+  HarryPlotter::CheckAndStore(out, dca_z_meson_c);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_meson_b);
+  HarryPlotter::CheckAndStore(out, dca_z_meson_b);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_baryon_ud);
+  HarryPlotter::CheckAndStore(out, dca_z_baryon_ud);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_baryon_s);
+  HarryPlotter::CheckAndStore(out, dca_z_baryon_s);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_baryon_c);
+  HarryPlotter::CheckAndStore(out, dca_z_baryon_c);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_baryon_b);
+  HarryPlotter::CheckAndStore(out, dca_z_baryon_b);
+
+  HarryPlotter::CheckAndStore(out, dca_xy_other);
+  HarryPlotter::CheckAndStore(out, dca_z_other);
 
   out->Close(); 
   return 0; 
