@@ -198,114 +198,114 @@ int main(int argc, char **argv) {
   auto h_PDGCode = df_in_qa.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCodeWide = df_in_qa.Histo1D({"PDGCodeWide", "PDGCodeWide", 20000, -1e8, 1e8}, "fPiccMotherPDG"); 
   
-  auto h_dca_xy = df_in_qa.Histo1D({"dca_xy", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z = df_in_qa.Histo1D({"dca_z", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy = df_in_qa.Histo1D({"dca_xy", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z = df_in_qa.Histo1D({"dca_z", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_130 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 130").Histo1D({"dca_xy_130", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_130 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 130").Histo1D({"dca_z_130", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_130 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 130").Histo1D({"dca_xy_130", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_130 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 130").Histo1D({"dca_z_130", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"dca_xy_310", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"dca_z_310", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"dca_xy_310", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_310 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 310").Histo1D({"dca_z_310", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_321 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 321").Histo1D({"dca_xy_321", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_321 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 321").Histo1D({"dca_z_321", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_321 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 321").Histo1D({"dca_xy_321", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_321 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 321").Histo1D({"dca_z_321", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_411 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 411").Histo1D({"dca_xy_411", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_411 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 411").Histo1D({"dca_z_411", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"});   
+  auto h_dca_xy_pion_411 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 411").Histo1D({"dca_xy_411", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_411 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 411").Histo1D({"dca_z_411", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"});   
 
-  auto h_dca_xy_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"dca_xy_421", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"dca_z_421", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"dca_xy_421", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_421 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 421").Histo1D({"dca_z_421", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_431 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 431").Histo1D({"dca_xy_431", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_431 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 431").Histo1D({"dca_z_431", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_431 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 431").Histo1D({"dca_xy_431", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_431 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 431").Histo1D({"dca_z_431", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_511 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 511").Histo1D({"dca_xy_511", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_511 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 511").Histo1D({"dca_z_511", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_511 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 511").Histo1D({"dca_xy_511", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_511 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 511").Histo1D({"dca_z_511", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_521 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 521").Histo1D({"dca_xy_521", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_521 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 521").Histo1D({"dca_z_521", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_521 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 521").Histo1D({"dca_xy_521", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_521 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 521").Histo1D({"dca_z_521", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_531 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 531").Histo1D({"dca_xy_531", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_531 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 531").Histo1D({"dca_z_531", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_531 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 531").Histo1D({"dca_xy_531", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_531 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 531").Histo1D({"dca_z_531", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_541 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 541").Histo1D({"dca_xy_541", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_541 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 541").Histo1D({"dca_z_541", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_541 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 541").Histo1D({"dca_xy_541", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_541 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 541").Histo1D({"dca_z_541", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_3122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3122").Histo1D({"dca_xy_3122", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_3122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3122").Histo1D({"dca_z_3122", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_3122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3122").Histo1D({"dca_xy_3122", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_3122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3122").Histo1D({"dca_z_3122", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_3112 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3112").Histo1D({"dca_xy_3112", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_3112 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3112").Histo1D({"dca_z_3112", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_3112 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3112").Histo1D({"dca_xy_3112", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_3112 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3112").Histo1D({"dca_z_3112", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_3222 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3222").Histo1D({"dca_xy_3222", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_3222 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3222").Histo1D({"dca_z_3222", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_3222 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3222").Histo1D({"dca_xy_3222", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_3222 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3222").Histo1D({"dca_z_3222", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_3322 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3322").Histo1D({"dca_xy_3322", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_3322 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3322").Histo1D({"dca_z_3322", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_3322 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3322").Histo1D({"dca_xy_3322", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_3322 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3322").Histo1D({"dca_z_3322", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_3312 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3312").Histo1D({"dca_xy_3312", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_3312 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3312").Histo1D({"dca_z_3312", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_3312 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3312").Histo1D({"dca_xy_3312", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_3312 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3312").Histo1D({"dca_z_3312", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_3334 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3334").Histo1D({"dca_xy_3334", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_3334 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3334").Histo1D({"dca_z_3334", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_3334 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3334").Histo1D({"dca_xy_3334", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_3334 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 3334").Histo1D({"dca_z_3334", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_4122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4122").Histo1D({"dca_xy_4122", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_4122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4122").Histo1D({"dca_z_4122", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_4122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4122").Histo1D({"dca_xy_4122", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_4122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4122").Histo1D({"dca_z_4122", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_4132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4132").Histo1D({"dca_xy_4132", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_4132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4132").Histo1D({"dca_z_4132", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_4132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4132").Histo1D({"dca_xy_4132", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_4132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4132").Histo1D({"dca_z_4132", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_4232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4232").Histo1D({"dca_xy_4232", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_4232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4232").Histo1D({"dca_z_4232", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_4232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4232").Histo1D({"dca_xy_4232", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_4232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4232").Histo1D({"dca_z_4232", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_4332 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4332").Histo1D({"dca_xy_4332", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_4332 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4332").Histo1D({"dca_z_4332", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_4332 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4332").Histo1D({"dca_xy_4332", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_4332 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 4332").Histo1D({"dca_z_4332", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_5122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5122").Histo1D({"dca_xy_5122", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_5122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5122").Histo1D({"dca_z_5122", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_5122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5122").Histo1D({"dca_xy_5122", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_5122 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5122").Histo1D({"dca_z_5122", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
-  auto h_dca_xy_pion_5132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5132").Histo1D({"dca_xy_5132", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_5132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5132").Histo1D({"dca_z_5132", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_5132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5132").Histo1D({"dca_xy_5132", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_5132 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5132").Histo1D({"dca_z_5132", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
-  auto h_dca_xy_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_xy_5232", "dca_xy", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto h_dca_z_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_z_5232", "dca_z", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto h_dca_xy_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_xy_5232", "dca_xy", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto h_dca_z_pion_5232 = df_in_qa.Filter("TMath::Abs(fPiccMotherPDG) == 5232").Histo1D({"dca_z_5232", "dca_z", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
  
 
   auto df_meson_ud = df_in_qa.Filter(Mesons_u_d, {"absfPiccMotherPDG"}); 
-  auto dca_xy_meson_ud = df_meson_ud.Histo1D({"dca_xy_meson_ud", "dca_xy_meson_ud", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_meson_ud = df_meson_ud.Histo1D({"dca_z_meson_ud", "dca_z_meson_ud", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_meson_ud = df_meson_ud.Histo1D({"dca_xy_meson_ud", "dca_xy_meson_ud", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_ud = df_meson_ud.Histo1D({"dca_z_meson_ud", "dca_z_meson_ud", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_meson_s = df_in_qa.Filter(Mesons_s, {"absfPiccMotherPDG"}); 
-  auto dca_xy_meson_s = df_meson_s.Histo1D({"dca_xy_meson_s", "dca_xy_meson_s", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_meson_s = df_meson_s.Histo1D({"dca_z_meson_s", "dca_z_meson_s", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_meson_s = df_meson_s.Histo1D({"dca_xy_meson_s", "dca_xy_meson_s", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_s = df_meson_s.Histo1D({"dca_z_meson_s", "dca_z_meson_s", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_meson_c = df_in_qa.Filter(Mesons_c, {"absfPiccMotherPDG"}); 
-  auto dca_xy_meson_c = df_meson_c.Histo1D({"dca_xy_meson_c", "dca_xy_meson_c", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_meson_c = df_meson_c.Histo1D({"dca_z_meson_c", "dca_z_meson_c", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_meson_c = df_meson_c.Histo1D({"dca_xy_meson_c", "dca_xy_meson_c", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_c = df_meson_c.Histo1D({"dca_z_meson_c", "dca_z_meson_c", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_meson_b = df_in_qa.Filter(Mesons_b, {"absfPiccMotherPDG"}); 
-  auto dca_xy_meson_b = df_meson_b.Histo1D({"dca_xy_meson_b", "dca_xy_meson_b", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_meson_b = df_meson_b.Histo1D({"dca_z_meson_b", "dca_z_meson_b", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_meson_b = df_meson_b.Histo1D({"dca_xy_meson_b", "dca_xy_meson_b", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_meson_b = df_meson_b.Histo1D({"dca_z_meson_b", "dca_z_meson_b", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
   auto df_baryon_ud = df_in_qa.Filter(Baryons_u_d, {"absfPiccMotherPDG"});
-  auto dca_xy_baryon_ud = df_baryon_ud.Histo1D({"dca_xy_baryon_ud", "dca_xy_baryon_ud", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_baryon_ud = df_baryon_ud.Histo1D({"dca_z_baryon_ud", "dca_z_baryon_ud", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_baryon_ud = df_baryon_ud.Histo1D({"dca_xy_baryon_ud", "dca_xy_baryon_ud", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_ud = df_baryon_ud.Histo1D({"dca_z_baryon_ud", "dca_z_baryon_ud", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_baryon_s = df_in_qa.Filter(Baryons_s, {"absfPiccMotherPDG"}); 
-  auto dca_xy_baryon_s = df_baryon_s.Histo1D({"dca_xy_baryon_s", "dca_xy_baryon_s", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_baryon_s = df_baryon_s.Histo1D({"dca_z_baryon_s", "dca_z_baryon_s", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_baryon_s = df_baryon_s.Histo1D({"dca_xy_baryon_s", "dca_xy_baryon_s", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_s = df_baryon_s.Histo1D({"dca_z_baryon_s", "dca_z_baryon_s", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_baryon_c = df_in_qa.Filter(Baryons_c, {"absfPiccMotherPDG"}); 
-  auto dca_xy_baryon_c = df_baryon_c.Histo1D({"dca_xy_baryon_c", "dca_xy_baryon_c", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_baryon_c = df_baryon_c.Histo1D({"dca_z_baryon_c", "dca_z_baryon_c", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_baryon_c = df_baryon_c.Histo1D({"dca_xy_baryon_c", "dca_xy_baryon_c", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_c = df_baryon_c.Histo1D({"dca_z_baryon_c", "dca_z_baryon_c", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_baryon_b = df_in_qa.Filter(Baryons_b, {"absfPiccMotherPDG"}); 
-  auto dca_xy_baryon_b = df_baryon_b.Histo1D({"dca_xy_baryon_b", "dca_xy_baryon_b", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_baryon_b = df_baryon_b.Histo1D({"dca_z_baryon_b", "dca_z_baryon_b", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_baryon_b = df_baryon_b.Histo1D({"dca_xy_baryon_b", "dca_xy_baryon_b", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_baryon_b = df_baryon_b.Histo1D({"dca_z_baryon_b", "dca_z_baryon_b", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
 
   auto df_other = df_in_qa.Filter(nonOfTheAbove, {"absfPiccMotherPDG"}); 
-  auto dca_xy_other = df_other.Histo1D({"dca_xy_other", "dca_xy_other", 1000, -500, 500}, {"fPicDCAxyToPVTopo"}); 
-  auto dca_z_other = df_other.Histo1D({"dca_z_other", "dca_z_other", 1000, -500, 500}, {"fPicDCAzToPVTopo"}); 
+  auto dca_xy_other = df_other.Histo1D({"dca_xy_other", "dca_xy_other", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
+  auto dca_z_other = df_other.Histo1D({"dca_z_other", "dca_z_other", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
   
   TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
