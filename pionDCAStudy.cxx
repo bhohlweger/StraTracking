@@ -231,8 +231,17 @@ int main(int argc, char **argv) {
   auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
   auto givemyintback = [] (int value) {return (int)value;}; 
   auto givemyfloatback = [] (float value) {return (float)value;}; 
-  ROOT::RDataFrame df(input);
+  auto givemyRVecBack = [] (ROOT::RVec<int> array) { return array;};
+  ROOT::RDataFrame df_in(input);
   
+  auto df = df_in
+    .Define("fPiccMotherPDG", givemyintback, {"fPionMotherPDG"})
+    .Define("fPiccMotherNChain", givemyintback, {"fPionMotherNChain"})
+    .Define("fPiccMotherChain", givemyRVecBack, {"fPionMotherChain"})
+    .Define("fPicDCAxyToPVTopo", givemyfloatback, {"fPionDCAxy"})
+    .Define("fPicDCAzToPVTopo", givemyfloatback, {"fPionDCAz"})
+    ;
+
   auto FromBaryon = [](int pdgCodes) { 
     bool out = false; 
     auto checkDigits = pdgCodes/(int)1000; 
@@ -396,9 +405,6 @@ int main(int argc, char **argv) {
 
 /*
   auto df_in_qa = df
-  .Define("fPiccMotherPDG", givemyintback, {"fPionMotherPDG"})
-  .Define("fPicDCAxyToPVTopo", givemyfloatback, {"fPionDCAxy"})
-  .Define("fPicDCAzToPVTopo", givemyfloatback, {"fPionDCAz"})
   .Define("fPiCCPt", givemyfloatback, {"fPionPt"})
   .Define("absfPiccMotherPDG", makeMeAbsolute, {"fPiccMotherPDG"})
   ; 
