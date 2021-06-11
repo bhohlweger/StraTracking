@@ -63,12 +63,12 @@ int main(int argc, char **argv) {
 	TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
 	TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
 	/*
-	if (!evtCounter||!ptXicGen||!ptXiccGen) { 
+	  if (!evtCounter||!ptXicGen||!ptXiccGen) { 
 	  continue; 
-	}
-	h_cand_counter->Add(evtCounter); 
-	h_gen_xi_c_counter->Add(ptXicGen); 
-	h_gen_xi_cc_counter->Add(ptXiccGen); 
+	  }
+	  h_cand_counter->Add(evtCounter); 
+	  h_gen_xi_c_counter->Add(ptXicGen); 
+	  h_gen_xi_cc_counter->Add(ptXiccGen); 
 	*/
 	input.Add(inSubDirFile);
 	inputFiles++;
@@ -191,15 +191,71 @@ int main(int argc, char **argv) {
   auto givemyfloatback = [] (float value) {return (float)value;}; 
   ROOT::RDataFrame df(input);
   
-  auto PDGLead = [](int motherPDGs) {return motherPDGs;}; 
+  auto FromBaryon = [](ROOT::RVec<int> pdgCodes) { 
+    bool out = false; 
+    auto checkDigits = pdgCodes/(int)1000; 
+    auto baryons = checkDigits[checkDigits >0 && checkDigits < 10]; 
+    if (baryons.size() > 0) {
+      out = true;
+    }
+    return out; 
+  };
+  
+  auto FromMeson = [](ROOT::RVec<int> pdgCodes) { 
+    bool out = false; 
+    auto checkDigits = pdgCodes/(int)100; 
+    auto mesons = checkDigits[checkDigits >0 && checkDigits < 10]; 
+    if (mesons.size() > 0) {
+      out = true;
+    }
+    return out; 
+  };
+  
+  //let's tackle this someway different ... 
+  
+  //Filter primary 
+  auto df_prim = df.Filter("fPiccMotherNChain < 1"); 
+  auto h_PDGCode_prim = df_prim.Histo1D({"PDGCodePrim", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  //Filter non-primary 
+  auto df_dec = df.Filter("fPiccMotherNChain > 0"); 
 
+  //From Baryons 
+  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherChain"});
+  auto h_PDGCode_baryon = df_baryon.Histo1D({"PDGCodeBaryon", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  //Mesons 
+  auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherChain"});
+  auto h_PDGCode = df_meson.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  auto h_PDGCode_meson = df_meson.Histo1D({"PDGCodeMeson", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+
+  
+
+  TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
+  TFile* out = TFile::Open(outName.Data(), "recreate");
+  
+  out->cd(); 
+  //this is my start
+
+  HarryPlotter::CheckAndStore(out, h_cand_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
+  
+  HarryPlotter::CheckAndStore(out, h_PDGCode_prim); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_baryon); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson); 
+  
+  out->Close(); 
+  return 0; 
+}
+
+
+/*
   auto df_in_qa = df
-    .Define("fPiccMotherPDG", givemyintback, {"fPionMotherPDG"})
-    .Define("fPicDCAxyToPVTopo", givemyfloatback, {"fPionDCAxy"})
-    .Define("fPicDCAzToPVTopo", givemyfloatback, {"fPionDCAz"})
-    .Define("fPiCCPt", givemyfloatback, {"fPionPt"})
-    .Define("absfPiccMotherPDG", makeMeAbsolute, {"fPiccMotherPDG"})
-    ; 
+  .Define("fPiccMotherPDG", givemyintback, {"fPionMotherPDG"})
+  .Define("fPicDCAxyToPVTopo", givemyfloatback, {"fPionDCAxy"})
+  .Define("fPicDCAzToPVTopo", givemyfloatback, {"fPionDCAz"})
+  .Define("fPiCCPt", givemyfloatback, {"fPionPt"})
+  .Define("absfPiccMotherPDG", makeMeAbsolute, {"fPiccMotherPDG"})
+  ; 
   auto in_counter = df_in_qa.Count(); 
   
   auto h_PDGCode = df_in_qa.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
@@ -360,20 +416,14 @@ int main(int argc, char **argv) {
   auto df_other = df_in_qa.Filter(nonOfTheAbove, {"absfPiccMotherPDG"}); 
   auto dca_xy_other = df_other.Histo1D({"dca_xy_other", "dca_xy_other", 3000, -1500, 1500}, {"fPicDCAxyToPVTopo"}); 
   auto dca_z_other = df_other.Histo1D({"dca_z_other", "dca_z_other", 3000, -1500, 1500}, {"fPicDCAzToPVTopo"}); 
-  
-  TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
-  TFile* out = TFile::Open(outName.Data(), "recreate");
-  
-  out->cd(); 
-  //this is my start
+*/
 
-  HarryPlotter::CheckAndStore(out, h_cand_counter); 
-  HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
-  HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
-   
+
+
+/*
   HarryPlotter::CheckAndStore(out, h_PDGCode); 
   HarryPlotter::CheckAndStore(out, h_PDGCodeWide); 
-
+  
   HarryPlotter::CheckAndStore(out, h_dca_xy);
   HarryPlotter::CheckAndStore(out, h_dca_z);
 
@@ -525,8 +575,4 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out, dca_xy_other);
   HarryPlotter::CheckAndStore(out, dca_z_other);
-
-  out->Close(); 
-  return 0; 
-}
-
+*/
