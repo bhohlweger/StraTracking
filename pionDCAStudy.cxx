@@ -216,6 +216,16 @@ int main(int argc, char **argv) {
     }
   };
   
+  auto bar_s = [](int pdg) { return Baryons_s(pdg);}; 
+  auto bar_c = [](int pdg) { return Baryons_c(pdg);}; 
+  auto bar_b = [](int pdg) { return Baryons_b(pdg);}; 
+  
+  auto mes_s = [](int pdg) { return Mesons_s(pdg);}; 
+  auto mes_c = [](int pdg) { return Mesons_c(pdg);}; 
+  auto mes_b = [](int pdg) { return Mesons_b(pdg);}; 
+
+  
+
   //auto findWeakMesonInChain; 
 
   auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
@@ -246,12 +256,15 @@ int main(int argc, char **argv) {
   //Filter primary 
   auto df_prim = df.Filter("fPiccMotherNChain < 1"); 
   auto h_PDGCode_prim = df_prim.Histo1D({"PDGCodePrim", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
-  
+  auto h_DCA_prim = df_prim.Histo1D({"DCAPrim", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   auto df_strong = df.Filter(nonWeakDecay, {"fPiccMotherPDG"}); 
   auto h_PDGCode_strong = df_strong.Histo1D({"PDGCodeStrong", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
-  
+  auto h_DCA_strong = df_strong.Histo1D({"DCAStrong", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   auto df_other = df.Filter(otherDecays, {"fPiccMotherPDG"}); 
   auto h_PDGCode_other = df_other.Histo1D({"PDGCodeOther", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  auto h_DCA_other = df_other.Histo1D({"DCAOther", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
 
   //Filter non-primary 
   auto df_dec = df.Filter("fPiccMotherNChain > 0").Filter(anyWeakDecay, {"fPiccMotherPDG"});   
@@ -259,30 +272,58 @@ int main(int argc, char **argv) {
   auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherPDG"}).Define("LeadingBaryon", findLeadingWeakInBaryonChain, {"fPiccMotherChain"});
   auto h_PDGCode_baryon = df_baryon.Histo1D({"PDGCodeBaryon", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCode_lead_baryon = df_baryon.Histo1D({"PDGCodeLeadBaryon", "PDGCode", 20000, -10000, 10000}, "LeadingBaryon"); 
-  
+  auto h_DCA_baryon = df_baryon.Histo1D({"DCABaryon", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_s = df_baryon.Filter(bar_s, {"fPiccMotherPDG"}).Histo1D({"DCABaryon_s", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_c = df_baryon.Filter(bar_c, {"fPiccMotherPDG"}).Histo1D({"DCABaryon_c", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_b = df_baryon.Filter(bar_b, {"fPiccMotherPDG"}).Histo1D({"DCABaryon_b", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   auto df_baryon_promt = df_baryon.Filter("fPiccMotherPDG==LeadingBaryon"); 
   auto h_PDGCode_baryon_promt = df_baryon_promt.Histo1D({"PDGCodeBaryonPromt", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
-  
+  auto h_DCA_baryon_promt = df_baryon_promt.Histo1D({"DCABaryon_Promt", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_promt_s = df_baryon_promt.Filter(bar_s, {"fPiccMotherPDG"}).Histo1D({"DCABaryonPromt_s", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_promt_c = df_baryon_promt.Filter(bar_c, {"fPiccMotherPDG"}).Histo1D({"DCABaryonPromt_c", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_promt_b = df_baryon_promt.Filter(bar_b, {"fPiccMotherPDG"}).Histo1D({"DCABaryonPromt_b", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   auto df_baryon_non_promt = df_baryon.Filter("fPiccMotherPDG!=LeadingBaryon"); 
   auto h_PDGCode_baryon_non_promt = df_baryon_non_promt.Histo1D({"PDGCodeBaryonNonPromt", "PDGCode", 20000, -10000, 10000}, "LeadingBaryon"); 
+  auto h_DCA_baryon_non_promt = df_baryon_non_promt.Histo1D({"DCABaryonNonPromt", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_non_promt_s = df_baryon_promt.Filter(bar_s, {"fPiccMotherPDG"}).Histo1D({"DCABaryonNonPromt_s", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_non_promt_c = df_baryon_promt.Filter(bar_c, {"fPiccMotherPDG"}).Histo1D({"DCABaryonNonPromt_c", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_baryon_non_promt_b = df_baryon_promt.Filter(bar_b, {"fPiccMotherPDG"}).Histo1D({"DCABaryonNonPromt_b", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
 
   //Mesons 
   auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherPDG"}).Define("LeadingHadron", findLeadingWeakInMesonChain, {"fPiccMotherChain"});
   auto h_PDGCode = df_meson.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCode_meson = df_meson.Histo1D({"PDGCodeMeson", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
-  
+  auto h_DCA_meson = df_meson.Histo1D({"DCAMeson", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_s = df_meson.Filter(mes_s, {"fPiccMotherPDG"}).Histo1D({"DCAMeson_s", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_c = df_meson.Filter(mes_c, {"fPiccMotherPDG"}).Histo1D({"DCAMeson_c", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_b = df_meson.Filter(mes_b, {"fPiccMotherPDG"}).Histo1D({"DCAMeson_b", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   auto df_meson_promt = df_meson.Filter("fPiccMotherPDG==LeadingHadron"); 
   auto h_PDGCode_meson_promt = df_meson_promt.Histo1D({"PDGCodeMesonPromt", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  auto h_DCA_meson_promt = df_meson_promt.Histo1D({"DCAMesonPromt", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_promt_s = df_meson_promt.Filter(bar_s, {"fPiccMotherPDG"}).Histo1D({"DCAMesonPromt_s", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_promt_c = df_meson_promt.Filter(bar_c, {"fPiccMotherPDG"}).Histo1D({"DCAMesonPromt_c", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_promt_b = df_meson_promt.Filter(bar_b, {"fPiccMotherPDG"}).Histo1D({"DCAMesonPromt_b", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   
   auto df_meson_non_promt = df_meson.Filter("fPiccMotherPDG==LeadingHadron"); 
   auto h_PDGCode_meson_non_promt = df_meson_non_promt.Histo1D({"PDGCodeMesonNonPromt", "PDGCode", 20000, -10000, 10000}, "LeadingHadron"); 
+  auto h_DCA_meson_non_promt = df_meson_non_promt.Histo1D({"DCAMesonNonPromt", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_non_promt_s = df_meson_promt.Filter(bar_s, {"fPiccMotherPDG"}).Histo1D({"DCAMesonNonPromt_s", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_non_promt_c = df_meson_promt.Filter(bar_c, {"fPiccMotherPDG"}).Histo1D({"DCAMesonNonPromt_c", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_non_promt_b = df_meson_promt.Filter(bar_b, {"fPiccMotherPDG"}).Histo1D({"DCAMesonNonPromt_b", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
   
   auto df_meson_non_promt_baryon = df_meson_non_promt.Filter(FromBaryon, {"LeadingHadron"}); 
   auto h_PDGCode_meson_non_promt_baryon = df_meson_non_promt_baryon.Histo1D({"PDGCodeMesonNonPromtBaryon", "PDGCode", 20000, -10000, 10000}, "LeadingHadron"); 
+  auto h_DCA_meson_non_promt_baryon = df_meson_non_promt_baryon.Histo1D({"DCAMesonNonPromtBaryon", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+
   
   auto df_meson_non_promt_meson = df_meson_non_promt.Filter(FromMeson, {"LeadingHadron"}); 
   auto h_PDGCode_meson_non_promt_meson = df_meson_non_promt_meson.Histo1D({"PDGCodeMesonNonPromtMeson", "PDGCode", 20000, -10000, 10000}, "LeadingHadron"); 
-  
+  auto h_DCA_meson_non_promt_meson = df_meson_non_promt_meson.Histo1D({"DCAMesonNonPromtMeson", "DCA", 300, -1500, 1500}, "fPicDCAxyToPVTopo"); 
+  auto h_DCA_meson_non_promt_meson_2D = df_meson_non_promt_meson.Histo2D({"NonPromtMesonOrg", "bla", 2000, -1000, 1000, 2000, -1000, 1000}, "fPiccMotherPDG", "LeadingHadron"); 
   
   TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
@@ -295,19 +336,59 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
   
   HarryPlotter::CheckAndStore(out, h_PDGCode_prim); 
+  HarryPlotter::CheckAndStore(out, h_DCA_prim); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_strong); 
+  HarryPlotter::CheckAndStore(out, h_DCA_strong); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_other); 
+  HarryPlotter::CheckAndStore(out, h_DCA_other); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_c); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_b); 
+
   HarryPlotter::CheckAndStore(out, h_PDGCode_lead_baryon); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_promt_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_promt_b); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_promt_c); 
+
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt_c); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt_b); 
+
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon_non_promt); 
-  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_promt); 
-  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt); 
-  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt_baryon); 
-  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt_meson); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt_c); 
+  HarryPlotter::CheckAndStore(out, h_DCA_baryon_non_promt_b); 
 
   HarryPlotter::CheckAndStore(out, h_PDGCode_meson); 
-  
+  HarryPlotter::CheckAndStore(out, h_DCA_meson); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_c); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_b); 
+
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_promt_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_promt_c); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_promt_b); 
+
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt_s); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt_c); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt_b); 
+
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt_baryon); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt_baryon); 
+
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt_meson); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt_meson); 
+  HarryPlotter::CheckAndStore(out, h_DCA_meson_non_promt_meson_2D); 
   out->Close(); 
   return 0; 
 }
