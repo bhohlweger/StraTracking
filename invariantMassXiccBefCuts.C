@@ -10,15 +10,15 @@ void invariantMassXiccBefCuts(TString addon) {
   
   TH1D* h_mbRedCounter = (TH1D*)mb->Get("cutCounter");
   TH1D* h_mbCounter = (TH1D*)mb->Get("df_xi_c_candCounter");
-  double normMb = 1/(9.91e-9*h_mbCounter->GetBinContent(1)); 
+  double normMb = 1/(1.614e-8*h_mbCounter->GetBinContent(1)); 
   
   TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
   TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
-  double normXi = 1/(9.25e-7*h_xiCounter->GetBinContent(1)); 
+  double normXi = 1/(1.63e-6*h_xiCounter->GetBinContent(1)); 
 
   TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
   TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
-  double normXic = 1/(1.24e-4*h_xicCounter->GetBinContent(1)); 
+  double normXic = 1/(2.1e-4*h_xicCounter->GetBinContent(1)); 
   
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
   TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
