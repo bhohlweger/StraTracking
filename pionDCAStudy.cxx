@@ -192,6 +192,13 @@ int main(int argc, char **argv) {
   auto otherDecays = [] (int PDGCode) { 
     return !(Mesons_u_d(PDGCode)||Mesons_s(PDGCode)||Mesons_c(PDGCode)||Mesons_b(PDGCode)||Baryons_u_d(PDGCode)||Baryons_s(PDGCode)||Baryons_c(PDGCode)||Baryons_b(PDGCode)); 
   };
+  auto findWeakBaryonInChain = [](ROOT::RVec<int> &PDGs) {
+    auto weakPDGs = ROOT::VecOps::Filter(PDGs, [](int pdg){return Baryons_s(pdg)||Baryons_c(pdg)||Baryons_b(pdg);}); 
+    auto sorted = ROOT::VecOps::Reverse(ROOT::VecOps::Sort(weakPDGs));
+    return sorted.at(0); 
+  }; 
+  
+    //auto findWeakMesonInChain; 
 
   auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
   auto givemyintback = [] (int value) {return (int)value;}; 
@@ -231,8 +238,15 @@ int main(int argc, char **argv) {
   //Filter non-primary 
   auto df_dec = df.Filter("fPiccMotherNChain > 0").Filter(anyWeakDecay, {"fPiccMotherPDG"});   
   //From Baryons 
-  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherPDG"});
+  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherPDG"}).Define("LeadingBaryon", findWeakBaryonInChain, {"fPiccMotherChain"});
   auto h_PDGCode_baryon = df_baryon.Histo1D({"PDGCodeBaryon", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  auto h_PDGCode_lead_baryon = df_baryon.Histo1D({"PDGCodeLeadBaryon", "PDGCode", 20000, -10000, 10000}, "LeadingBaryon"); 
+  
+  auto df_baryon_promt = df_baryon.Filter("fPiccMotherPDG==LeadingBaryon"); 
+  auto h_PDGCode_baryon_promt = df_baryon_promt.Histo1D({"PDGCodeBaryonPromt", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  
+  auto df_baryon_non_promt = df_baryon.Filter("fPiccMotherPDG!=LeadingBaryon"); 
+  auto h_PDGCode_baryon_non_promt = df_baryon_non_promt.Histo1D({"PDGCodeBaryonNonPromt", "PDGCode", 20000, -10000, 10000}, "LeadingBaryon"); 
 
   //Mesons 
   auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherPDG"});
@@ -255,6 +269,10 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_PDGCode_strong); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_other); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_lead_baryon); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_baryon_promt); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_baryon_non_promt); 
+
   HarryPlotter::CheckAndStore(out, h_PDGCode_meson); 
   
   out->Close(); 
