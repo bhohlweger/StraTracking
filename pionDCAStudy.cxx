@@ -192,13 +192,31 @@ int main(int argc, char **argv) {
   auto otherDecays = [] (int PDGCode) { 
     return !(Mesons_u_d(PDGCode)||Mesons_s(PDGCode)||Mesons_c(PDGCode)||Mesons_b(PDGCode)||Baryons_u_d(PDGCode)||Baryons_s(PDGCode)||Baryons_c(PDGCode)||Baryons_b(PDGCode)); 
   };
-  auto findWeakBaryonInChain = [](ROOT::RVec<int> &PDGs) {
+  auto findLeadingWeakInBaryonChain = [](ROOT::RVec<int> &PDGs) {
     auto weakPDGs = ROOT::VecOps::Filter(PDGs, [](int pdg){return Baryons_s(pdg)||Baryons_c(pdg)||Baryons_b(pdg);}); 
     auto sorted = ROOT::VecOps::Reverse(ROOT::VecOps::Sort(weakPDGs));
     return sorted.at(0); 
   }; 
   
-    //auto findWeakMesonInChain; 
+  auto findLeadingWeakInMesonChain = [](ROOT::RVec<int> &PDGs) { 
+    auto weakBaryonPDGs = ROOT::VecOps::Filter(PDGs, [](int pdg){return Baryons_s(pdg)||Baryons_c(pdg)||Baryons_b(pdg);}); 
+    auto sortedBaryons = ROOT::VecOps::Reverse(ROOT::VecOps::Sort(weakBaryonPDGs));
+    auto weakMesonPDGs = ROOT::VecOps::Filter(PDGs, [](int pdg){return Mesons_s(pdg)||Mesons_c(pdg)||Mesons_b(pdg);}); 
+    auto sortedMesons = ROOT::VecOps::Reverse(ROOT::VecOps::Sort(weakMesonPDGs));
+    if (sortedBaryons.size() < 1) { 
+      return sortedMesons.at(0); 
+    } else { 
+      auto checkBaryons = sortedBaryons/1000; 
+      auto checkMesons = sortedMesons/100; 
+      if (checkBaryons.at(0) >= checkMesons.at(0)) { 
+	return sortedBaryons.at(0); 
+      } else { 
+	return sortedMesons.at(0); 
+      }
+    }
+  };
+  
+  //auto findWeakMesonInChain; 
 
   auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
   auto givemyintback = [] (int value) {return (int)value;}; 
@@ -238,7 +256,7 @@ int main(int argc, char **argv) {
   //Filter non-primary 
   auto df_dec = df.Filter("fPiccMotherNChain > 0").Filter(anyWeakDecay, {"fPiccMotherPDG"});   
   //From Baryons 
-  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherPDG"}).Define("LeadingBaryon", findWeakBaryonInChain, {"fPiccMotherChain"});
+  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherPDG"}).Define("LeadingBaryon", findLeadingWeakInBaryonChain, {"fPiccMotherChain"});
   auto h_PDGCode_baryon = df_baryon.Histo1D({"PDGCodeBaryon", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCode_lead_baryon = df_baryon.Histo1D({"PDGCodeLeadBaryon", "PDGCode", 20000, -10000, 10000}, "LeadingBaryon"); 
   
@@ -249,12 +267,23 @@ int main(int argc, char **argv) {
   auto h_PDGCode_baryon_non_promt = df_baryon_non_promt.Histo1D({"PDGCodeBaryonNonPromt", "PDGCode", 20000, -10000, 10000}, "LeadingBaryon"); 
 
   //Mesons 
-  auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherPDG"});
+  auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherPDG"}).Define("LeadingHadron", findLeadingWeakInMesonChain, {"fPiccMotherChain"});
   auto h_PDGCode = df_meson.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCode_meson = df_meson.Histo1D({"PDGCodeMeson", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
-
   
-
+  auto df_meson_promt = df_meson.Filter("fPiccMotherPDG==LeadingHadron"); 
+  auto h_PDGCode_meson_promt = df_meson_promt.Histo1D({"PDGCodeMesonPromt", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  
+  auto df_meson_non_promt = df_meson.Filter("fPiccMotherPDG==LeadingHadron"); 
+  auto h_PDGCode_meson_non_promt = df_meson_non_promt.Histo1D({"PDGCodeMesonNonPromt", "PDGCode", 20000, -10000, 10000}, "LeadingHadron"); 
+  
+  auto df_meson_non_promt_baryon = df_meson_non_promt.Filter(FromBaryon, {"LeadingHadron"}); 
+  auto h_PDGCode_meson_non_promt_baryon = df_meson_non_promt_baryon.Histo1D({"PDGCodeMesonNonPromtBaryon", "PDGCode", 20000, -10000, 10000}, "LeadingHadron"); 
+  
+  auto df_meson_non_promt_meson = df_meson_non_promt.Filter(FromMeson, {"LeadingHadron"}); 
+  auto h_PDGCode_meson_non_promt_meson = df_meson_non_promt_meson.Histo1D({"PDGCodeMesonNonPromtMeson", "PDGCode", 20000, -10000, 10000}, "LeadingHadron"); 
+  
+  
   TString outName = TString::Format("outpionDCA_%s.root",outAddon )  ; 
   TFile* out = TFile::Open(outName.Data(), "recreate");
   
@@ -272,6 +301,10 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_PDGCode_lead_baryon); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon_promt); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon_non_promt); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_promt); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt_baryon); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_meson_non_promt_meson); 
 
   HarryPlotter::CheckAndStore(out, h_PDGCode_meson); 
   
