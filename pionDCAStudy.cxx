@@ -49,7 +49,6 @@ int main(int argc, char **argv) {
     for (auto fileObj : *files)  {
       auto file = (TSystemFile*) fileObj;
       TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
-      std::cout << inSubDirFile.Data() << std::endl; 
       if (!gSystem->AccessPathName(inSubDirFile)) { 
 	TFile *inFile = TFile::Open(inSubDirFile);
 	if (!inFile) { 
@@ -181,31 +180,34 @@ int main(int argc, char **argv) {
     }
   };
   
-  auto nonOfTheAbove = [&Mesons_u_d, &Mesons_s, &Mesons_b, &Baryons_u_d, &Baryons_s, &Baryons_c, &Baryons_b] (int PDGCode) { 
-    return !(Mesons_u_d(PDGCode)||&Mesons_s||Mesons_b||Baryons_u_d||Baryons_s||Baryons_c||Baryons_b); 
+  auto anyWeakDecay = [&Mesons_s, &Mesons_c, &Mesons_b, &Baryons_s, &Baryons_c, &Baryons_b] (int PDGCode) { 
+    return (Mesons_s(PDGCode)||Mesons_c(PDGCode)||Mesons_b(PDGCode)||Baryons_s(PDGCode)||Baryons_c(PDGCode)||Baryons_b(PDGCode)); 
+  };   
+  auto nonWeakDecay = [&Mesons_u_d, &Baryons_u_d] (int PDGCode) { 
+    return (Mesons_u_d(PDGCode)||Baryons_u_d(PDGCode));
   }; 
-
+  auto otherDecays = [&Mesons_u_d, &Mesons_s, &Mesons_c, &Mesons_b, &Baryons_u_d, &Baryons_s, &Baryons_c, &Baryons_b] (int PDGCode) { 
+    return !(Mesons_u_d(PDGCode)||Mesons_s(PDGCode)||Mesons_c(PDGCode)||Mesons_b(PDGCode)||Baryons_u_d(PDGCode)||Baryons_s(PDGCode)||Baryons_c(PDGCode)||Baryons_b(PDGCode)); 
+  };
 
   auto makeMeAbsolute = [] (int value) { return (int)TMath::Abs(value);}; 
   auto givemyintback = [] (int value) {return (int)value;}; 
   auto givemyfloatback = [] (float value) {return (float)value;}; 
   ROOT::RDataFrame df(input);
   
-  auto FromBaryon = [](ROOT::RVec<int> pdgCodes) { 
+  auto FromBaryon = [](int pdgCodes) { 
     bool out = false; 
     auto checkDigits = pdgCodes/(int)1000; 
-    auto baryons = checkDigits[checkDigits >0 && checkDigits < 10]; 
-    if (baryons.size() > 0) {
+    if ((checkDigits > 0) && (checkDigits < 10)) {
       out = true;
     }
     return out; 
   };
-  
-  auto FromMeson = [](ROOT::RVec<int> pdgCodes) { 
+ 
+  auto FromMeson = [](int pdgCodes) { 
     bool out = false; 
     auto checkDigits = pdgCodes/(int)100; 
-    auto mesons = checkDigits[checkDigits >0 && checkDigits < 10]; 
-    if (mesons.size() > 0) {
+    if ((checkDigits > 0) && (checkDigits < 10)) {
       out = true;
     }
     return out; 
@@ -216,14 +218,21 @@ int main(int argc, char **argv) {
   //Filter primary 
   auto df_prim = df.Filter("fPiccMotherNChain < 1"); 
   auto h_PDGCode_prim = df_prim.Histo1D({"PDGCodePrim", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
-  //Filter non-primary 
-  auto df_dec = df.Filter("fPiccMotherNChain > 0"); 
+  
+  auto df_strong = df.Filter(nonWeakDecay, {"fPiccMotherPDG"}); 
+  auto h_PDGCode_strong = df_strong.Histo1D({"PDGCodeStrong", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+  
+  auto df_other = df.Filter(otherDecays, {"fPiccMotherPDG"}); 
+  auto h_PDGCode_other = df_other.Histo1D({"PDGCodeOther", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
 
+  //Filter non-primary 
+  auto df_dec = df.Filter("fPiccMotherNChain > 0").Filter(anyWeakDecay, {"fPiccMotherPDG"});   
   //From Baryons 
-  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherChain"});
+  auto df_baryon = df_dec.Filter(FromBaryon, {"fPiccMotherPDG"});
   auto h_PDGCode_baryon = df_baryon.Histo1D({"PDGCodeBaryon", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
+
   //Mesons 
-  auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherChain"});
+  auto df_meson = df_dec.Filter(FromMeson, {"fPiccMotherPDG"});
   auto h_PDGCode = df_meson.Histo1D({"PDGCode", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
   auto h_PDGCode_meson = df_meson.Histo1D({"PDGCodeMeson", "PDGCode", 20000, -10000, 10000}, "fPiccMotherPDG"); 
 
