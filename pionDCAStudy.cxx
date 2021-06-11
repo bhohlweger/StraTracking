@@ -84,7 +84,7 @@ template <typename T>  bool Mesons_u_d(T PDGCode) {
   } else if (PDGCode == 130){ //K0L
     return false; 
   } else {
-    return true; 
+    return false; 
   }
 };
   
