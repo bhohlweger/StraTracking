@@ -22,6 +22,111 @@ std::vector<float> ptbins = {1.,6.};//HarryPlotter::Getptbins();
 std::vector<float> layerPos = HarryPlotter::GetposLayers();
 
 
+
+template <typename T> bool Baryons_u_d (T PDGCode) { 
+  if((PDGCode > 1000) && (PDGCode < 3000)){
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+
+
+template <typename T>  bool Baryons_s(T PDGCode) { 
+  if(PDGCode == 3122){ //Lambda
+    return true; 
+  } else if(PDGCode == 3222){ //Sigma+ 
+    return true; 
+  } else if(PDGCode == 3112){ //Sigma-
+    return true; 
+  } else if(PDGCode == 3322){ //Xi0
+    return true; 
+  } else if(PDGCode == 3312){ //Xi-
+    return true; 
+  } else if(PDGCode == 3334){ //Omega
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+
+template <typename T>  bool Baryons_c(T PDGCode) { 
+  if(PDGCode == 4122){ //Lambda c
+    return true; 
+  } else if(PDGCode == 4132){ //Xi0 c
+    return true; 
+  } else if(PDGCode == 4232){ //Xi- c
+    return true; 
+  } else if(PDGCode == 4332){ //Omega c
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+  
+template <typename T>  bool Baryons_b(T PDGCode) { 
+  if(PDGCode == 5122){ //Lambda b 
+    return true; 
+  } else if(PDGCode == 5132){ //Xi- b
+    return true; 
+  } else if(PDGCode == 5232){ //Xi0 b
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+  
+template <typename T>  bool Mesons_u_d(T PDGCode) { 
+  if((PDGCode > 100) && (PDGCode < 300) && !PDGCode == 130){
+    return true; 
+  } else if (PDGCode == 333) { //Phi
+    return true; 
+  } else if (PDGCode == 130){ //K0L
+    return false; 
+  } else {
+    return true; 
+  }
+};
+  
+template <typename T>  bool Mesons_s(T PDGCode) { 
+  if(PDGCode == 130){ //K0L
+    return true; 
+  } else if(PDGCode == 310){ //K0S
+    return true; 
+  } else if(PDGCode == 321){ //K+
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+
+template <typename T>  bool Mesons_c(T PDGCode) { 
+  if(PDGCode == 411){ //D+
+    return true; 
+  } else if(PDGCode == 421){ //D0
+    return true; 
+  } else if(PDGCode == 431){ //Ds+
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+
+template <typename T>  bool Mesons_b(T PDGCode) { 
+  if(PDGCode == 511){ //B0
+    return true; 
+  } else if(PDGCode == 521){ //B+
+    return true; 
+  } else if(PDGCode == 531){ //B0s
+    return true; 
+  } else if(PDGCode == 541){ //B+c
+    return true; 
+  } else { 
+    return false; 
+  }
+};
+  
+
 int main(int argc, char **argv) {
   
   const char* fileName = argv[1]; 
@@ -78,115 +183,13 @@ int main(int argc, char **argv) {
   
   std::cout << "Added " << inputFiles << " files to the chain \n"; 
   
-  auto Baryons_u_d = [](int PDGCode) { 
-    if((PDGCode > 1000) && (PDGCode < 3000)){
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-  
-  auto Baryons_s = [](int PDGCode) { 
-    if(PDGCode == 3122){ //Lambda
-      return true; 
-    } else if(PDGCode == 3222){ //Sigma+ 
-      return true; 
-    } else if(PDGCode == 3112){ //Sigma-
-      return true; 
-    } else if(PDGCode == 3322){ //Xi0
-      return true; 
-    } else if(PDGCode == 3312){ //Xi-
-      return true; 
-    } else if(PDGCode == 3334){ //Omega
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-
-  auto Baryons_c = [](int PDGCode) { 
-    if(PDGCode == 4122){ //Lambda c
-      return true; 
-    } else if(PDGCode == 4132){ //Xi0 c
-      return true; 
-    } else if(PDGCode == 4232){ //Xi- c
-      return true; 
-    } else if(PDGCode == 4332){ //Omega c
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-  
-  auto Baryons_b = [](int PDGCode) { 
-    if(PDGCode == 5122){ //Lambda b 
-      return true; 
-    } else if(PDGCode == 5132){ //Xi- b
-      return true; 
-    } else if(PDGCode == 5232){ //Xi0 b
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-  
-  auto Mesons_u_d = [](int PDGCode) { 
-    if((PDGCode > 100) && (PDGCode < 300) && !PDGCode == 130){
-      return true; 
-    } else if (PDGCode == 333) { //Phi
-      return true; 
-    } else if (PDGCode == 130){ //K0L
-      return false; 
-    } else {
-      return true; 
-    }
-  };
-  
-  auto Mesons_s = [](int PDGCode) { 
-    if(PDGCode == 130){ //K0L
-      return true; 
-    } else if(PDGCode == 310){ //K0S
-      return true; 
-    } else if(PDGCode == 321){ //K+
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-
-  auto Mesons_c = [](int PDGCode) { 
-    if(PDGCode == 411){ //D+
-      return true; 
-    } else if(PDGCode == 421){ //D0
-      return true; 
-    } else if(PDGCode == 431){ //Ds+
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-
-  auto Mesons_b = [](int PDGCode) { 
-    if(PDGCode == 511){ //B0
-      return true; 
-    } else if(PDGCode == 521){ //B+
-      return true; 
-    } else if(PDGCode == 531){ //B0s
-      return true; 
-    } else if(PDGCode == 541){ //B+c
-      return true; 
-    } else { 
-      return false; 
-    }
-  };
-  
-  auto anyWeakDecay = [&Mesons_s, &Mesons_c, &Mesons_b, &Baryons_s, &Baryons_c, &Baryons_b] (int PDGCode) { 
+  auto anyWeakDecay = [] (int PDGCode) { 
     return (Mesons_s(PDGCode)||Mesons_c(PDGCode)||Mesons_b(PDGCode)||Baryons_s(PDGCode)||Baryons_c(PDGCode)||Baryons_b(PDGCode)); 
   };   
-  auto nonWeakDecay = [&Mesons_u_d, &Baryons_u_d] (int PDGCode) { 
+  auto nonWeakDecay = [] (int PDGCode) { 
     return (Mesons_u_d(PDGCode)||Baryons_u_d(PDGCode));
   }; 
-  auto otherDecays = [&Mesons_u_d, &Mesons_s, &Mesons_c, &Mesons_b, &Baryons_u_d, &Baryons_s, &Baryons_c, &Baryons_b] (int PDGCode) { 
+  auto otherDecays = [] (int PDGCode) { 
     return !(Mesons_u_d(PDGCode)||Mesons_s(PDGCode)||Mesons_c(PDGCode)||Mesons_b(PDGCode)||Baryons_u_d(PDGCode)||Baryons_s(PDGCode)||Baryons_c(PDGCode)||Baryons_b(PDGCode)); 
   };
 
@@ -249,6 +252,8 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
   
   HarryPlotter::CheckAndStore(out, h_PDGCode_prim); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_strong); 
+  HarryPlotter::CheckAndStore(out, h_PDGCode_other); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_baryon); 
   HarryPlotter::CheckAndStore(out, h_PDGCode_meson); 
   
