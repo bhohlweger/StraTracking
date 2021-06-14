@@ -210,13 +210,13 @@ void invariantMassXicc(TString addon) {
       myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
     }
     
-    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simulation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}}");
   
     p2->cd(); 
     avgBkg->Draw("hist"); 
     xiccHist->Draw("sameHist"); 
     leg2->Draw("same"); 
-    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Full Simulation}{#splitline{Pythia pp #sqrt{s} = 13 TeV}{GEANT3}}");
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}}");
     
 
     c1->Write();

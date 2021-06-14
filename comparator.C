@@ -31,8 +31,12 @@ void comparator(TString addon) {
       xiHist->GetYaxis()->SetTitleOffset(1.2); 
       xiHist->GetXaxis()->SetNdivisions(506); 
       xiHist->GetYaxis()->SetNdivisions(504); 
+
+      xiHist->Rebin(4); 
+      xicHist->Rebin(4); 
+      xiccHist->Rebin(4); 
       
-      xiHist->SetTitle("#Xi^{#minus} + #pi_{Pythia} + #pi_{Pythia} + #pi_{Pythia}"); 
+      xiHist->SetTitle("#Xi^{#minus} + 3#times#pi_{Pythia}"); 
       xicHist->SetTitle("#Xi^{+}_{c} + #pi_{Pythia}"); 
       xiccHist->SetTitle("#Xi_{cc}^{++}"); 
 
@@ -50,7 +54,7 @@ void comparator(TString addon) {
     auto p = (TPad*)gROOT->FindObject(TString::Format("p%s",obj->GetName()).Data()); 
     p->cd(); 
     
-    auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 (Layout v1) Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
     leg->SetFillStyle(0); 
 
     p->cd(); 
