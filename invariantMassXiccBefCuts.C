@@ -11,26 +11,30 @@ void invariantMassXiccBefCuts(TString addon) {
   TH1D* h_mbRedCounter = (TH1D*)mb->Get("cutCounter");
   TH1D* h_mbCounter = (TH1D*)mb->Get("df_xi_c_candCounter");
   double normMb = 1/(1.614e-8*h_mbCounter->GetBinContent(1)); 
-  
+  std::cout << "Nevt mb = " << h_mbCounter->GetBinContent(1) << std::endl; 
+
   TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
   TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
   double normXi = 1/(1.63e-6*h_xiCounter->GetBinContent(1)); 
+  std::cout << "Nevt xi = " << h_xiCounter->GetBinContent(1) << std::endl; 
 
   TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
   TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
   double normXic = 1/(2.1e-4*h_xicCounter->GetBinContent(1)); 
-  
+  std::cout << "Nevt xic = " << h_xicCounter->GetBinContent(1) << std::endl; 
+
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
   TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
   double normXicc = (1.)/(h_xiccCounter->GetBinContent(1)); 
-  
+  std::cout << "Nevt xicc = " << h_xiccCounter->GetBinContent(1) << std::endl; 
+ 
   TH1D* sumHist = nullptr;
   TH1D* sumHistBkg = nullptr;
   TH1D* avgBkg; 
   int counter = 0; 
   
-  TString histName = "h_df_in_im_xi_cc_mass_stra";
-
+  //TString histName = "h_df_in_im_xi_cc_mass_stra";
+  TString histName = "df_xi_c_xi_cc_mass_stra"; 
   TH1D* mbHist = (TH1D*)mb->Get(histName.Data()); 
   TH1D* xiHist = (TH1D*)xi->Get(histName.Data()); 
   TH1D* xicHist = (TH1D*)xic->Get(histName.Data()); 
