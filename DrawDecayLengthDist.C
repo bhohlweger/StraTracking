@@ -2,7 +2,9 @@
 
 The math ... 
 
-dN/dt = - lmb*N = - N / tau -> Decay Law ... (Eq. 1)
+dN/dt = - lmb*N = - N / (gamma*tau) -> Decay Law ... (Eq. 1)
+
+see.e.g: https://aapt.scitation.org/doi/10.1119/1.16841
 
 Now do the variable substitution 
 -> v = beta * c = L / t 
@@ -12,25 +14,23 @@ Now do the variable substitution
 
 Insert into (Eq. 1)
 
-dN/N = - dL/(beta*c*tau)
+dN/N = - dL/(beta*c*gamma*tau)
 
 Integration on each side gives 
 
-ln(N) = - L/(beta*c*tau) + C ( < -- C related to the starting population)
+ln(N) = - L/(beta*c*gamma*tau) + C ( < -- C related to the starting population)
 
--> N(L) = exp(-L/(beta*c*tau))*exp(C) ( exp(C) is the Starting Population N_0)
+-> N(L) = exp(-L/(beta*c*gamma*tau))*exp(C) ( exp(C) is the Starting Population N_0)
 
--> N(L)/N_0 = exp(-L/(beta*c*tau)) 
+-> N(L)/N_0 = exp(-L/(beta*c*gamma*tau)) 
 
-beta comes from momentum: 
+use momentum p = m*beta*gamma*c -> beta*gamma = p/(m*c)
 
-p = m * v = m_0 * gamma * beta * c 
+-> N(L)/N_0 = exp(-L*m/(p*tau)) 
 
-in the following: m = m_0, gamma = 1/sqrt(1-beta*beta), solve for beta 
+-> To equalize units: 
 
--> beta = 1/sqrt(1+(c*m/p)*(c*m/p))
-
--> 1/beta = sqrt(1+(c*m/p)*(c*m/p))
+-> N(L)/N_0 = exp(-L*m/(c*p*tau)) 
 
 */  
 
@@ -41,7 +41,7 @@ double decayLengthDist(double* x, double* par) {
   double mass = par[1]; // in GeV/cc (ignore one c and tf don't multiply by c)
   double p = par[2]; // in GeV/c
   double c = 299792458; // m/s 
-  return TMath::Exp(-TMath::Sqrt(1+(mass/p)*(mass/p))/(c*tau)*L); 
+  return TMath::Exp(-L*mass/(c*tau*p)); 
 }
 
 void DrawDecayLengthDist() {  
@@ -115,7 +115,6 @@ void DrawDecayLengthDist() {
     }
     
   }
-
   c1->SaveAs("DecayLengthDist.pdf");
 
 }
