@@ -31,11 +31,11 @@ void comparator(TString addon) {
       xiHist->GetYaxis()->SetTitleOffset(1.2); 
       xiHist->GetXaxis()->SetNdivisions(506); 
       xiHist->GetYaxis()->SetNdivisions(504); 
-
+      /*
       xiHist->Rebin(4); 
       xicHist->Rebin(4); 
       xiccHist->Rebin(4); 
-      
+      */
       xiHist->SetTitle("#Xi^{#minus} + 3#times#pi_{Pythia}"); 
       xicHist->SetTitle("#Xi^{+}_{c} + #pi_{Pythia}"); 
       xiccHist->SetTitle("#Xi_{cc}^{++}"); 
