@@ -54,7 +54,7 @@ void comparator(TString addon) {
     auto p = (TPad*)gROOT->FindObject(TString::Format("p%s",obj->GetName()).Data()); 
     p->cd(); 
     
-    auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 (Layout v1) Full Simluation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
+    auto leg = new TLegend(0.16, 0.45, 0.56, 0.8, "#splitline{ALICE 3 (Layout v1) Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}");
     leg->SetFillStyle(0); 
 
     p->cd(); 

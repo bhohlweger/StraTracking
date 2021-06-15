@@ -84,12 +84,12 @@ TCanvas* c11Leg(const char* c) {
   c1->SetFillStyle(0);
   TPad* p1 = new TPad(p1Name,p1Name, 0., 0, .6, 1.0);
   p1->SetFillStyle(0);
-  p1->SetLeftMargin(c1->GetLeftMargin()/0.6);
-  p1->SetRightMargin(c1->GetRightMargin()/0.6);
+  p1->SetLeftMargin(c1->GetLeftMargin()/0.6+c1->GetRightMargin()/0.6-0.01);
+  p1->SetRightMargin(0.01);
   TPad* p2 = new TPad(p2Name,p2Name, 0.6, 0, 1., 1.0);
   p2->SetFillStyle(0);
-  p2->SetLeftMargin(c1->GetLeftMargin()/0.4);
-  p2->SetRightMargin(c1->GetRightMargin()/0.4);
+  p2->SetLeftMargin(.0);
+  p2->SetRightMargin(.0);
   
   c1->cd();
   p1->Draw();
