@@ -240,7 +240,8 @@ int main(int argc, char **argv) {
 
   //Towards the Xi for Xic->Xi+2pi 
   //Fill some Histograms
-  
+  auto h_df_lmb_xi_cc_mass_stra = df_lmb.Histo1D({"h_df_lmb_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+
   auto df_lmb_qa = df_lmb.Filter("fFirstCandidateXiCC", "df_lmb_h_bool");
 
   auto h_df_lmb_qa_bach_pt = df_lmb_qa.Histo1D({"df_lmb_qa_bach_pt", "bach pt", 100, 0, 10}, "fBachelorPt"); 
@@ -292,7 +293,8 @@ int main(int argc, char **argv) {
   auto df_xi = df_xi_im
     .Filter(invMassXiCut, {"fXiMass"},"fXiMass")
     ;
-  
+  auto h_df_xi_xi_cc_mass_stra = df_xi.Histo1D({"h_df_xi_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+
   //Towards the Xi_c for Xi_cc->Xi_c+pi: 
   //Fill some histograms 
   //Topo
@@ -666,7 +668,8 @@ int main(int argc, char **argv) {
   
   //to xi 
   HarryPlotter::CheckAndStore(out, h_df_lmb_im_lmb_mass);
- 
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_cc_mass_stra); 
+
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_pt);
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_dca_xy);
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_dca_z);
@@ -687,6 +690,8 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_topo); 
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_stra); 
+  
+  HarryPlotter::CheckAndStore(out, h_df_xi_xi_cc_mass_stra);
 
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_trad_diff_lmb_xi); 
   
