@@ -341,12 +341,12 @@ int main(int argc, char **argv) {
   auto h_df_xi_qa_trad_xi_c_ddist_dv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
   
   //cut on dl to pv 
-  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.004","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
-  auto h_df_xi_qa_dl_pv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.004","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.002","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
+  auto h_df_xi_qa_dl_pv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.002","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
   
   //cut on dl to dv 
-  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra > 0.001","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
-  auto h_df_xi_qa_dl_dv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToDVStra > 0.001","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.1","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
+  auto h_df_xi_qa_dl_dv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.1","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
 
   //Select the Xi_c 
 
