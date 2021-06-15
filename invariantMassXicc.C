@@ -25,7 +25,7 @@ void invariantMassXicc(TString addon) {
   TH1D* sumHist = nullptr;
   TH1D* sumHistBkg = nullptr;
   TH1D* avgBkg; 
-  int counter = -1;  // two non tracked histos
+  int counter = -3;  // four non tracked histos
   double redXi; 
   double redXic;
   double redXicc; 
