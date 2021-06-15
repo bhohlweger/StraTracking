@@ -72,8 +72,8 @@ void invariantMassXiccBefCuts(TString addon) {
   p2->Draw(); 
   
   mbHist->SetTitle("Pythia MB");   
-  mbHist->SetLineColor(kAzure-3); 
-  mbHist->SetMarkerColor(kAzure-3); 
+  mbHist->SetLineColor(kViolet-7); 
+  mbHist->SetMarkerColor(kViolet-7); 
 
   xiHist->SetTitle("#Xi^{#minus} + 3#times#pi_{Pythia}"); 
   xiHist->SetLineColor(kPink+7); 
