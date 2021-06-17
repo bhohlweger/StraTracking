@@ -666,7 +666,69 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_pt_c7 = df_xi_cc_im_c7.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_cc_im_xi_cc_pt_c7", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
   auto out_counter_c7 = df_xi_cc_im_c7.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
   
+  //Select the Xi_cc
+  auto df_xi_cc_im_c8 = df_xi_c
+    .Filter("XicXiccDecayRadDiffStra > 0","c8_XicXiccDecayRadDiffStra")
+    .Filter("fXicDaughterDCAStraTrack < 20","c8_fXicDaughterDCAStraTrack")
+    .Filter("fXicDecayRadiusStraTrack > 0.004","c8_fXicDecayRadiusStraTrack")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002","c8_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1","c8_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCAStraTrack < 20","c8_fXiccDaughterDCAStraTrack")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005","c8_fXiccDecayRadiusStraTrack")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004","c8_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c8_fXiDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c8_fXiDCAzToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c8_fXicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10","c8_fXicDCAzToPVStraTrack")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c8_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c8_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c8_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c8_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20","c8_fPicDCAxyToPVTopo")
+    .Filter("fPiC1Pt > 0.35", "c8_fPiC1Pt")
+    .Filter("fPiC2Pt > 0.35", "c8_fPiC2Pt")
+    .Filter("fPiCCPt > 0.35", "c8_fPiCCPt")
+    ;
   
+  //Fill some final histograms  
+  auto h_df_xi_cc_im_xi_cc_mass_stra_c8 = df_xi_cc_im_c8.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c8", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c8 = df_xi_cc_im_c8.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_cc_im_xi_cc_pt_c8", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
+  auto out_counter_c8 = df_xi_cc_im_c8.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
+  
+  auto df_xi_cc_im_c9 = df_xi_c
+    .Filter("XicXiccDecayRadDiffStra > 0","c9_XicXiccDecayRadDiffStra")
+    .Filter("XicXiccDecayRadDiffStra > 0","c9_XicXiccDecayRadDiffStra")
+    .Filter("XicXiccDecayRadDiffStra > 0","c9_XicXiccDecayRadDiffStra")
+    .Filter("fXicDaughterDCAStraTrack < 20","c9_fXicDaughterDCAStraTrack")
+    .Filter("fXicDecayRadiusStraTrack > 0.004","c9_fXicDecayRadiusStraTrack")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002","c9_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDVStra < 0.1","c9_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCAStraTrack < 20","c9_fXiccDaughterDCAStraTrack")
+    .Filter("fXiccDecayRadiusStraTrack > 0.005","c9_fXiccDecayRadiusStraTrack")
+    .Filter("fXiccInvDecayLengthToPVStra > 0.004","c9_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c9_fXiDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c9_fXiDCAzToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20","c9_fXicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20","c9_fXicDCAzToPVStraTrack")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c9_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c9_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c9_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c9_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20","c9_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c9_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c9_fXiccDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c9_fXiccDCAzToPVStraTrack")    
+    .Filter("fPiC1Pt > 0.35", "c9_fPiC1Pt")
+    .Filter("fPiC2Pt > 0.35", "c9_fPiC2Pt")
+    .Filter("fPiCCPt > 0.35", "c9_fPiCCPt")
+    ;
+  
+  //Fill some final histograms  
+  auto h_df_xi_cc_im_xi_cc_mass_stra_c9 = df_xi_cc_im_c9.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c9", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c9 = df_xi_cc_im_c9.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_cc_im_xi_cc_pt_c9", "pt selected", 100, 0, 10}, "lPtMCXiCC"); 
+  auto out_counter_c9 = df_xi_cc_im_c9.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
+
+
   std::cout <<"==========================================================================================================\n";
   std::cout <<"You might want to close your eyes in case you are not really interesterd .... Very not nice cut overview: \n";
   std::cout <<"==========================================================================================================\n";
@@ -718,6 +780,14 @@ int main(int argc, char **argv) {
   reduction = *out_counter_c7/inputCounter;
   std::cout << reduction << std::endl; 
   cutCounter->SetBinContent(9, reduction);
+  
+  reduction = *out_counter_c8/inputCounter;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(10, reduction);
+  
+  reduction = *out_counter_c9/inputCounter;
+  std::cout << reduction << std::endl; 
+  cutCounter->SetBinContent(10, reduction);
   
   
   TString outName = TString::Format("outxiccSelector_%s.root",outAddon )  ; 
@@ -888,6 +958,11 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c6); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c7); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c7); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c8); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c8); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9); 
+
 
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
