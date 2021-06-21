@@ -174,7 +174,7 @@ int main(int argc, char **argv) {
   auto decLengthXicc = [&xiccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiccMass/mom:-999; }; 
   auto invMassXiccCut = [&invMassDiffXicc, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXicc); }; 
   float xiccpTmin = 2.0; 
-  float xiccpTmax = 6.0; 
+  float xiccpTmax = 10.0; 
   auto pTCut = [&xiccpTmin, &xiccpTmax](float pT) { return (xiccpTmin < pT)&&(pT < xiccpTmax); }; 
 
   ROOT::RDataFrame df(input);
