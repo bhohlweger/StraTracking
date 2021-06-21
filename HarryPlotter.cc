@@ -148,9 +148,10 @@ double HarryPlotter::FitDCA(TH1* hist) {
   return TMath::Sqrt(sigma); 
 }
 
-float HarryPlotter::YFromMomentum(float ptot, float pT, float mass) { 
+float HarryPlotter::YFromMomentum(float ptot, float pT, float mass, float eta) { 
+  int sign = eta > 0?1:-1; 
   //ptot and pT in GeV/c, mass in GeV/c2
-  float pL = TMath::Sqrt(ptot*ptot-pT*pT); 
+  float pL = sign*TMath::Sqrt(ptot*ptot-pT*pT); 
   float e = TMath::Sqrt(ptot*ptot + mass*mass); 
   return 0.5*TMath::Log((e+pL)/(e-pL));
 }; 
