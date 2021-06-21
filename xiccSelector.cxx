@@ -1011,7 +1011,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_eta_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_y_counter); 
   
-  Harryplotter::CheckAndStore(out, h_gen_xi_cc_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_pt_eta_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_cc_pt_y_counter); 
  
