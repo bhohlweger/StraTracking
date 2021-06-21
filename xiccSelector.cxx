@@ -58,13 +58,42 @@ int main(int argc, char **argv) {
   
   auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
   auto h_gen_xi_c_counter = new TH1D("ptXicGen", "candCounter", 100, 0, 10); 
+  auto h_gen_xi_c_pt_eta_counter = new TH2D("ptetaXicGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
+  auto h_gen_xi_c_pt_y_counter = new TH2D("ptyXicGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
+    
   auto h_gen_xi_cc_counter = new TH1D("ptXiccGen", "candCounter", 100, 0, 10); 
+  auto h_gen_xi_cc_pt_eta_counter = new TH2D("ptetaXiccGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
+  auto h_gen_xi_cc_pt_y_counter = new TH2D("ptyXiccGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
    
   TChain input("fTreeCandidates"); 
   int inputFiles = 0; 
   if (filePath.Contains(".root")) { 
-    input.Add(filePath); 
-    inputFiles++;
+    TFile *inFile = TFile::Open(filePath);
+    TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
+    TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
+    TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
+    TH2D* ptXicpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiC"); 
+    TH2D* ptXicpty = (TH2D*)inFile->Get("hPtYGeneratedXiC"); 
+    TH2D* ptXiccpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiCC"); 
+    TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
+
+    if (!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+      std::cout << "Zis is vehry bad, ze generation histograms are missing, Guenther! No histogram, no chain! \n"; 
+    } else { 
+      h_cand_counter->Add(evtCounter); 
+      h_gen_xi_c_counter->Add(ptXicGen); 
+      h_gen_xi_cc_counter->Add(ptXiccGen); 
+	
+      h_gen_xi_c_pt_eta_counter->Add(ptXicpteta); 
+      h_gen_xi_c_pt_y_counter->Add(ptXicpty); 
+	
+      h_gen_xi_cc_pt_eta_counter->Add(ptXiccpteta); 
+      h_gen_xi_cc_pt_y_counter->Add(ptXiccpty); 
+	
+      input.Add(filePath); 
+      inputFiles++;
+    }
+    
   } else { 
     std::cout << "Input seems not to be a file, trying to build a chain from sudirs...\n"; 
     // if file does not exist, loop over subdirs to find TFiles 
@@ -85,12 +114,24 @@ int main(int argc, char **argv) {
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
 	TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
 	TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
-	if (!evtCounter||!ptXicGen||!ptXiccGen) { 
+	TH2D* ptXicpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiC"); 
+	TH2D* ptXicpty = (TH2D*)inFile->Get("hPtYGeneratedXiC"); 
+	TH2D* ptXiccpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiCC"); 
+	TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
+
+	if (!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
 	  continue; 
 	}
 	h_cand_counter->Add(evtCounter); 
 	h_gen_xi_c_counter->Add(ptXicGen); 
 	h_gen_xi_cc_counter->Add(ptXiccGen); 
+	
+	h_gen_xi_c_pt_eta_counter->Add(ptXicpteta); 
+	h_gen_xi_c_pt_y_counter->Add(ptXicpty); 
+	
+	h_gen_xi_cc_pt_eta_counter->Add(ptXiccpteta); 
+	h_gen_xi_cc_pt_y_counter->Add(ptXiccpty); 
+	
 	input.Add(inSubDirFile);
 	inputFiles++;
 	inFile->Close();
@@ -142,7 +183,8 @@ int main(int argc, char **argv) {
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   }
   
-  auto df_in = ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis"); 
+  auto df_in = (ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis")).Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;}).Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass"}).Filter("TMath::Abs(fXiccY)<0.5");
+  
   auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
 
   auto df_in_qa = df_in.Filter("fFirstCandidateXiCC","df_in_h_bool"); 
@@ -966,7 +1008,13 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
-  HarryPlotter::CheckAndStore(out, h_gen_xi_cc_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_eta_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_y_counter); 
+  
+  Harryplotter::CheckAndStore(out, h_gen_xi_cc_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_cc_pt_eta_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_cc_pt_y_counter); 
+ 
   HarryPlotter::CheckAndStore(out, cutCounter);
 
 			    
