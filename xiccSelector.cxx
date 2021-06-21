@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   }
   
-  auto df_in = (ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis")).Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;}).Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass"}).Filter("TMath::Abs(fXiCCEta)<0.5");
+  auto df_in = (ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis")).Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;}).Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"}).Filter("TMath::Abs(fXiCCEta)<0.5");
   
   auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
 
