@@ -176,7 +176,7 @@ void invariantMassXicc(TString addon) {
     double nxicc = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow),xiccHist->FindBin(xiccMass+xiccWindow)); 
     double nbkgavg = avgBkg->Integral(avgBkg->FindBin(xiccMass-xiccWindow),avgBkg->FindBin(xiccMass+xiccWindow)); 
     std::cout <<"nxi = " << nxi << " nxic = "<< nxic << " nxicc = " << nxicc << " S/B = " << nxicc/(nxi+nxic) << std::endl;
-    std::cout <<"Average Bakcground values: " << nxicc/nbkgavg << std::endl; 
+    std::cout <<"Average Bakcground values: \n" << "nbkgavg = " << nbkgavg << "S/B = " << nxicc/nbkgavg << std::endl; 
 
     p1->cd(); 
     
