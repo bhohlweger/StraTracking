@@ -6,6 +6,7 @@
 #include "TSystemDirectory.h"
 #include "TSystemFile.h"
 #include "TSystem.h"
+#include "TStopwatch.h"
 #include "ROOT/RDataFrame.hxx"
 #include "ROOT/RResultPtr.hxx"
 
@@ -46,6 +47,8 @@ std::vector<float> layerPos = HarryPlotter::GetposLayers();
 
 
 int main(int argc, char **argv) {
+  TStopwatch timer;
+  timer.Start();
   
   const char* fileName = argv[1]; 
   const char* outAddon = (argv[2])?argv[2]:""; 
@@ -1039,6 +1042,8 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_in_qa_bach_dca_xy_vs_bach_pt);   
   
   out->Close(); 
+  timer.Stop();
+  timer.Print();
   return 0; 
 }
 
