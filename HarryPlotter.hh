@@ -52,6 +52,7 @@ public:
     return (float)(dx>0?1:-1)*TMath::Sqrt(dx*dx+dy*dy);
   };  
   static float Distance_z(float z1, float z2) {return (float)(z1-z2);};   
+  static float YFromMomentum(float ptot, float pT, float mass); 
   static float RelErr(float generated, float measured) {return (float)(generated-measured)/generated;}; 
   static const char* FilePath() { return "/localstore/alice/hohlweger/analysis/StrangnessTracking/210319";}; 
   static const char* FilePathPythia() { return "/localstore/alice/hohlweger/analysis/StrangnessTracking/210406/omegacccpythia_new.root";}; 
