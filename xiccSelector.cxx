@@ -53,9 +53,12 @@ int main(int argc, char **argv) {
   const char* fileName = argv[1]; 
   const char* outAddon = (argv[2])?argv[2]:""; 
   int xiccDec = argv[3]?atoi(argv[3]):0; 
+  
   bool ExclusiveSignal = (xiccDec == 0)?false:true;
+  
   int wrongAssociationMode = argv[4]?atoi(argv[4]):0; 
-  int noXi = argv[4]?atoi(argv[5]):0; 
+  
+  int noXi = argv[5]?atoi(argv[5]):0; 
   bool ForceNoXi = (noXi==0)?false:true; 
   
   HarryPlotter::StyleBox(); 
