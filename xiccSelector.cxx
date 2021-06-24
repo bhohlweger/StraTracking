@@ -54,7 +54,8 @@ int main(int argc, char **argv) {
   const char* outAddon = (argv[2])?argv[2]:""; 
   int xiccDec = argv[3]?atoi(argv[3]):0; 
   bool ExclusiveSignal = (xiccDec == 0)?false:true;
-  int noXi = argv[4]?atoi(argv[4]):0; 
+  int wrongAssociationMode = argv[4]?atoi(argv[4]):0; 
+  int noXi = argv[4]?atoi(argv[5]):0; 
   bool ForceNoXi = (noXi==0)?false:true; 
   
   HarryPlotter::StyleBox(); 
@@ -182,20 +183,60 @@ int main(int argc, char **argv) {
   float xiccpTmin = 2.0; 
   float xiccpTmax = 10.0; 
   auto pTCut = [&xiccpTmin, &xiccpTmax](float pT) { return (xiccpTmin < pT)&&(pT < xiccpTmax); }; 
+  if (ExclusiveSignal) { 
+    wrongAssociationMode = 0; 
+  }
+  auto associations = [&wrongAssociationMode](bool isXicc, bool isXic, bool piccUsed, int picUsed) { 
+    bool out = true; 
+    if (wrongAssociationMode == 1) { 
+      //pions come from the correct decay chain but are not correctly associated
+      out = (!isXicc && !isXic && piccUsed & (picUsed == 2)); 
+    } else if (wrongAssociationMode == 2) { 
+      //Xic and its pions are good but the pion from the xicc is replaced by a pythia pion
+      out = (!isXicc && isXic && !piccUsed & (picUsed == 2)); 
+    } else if (wrongAssociationMode == 3) { 
+      //Xic and Xicc are wrong but the two pions from the xic are used only the xicc pion is replaced by a pythia pion
+      out = (!isXicc && !isXic && !piccUsed & (picUsed == 2)); 
+    } else if (wrongAssociationMode == 4) { 
+      //Xic and Xicc are wrong but one xic pion and the xicc pion is replaced by a pythia pion
+      out = (!isXicc && !isXic && !piccUsed & (picUsed == 1)); 
+    } else if (wrongAssociationMode == 5) { 
+      //Xic and Xicc are wrong but both xic pions are replaced by pythia pions
+      out = (!isXicc && !isXic && piccUsed & (picUsed == 0)); 
+    } else if (wrongAssociationMode == 6) { 
+      //All three pions are replaced by pythia pions 
+      out = (!isXicc && !isXic && !piccUsed & (picUsed == 0)); 
+    } 
+    return out;
+  }; 
 
   ROOT::RDataFrame df(input);
   
   if (ExclusiveSignal) {
     std::cout << "Looking Exclusively for Signal!\n"; 
+  } else { 
+    std::cout << "Rejecting Signal!\n"; 
   }
-  
+
+  std::cout << "Wrong association mode set to " << wrongAssociationMode << std::endl;
+
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   }
   
   auto df_ForceXi = ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
 
-  auto df_in = (ExclusiveSignal?df_ForceXi.Filter("fTrueXicc"):df_ForceXi.Filter("!fTrueXicc")).Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;}).Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"}).Filter("TMath::Abs(fXiCCEta)<0.5");
+  auto df_in = (
+		ExclusiveSignal?
+		df_ForceXi
+		.Filter("fTrueXicc")
+		:df_ForceXi
+		.Filter("!fTrueXicc")
+		)
+    .Filter(associations,{"fTrueXicc", "fTrueXic", "fPiccUsed", "fPicUsed"})
+    .Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;})
+    .Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"})
+    .Filter("TMath::Abs(fXiCCEta)<0.5");
   
   auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
 
