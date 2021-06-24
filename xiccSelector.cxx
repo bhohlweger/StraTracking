@@ -52,7 +52,10 @@ int main(int argc, char **argv) {
   
   const char* fileName = argv[1]; 
   const char* outAddon = (argv[2])?argv[2]:""; 
-  bool ForceNoXi = (argv[3])?true:false; 
+  int xiccDec = argv[3]?atoi(argv[3]):0; 
+  bool ExclusiveSignal = (xiccDec == 0)?false:true;
+  int noXi = argv[4]?atoi(argv[4]):0; 
+  bool ForceNoXi = (noXi==0)?false:true; 
   
   HarryPlotter::StyleBox(); 
  
@@ -182,11 +185,17 @@ int main(int argc, char **argv) {
 
   ROOT::RDataFrame df(input);
   
+  if (ExclusiveSignal) {
+    std::cout << "Looking Exclusively for Signal!\n"; 
+  }
+  
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   }
   
-  auto df_in = (ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis")).Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;}).Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"}).Filter("TMath::Abs(fXiCCEta)<0.5");
+  auto df_ForceXi = ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
+
+  auto df_in = (ExclusiveSignal?df_ForceXi.Filter("fTrueXicc"):df_ForceXi.Filter("!fTrueXicc")).Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;}).Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"}).Filter("TMath::Abs(fXiCCEta)<0.5");
   
   auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
 
