@@ -242,9 +242,10 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXiCCEta)<0.5");
   
   auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto in_counter = df_in.Count(); 
 
   auto df_in_qa = df_in.Filter("fFirstCandidateXiCC","df_in_h_bool"); 
-  auto in_counter = df_in_qa.Count(); 
+
   //towards the Lambda for the Xi 
   auto h_df_in_qa_pos_pt = df_in_qa.Histo1D({"df_in_qa_pos_pt", "pos pt", 100, 0, 10}, "fPositivePt"); 
   auto h_df_in_qa_pos_dca_xy = df_in_qa.Histo1D({"df_in_qa_pos_dca_xy", "pos dca xy pv", 1000, -1e4, 1e4}, "fPositiveDCAxy"); 
