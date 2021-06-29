@@ -57,7 +57,7 @@ public:
   static const char* FilePath() { return "/localstore/alice/hohlweger/analysis/StrangnessTracking/210319";}; 
   static const char* FilePathPythia() { return "/localstore/alice/hohlweger/analysis/StrangnessTracking/210406/omegacccpythia_new.root";}; 
   
-  static std::vector<float> Getptbins() { std::vector<float> ptbins = {0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 20.0}; return ptbins;}; 
+  static std::vector<float> Getptbins() { std::vector<float> ptbins = {0.0, 2.0, 4.0, 7.0, 10.0, 20.0}; return ptbins;}; 
   static std::vector<float> GetposLayers() { std::vector<float> layerPos = {0, 0.5, 1.2, 2.5, 3.75, 7.0, 12, 20, 30, 45, 60, 80, 100}; ; return layerPos;}; 
   
 }; 
