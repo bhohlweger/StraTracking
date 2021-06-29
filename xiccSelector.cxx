@@ -248,8 +248,10 @@ int main(int argc, char **argv) {
     .Filter(associations,{"fTrueXicc", "fTrueXic", "fPiccUsed", "fPicUsed"})
     .Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;})
     .Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"})
-    .Filter("TMath::Abs(fXiCCEta)<0.5");
-  
+    .Filter("TMath::Abs(fXiCCEta)<0.5")
+    .Filter(pTCut, {"lPtXiCCStraTrack"}, "pTXicc")
+    ;
+
   auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   auto in_counter = df_in.Count(); 
 
@@ -327,7 +329,6 @@ int main(int argc, char **argv) {
     .Define("fXicInvDecayLengthToDVTopo", decLengthXic, {"fXiCCtoXiCLengthTopo", "lPXiCTopo"}) //this is the Xi_c decay length 
     .Define("fXiInvDecayLengthToDVStra", decLengthXi, {"fXiCtoXiLengthStraTrack", "fXiTotalMomentum"}) //this is the Xi decay length 
     .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
-    .Filter(pTCut, {"lPtXiCCStraTrack"}, "pTXicc")
     //.Filter(radCut, {"XiV0DecayRadDiff"})
     // .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     // .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
