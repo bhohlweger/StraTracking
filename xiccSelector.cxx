@@ -425,9 +425,10 @@ int main(int argc, char **argv) {
   //Stra
 
   auto h_df_xi_qa_trad_diff_xi_xi_c_stra = df_xi_qa.Histo1D({"df_xi_qa_trad_diff_xi_xi_c_stra", "xi-xi_c trad", 500, -50, 200}, "XiXicDecayRadDiffStra") ;
-
+  
   auto h_df_xi_qa_xi_c_mass_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_mass_stra", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassStraTrack"); 
-   
+  auto h_df_xi_qa_xi_c_pt = df_xi_qa.Histo1D({"df_xi_qa_xi_c_pt", "xi_c pt", 100, 0, 10}, "fXicPtStraTrack");  
+  
   auto h_df_xi_qa_xi_c_ddca_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_ddca_stra", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCAStraTrack"); 
   auto h_df_xi_qa_xi_c_ddist_pv_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); //redefine as mL/p 
   auto h_df_xi_qa_xi_c_ddist_dv_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
@@ -444,6 +445,9 @@ int main(int argc, char **argv) {
   auto h_df_xi_qa_pi_two_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_pi_two_dca_xy", "pi2 dca xy stra", 1000, -500, 500}, "fXicPionDCAxyToPV2");  
   auto h_df_xi_qa_pi_two_dca_z = df_xi_qa.Histo1D({"df_xi_qa_pi_two_dca_z", "pi2 dca z stra", 1000, -500, 500}, "fXicPionDCAzToPV2");  
   
+  auto h_df_xi_qa_pi_one_pt = df_xi_qa.Histo1D({"df_xi_qa_pi_one_pt", "pi c pt", 100, 0, 10}, "fPiC1Pt");  
+  auto h_df_xi_qa_pi_two_pt = df_xi_qa.Histo1D({"df_xi_qa_pi_two_pt", "pi c pt", 100, 0, 10}, "fPiC2Pt");  
+
   //study a bit decay length + trad 
   //cut on Trad and check decay lengths to pv and to dv 
   auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
@@ -506,6 +510,9 @@ int main(int argc, char **argv) {
  
   auto h_df_xi_c_qa_pi_dca_xy = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_xy", "xi_c dca xy stra", 1000, -500, 500}, "fPicDCAxyToPVStraTrack");  
   auto h_df_xi_c_qa_pi_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_z", "xi_c dca z stra", 1000, -500, 500}, "fPicDCAzToPVStraTrack");  
+  
+  auto h_df_xi_c_qa_xi_cc_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 100, 0, 10}, "lPtXiCCStraTrack");  
+  auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 100, 0, 10}, "fPiCCPt");  
 
   //cut on Trad and check decay lengths 
   auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.004","corrStudy_fXiccDecayRadiusStraTrack").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
@@ -990,6 +997,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z_topo);
    
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_pt); 
   
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddca_stra); 
@@ -999,6 +1007,9 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z_stra);
+
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_one_pt);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_two_pt);
     
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_one_dca_xy);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_one_dca_z);
@@ -1034,6 +1045,9 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_stra);
     
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_xi_cc_pt); 
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_pt); 
+
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_dca_xy);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_dca_z);
   
