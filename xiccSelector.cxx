@@ -382,9 +382,9 @@ int main(int argc, char **argv) {
     .Filter("fXiDecayRadius > 0.5","fXiDecayRadius")
     .Filter("XiLmbDecayRadDiff > 0","XiLmbDecayRadDiff")
     // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
-    .Filter("fXiDecayLength > 0.02","fXiDecayLength")
-    .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
-    .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
+    //.Filter("fXiDecayLength > 0.02","fXiDecayLength")
+    //.Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
+    //.Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC","df_xi_sel_h_bool").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
