@@ -177,7 +177,7 @@ int main(int argc, char **argv) {
 
   //Xic cuts
   float xicMass = 2.468; 
-  float invMassDiffXic = 0.08; //8 MeV/c2 mass window 
+  float invMassDiffXic = 0.12; //8 MeV/c2 mass window 
   auto decLengthXic = [&xicMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xicMass/mom:-999; }; 
   
   auto invMassXicCut = [&invMassDiffXic, &xicMass](float invMass) { return (TMath::Abs(invMass-xicMass) < invMassDiffXic); }; 
@@ -329,15 +329,15 @@ int main(int argc, char **argv) {
     .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
     .Filter(pTCut, {"lPtXiCCStraTrack"}, "pTXicc")
     //.Filter(radCut, {"XiV0DecayRadDiff"})
-    .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
-    .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fXiV0DauDCA < 2000","fXiV0DauDCA")
-    .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
-    .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
-    .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
-    .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
-    .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
-    .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
+    // .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
+    // .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
+    // .Filter("fXiV0DauDCA < 2000","fXiV0DauDCA")
+    // .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
+    // .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
+    // .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
+    // .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
+    // .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
+    // .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
