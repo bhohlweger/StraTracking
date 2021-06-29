@@ -1,4 +1,4 @@
-void comparator(TString addon) { 
+void comparator(TString addon, TString mode) { 
   double xiccMass = 3.596; //3.621; 
   double xiccWindow = 0.12;
   
@@ -8,18 +8,26 @@ void comparator(TString addon) {
   auto files = dir.GetListOfFiles();
   for (auto fileObj : *files)  {
     auto file = (TSystemFile*) fileObj;
-    if (TString::Format("%s", file->GetName()).Contains(addon)) { 
+    TString fileName = TString::Format("%s", file->GetName()); 
+    if (fileName.Contains(addon) && !fileName.Contains("outComp_cut")) { 
       std::cout << "Reading file " << file->GetName() << std::endl;
       inFiles.emplace_back(TFile::Open(file->GetName(), "read"));
     }
   }
-
-
   std::vector<int> colors = {kPink+7, 38, kGreen+3, kOrange+7, kBlack, kViolet+1, kCyan+1}; 
-  //std::vector<TString> histnames = {"#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
-  std::vector<TString> histnames = {"0-2 GeV/#it{c}", "2-4 GeV/#it{c}", "4-6 GeV/#it{c}", "6-8 GeV/#it{c}", "8-10 GeV/#it{c}" }; 
-
-  TFile* output = TFile::Open(TString::Format("outComp_cut%s.root"         , addon.Data()), "recreate"); 
+  
+  std::vector<TString> histnames;
+  if (mode.Contains("ptcomp")) { 
+    std::cout <<"You chose mode pT comparison!\n"; 
+    histnames =  {"0-2 GeV/#it{c}", "2-4 GeV/#it{c}", "4-7 GeV/#it{c}", "7-10 GeV/#it{c}"};
+  } else if (mode.Contains("sgnbkgcomp")) {
+    std::cout <<"You chose mode Signal/Background comparison!\n"; 
+    histnames = {"#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
+  } else {
+    std::cout << "Mode " << mode << " not supported. Choose from (1) ptcomp or (2) sgnbkgcomp \n"; 
+  }
+  
+  TFile* output = TFile::Open(TString::Format("outComp_cut%s.root", addon.Data()), "recreate"); 
   
   TList* inList = inFiles[0]->GetListOfKeys(); 
   TIter next(inList); 
@@ -27,10 +35,11 @@ void comparator(TString addon) {
   
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
+    std::cout << objName.Data() << std::endl; 
     if (objName.Contains("Counter")  || objName.Contains("_vs_") ) { 
       continue; 
     }
-    if ((objName.Contains("mass") && objName.Contains("xi_cc"))) { 
+    if ((objName.Contains("mass") && objName.Contains("df_xi_cc"))) { 
       continue; 
     }
 
@@ -50,7 +59,6 @@ void comparator(TString addon) {
       if (!Hist) { 
 	continue;
       }
-   
       Hist->SetLineColor(colors[fileCounter]); 
       Hist->SetMarkerColor(colors[fileCounter]); 
  
