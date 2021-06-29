@@ -19,7 +19,7 @@
 #include "TFile.h" 
 #include "HarryPlotter.hh"
 
-std::vector<float> ptbins = {1.,6.};//HarryPlotter::Getptbins(); 
+std::vector<float> ptbins = HarryPlotter::Getptbins(); 
 std::vector<float> layerPos = HarryPlotter::GetposLayers();
 
 /* 
@@ -52,13 +52,18 @@ int main(int argc, char **argv) {
   
   const char* fileName = argv[1]; 
   const char* outAddon = (argv[2])?argv[2]:""; 
-  int xiccDec = argv[3]?atoi(argv[3]):0; 
   
+  int xiccDec = argv[3]?atoi(argv[3]):0; 
   bool ExclusiveSignal = (xiccDec == 0)?false:true;
   
-  int wrongAssociationMode = argv[4]?atoi(argv[4]):0; 
+  int pTbin = argv[4]?atoi(argv[4]):-1; 
+  if (pTbin >= 0 && pTbin > ptbins.size()-1) { 
+    std::cout << "Crashing cause the requested pT bin is out of range ( requested = " << pTbin << " , max. available = " << ptbins.size()-1 << " )\n";
+    return -999; 
+  }
+  int wrongAssociationMode = argv[5]?atoi(argv[5]):0; 
   
-  int noXi = argv[5]?atoi(argv[5]):0; 
+  int noXi = argv[6]?atoi(argv[6]):0; 
   bool ForceNoXi = (noXi==0)?false:true; 
   
   HarryPlotter::StyleBox(); 
@@ -183,8 +188,12 @@ int main(int argc, char **argv) {
   float invMassDiffXicc = 0.120; //8 MeV/c2 mass window 
   auto decLengthXicc = [&xiccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiccMass/mom:-999; }; 
   auto invMassXiccCut = [&invMassDiffXicc, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXicc); }; 
-  float xiccpTmin = 2.0; 
-  float xiccpTmax = 10.0; 
+
+  float xiccpTmin = pTbin >=0?ptbins[pTbin]:0; 
+  float xiccpTmax = pTbin >=0?ptbins[pTbin+1]:20.0; 
+  
+  std::cout << "Xicc pT range set to " << xiccpTmin << " to " << xiccpTmax << std::endl; 
+  
   auto pTCut = [&xiccpTmin, &xiccpTmax](float pT) { return (xiccpTmin < pT)&&(pT < xiccpTmax); }; 
   if (ExclusiveSignal) { 
     wrongAssociationMode = 0; 
