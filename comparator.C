@@ -6,12 +6,16 @@ void comparator(TString addon, TString mode) {
 
   TSystemDirectory dir("ZeDirectory", gSystem->pwd());
   auto files = dir.GetListOfFiles();
+  bool xifile = false; 
   for (auto fileObj : *files)  {
     auto file = (TSystemFile*) fileObj;
     TString fileName = TString::Format("%s", file->GetName()); 
     if (fileName.Contains(addon) && !fileName.Contains("outComp_cut")) { 
       std::cout << "Reading file " << file->GetName() << std::endl;
       inFiles.emplace_back(TFile::Open(file->GetName(), "read"));
+      if (fileName.Contains("_xi_")) { 
+	xifile = true;
+      }
     }
   }
   std::vector<int> colors = {kPink+7, 38, kGreen+3, kOrange+7, kBlack, kViolet+1, kCyan+1}; 
@@ -22,7 +26,11 @@ void comparator(TString addon, TString mode) {
     histnames =  {"0-2 GeV/#it{c}", "2-4 GeV/#it{c}", "4-7 GeV/#it{c}", "7-10 GeV/#it{c}"};
   } else if (mode.Contains("sgnbkgcomp")) {
     std::cout <<"You chose mode Signal/Background comparison!\n"; 
-    histnames = {"#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
+    if (xifile) { 
+      histnames = {"#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
+    }  else {
+      histnames = {"#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
+    }
   } else {
     std::cout << "Mode " << mode << " not supported. Choose from (1) ptcomp or (2) sgnbkgcomp \n"; 
   }
@@ -35,7 +43,7 @@ void comparator(TString addon, TString mode) {
   
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
-    std::cout << objName.Data() << std::endl; 
+    //std::cout << objName.Data() << std::endl; 
     if (objName.Contains("Counter")  || objName.Contains("_vs_") ) { 
       continue; 
     }
