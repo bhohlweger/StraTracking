@@ -82,6 +82,7 @@ int main(int argc, char **argv) {
    
   TChain input("fTreeCandidates"); 
   int inputFiles = 0; 
+  int inputFailures = 0; 
   if (filePath.Contains(".root")) { 
     TFile *inFile = TFile::Open(filePath);
     TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
@@ -93,6 +94,7 @@ int main(int argc, char **argv) {
     TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 
     if (!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+      inputFailures++; 
       std::cout << "Zis is vehry bad, ze generation histograms are missing, Guenther! No histogram, no chain! \n"; 
     } else { 
       h_cand_counter->Add(evtCounter); 
@@ -120,10 +122,12 @@ int main(int argc, char **argv) {
       if (!gSystem->AccessPathName(inSubDirFile)) { 
 	TFile *inFile = TFile::Open(inSubDirFile);
 	if (!inFile) { 
+	  inputFailures++;
 	  continue;
 	}
 	if (inFile->IsZombie()) { 
 	  inFile->Close();
+	  inputFailures++;
 	  continue; 
 	} 
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
@@ -135,6 +139,7 @@ int main(int argc, char **argv) {
 	TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 
 	if (!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+	  inputFailures++;
 	  continue; 
 	}
 	h_cand_counter->Add(evtCounter); 
@@ -154,7 +159,7 @@ int main(int argc, char **argv) {
     }
   }
   
-  std::cout << "Added " << inputFiles << " files to the chain \n"; 
+  std::cout << "Added " << inputFiles << " files to the chain, failed in " << inputFailures << " cases \n"; 
 
   //Lmb cuts
   float radDiffMax = 1.; //cm 
