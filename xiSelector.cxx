@@ -177,7 +177,6 @@ int main(int argc, char **argv) {
   auto df_ForceXi = (!ExclusiveSignal)?df.Filter("!fTrueXi","FakeXis"):df.Filter("fTrueXi","TrueXis");
 
   auto df_in = df_ForceXi
-    .Filter("TMath::Abs(fXiCCEta)<0.5")
     .Filter(pTCut, {"fXiPtStraTrack"}, "pTXi")
     ;
   
@@ -238,8 +237,6 @@ int main(int argc, char **argv) {
     //.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
     .Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
-    .Define("XiXicDecayRadDiffTopo", "fXiDecayRadius-fXicDecayRadiusTopo")
-    .Define("XiXicDecayRadDiffStra", "fXiDecayRadius-fXicDecayRadiusStraTrack")
     .Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"})
     .Define("fXiInvDecayLengthToPV", decLengthXi, {"fXiDecayLength", "fXiTotalMomentum"})
     //.Filter(radCut, {"XiV0DecayRadDiff"})
@@ -308,9 +305,6 @@ int main(int argc, char **argv) {
   
   auto h_df_xi_im_xi_mass = df_xi_im.Histo1D({"df_xi_im_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
   
-  auto h_df_xi_im_xi_ddist_dv_topo = df_xi_im.Histo1D({"df_xi_im_xi_dist_dv_topo", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVTopo"); 
-  auto h_df_xi_im_xi_ddist_dv_stra = df_xi_im.Histo1D({"df_xi_im_xi_dist_dv_stra", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVStra"); 
-
   auto df_xi = df_xi_im
     .Filter(invMassXiCut, {"fXiMass"},"fXiMass")
     ;
@@ -404,9 +398,6 @@ int main(int argc, char **argv) {
   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_xi_mass);
 
-  HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_topo); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_stra); 
-  
   HarryPlotter::CheckAndStore(out, h_df_xi_sel_xi_mass);
   
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy_topo);
