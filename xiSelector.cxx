@@ -83,7 +83,11 @@ int main(int argc, char **argv) {
 
     if (!evtCounter||!ptXipteta||!ptXipty) { 
       inputFailures++; 
+      inFile->ls(); 
       std::cout << "Zis is vehry bad, ze generation histograms are missing, Guenther! No histogram, no chain! \n"; 
+      if (!evtCounter) std::cout << "evt Counter \n"; 
+      if (!ptXipteta) std::cout << "eta pt \n"; 
+      if (!ptXipty) std::cout << "y pt \n"; 
     } else { 
       h_cand_counter->Add(evtCounter); 
 	
