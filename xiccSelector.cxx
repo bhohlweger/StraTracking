@@ -72,13 +72,13 @@ int main(int argc, char **argv) {
   TString filePath = TString::Format("%s", fileName); 
   
   auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
-  auto h_gen_xi_c_counter = new TH1D("ptXicGen", "candCounter", 100, 0, 10); 
-  auto h_gen_xi_c_pt_eta_counter = new TH2D("ptetaXicGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
-  auto h_gen_xi_c_pt_y_counter = new TH2D("ptyXicGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
+  auto h_gen_xi_c_counter = new TH1D("ptXicGen", "candCounter", 200, 0, 20); 
+  auto h_gen_xi_c_pt_eta_counter = new TH2D("ptetaXicGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
+  auto h_gen_xi_c_pt_y_counter = new TH2D("ptyXicGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
     
-  auto h_gen_xi_cc_counter = new TH1D("ptXiccGen", "candCounter", 100, 0, 10); 
-  auto h_gen_xi_cc_pt_eta_counter = new TH2D("ptetaXiccGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
-  auto h_gen_xi_cc_pt_y_counter = new TH2D("ptyXiccGen", "candCounter", 100, 0, 10, 30, -1.5, 1.5); 
+  auto h_gen_xi_cc_counter = new TH1D("ptXiccGen", "candCounter", 200, 0, 20); 
+  auto h_gen_xi_cc_pt_eta_counter = new TH2D("ptetaXiccGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
+  auto h_gen_xi_cc_pt_y_counter = new TH2D("ptyXiccGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
    
   TChain input("fTreeCandidates"); 
   int inputFiles = 0; 
