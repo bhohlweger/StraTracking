@@ -69,7 +69,8 @@ void comparator(TString addon, TString mode) {
       }
       Hist->SetLineColor(colors[fileCounter]); 
       Hist->SetMarkerColor(colors[fileCounter]); 
- 
+      Hist->Rebin(2); 
+
       Hist->GetYaxis()->SetTitleOffset(1.2); 
       Hist->GetXaxis()->SetNdivisions(506); 
       Hist->GetYaxis()->SetNdivisions(504); 
