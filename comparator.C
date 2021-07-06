@@ -23,7 +23,7 @@ void comparator(TString addon, TString mode) {
   std::vector<TString> histnames;
   if (mode.Contains("ptcomp")) { 
     std::cout <<"You chose mode pT comparison!\n"; 
-    histnames =  {"0-2 GeV/#it{c}", "2-4 GeV/#it{c}", "4-7 GeV/#it{c}", "7-10 GeV/#it{c}"};
+    histnames =  {"0-2 GeV/#it{c}", "10-20 GeV/#it{c}", "2-4 GeV/#it{c}", "4-7 GeV/#it{c}", "7-10 GeV/#it{c}"};
   } else if (mode.Contains("sgnbkgcomp")) {
     std::cout <<"You chose mode Signal/Background comparison!\n"; 
     if (xifile) { 
