@@ -286,7 +286,7 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_pos_dca_xy_vs_lmb_dl_pv = df_in_qa.Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"}).Histo2D<float,float>({"df_in_qa_pos_dca_xy_vs_lmb_dl_pv", "pos dca xy pv vs lmb decay length", 1000, -10000, 10000, 100, 0, 40}, "fPositiveDCAxy", "fLmbInvDecayLengthToPV"); 
   auto h_df_in_qa_pos_dca_xy_vs_pos_pt = df_in_qa.Histo2D<float,float>({"h_df_in_qa_pos_dca_xy_vs_pos_pt", "pos dca xy pv vs pos pt", 1000, -10000, 10000, 200, 0, 20}, "fPositiveDCAxy", "fPositivePt"); 
 
-  auto h_df_in_qa_pos_beta_vs_pos_pt = df_in_qa.Histo2D({"h_df_in_qa_pos_beta_vs_pos_pt", "pos beta vs pos pt", 200, 0, 20, 1200, 0, 1.2}, "fPositivePt", "fPosBeta"); 
+  auto h_df_in_qa_pos_beta_vs_pos_pt = df_in_qa.Histo2D({"h_df_in_qa_pos_beta_vs_pos_pt", "pos beta vs pos pt", 200, 0, 5, 1200, 0, 1.2}, "fPositivePt", "fPosBeta"); 
 
   auto h_df_in_qa_neg_pt = df_in_qa.Histo1D({"df_in_qa_neg_pt", "neg pt", 200, 0, 20}, "fNegativePt"); 
   auto h_df_in_qa_neg_dca_xy = df_in_qa.Histo1D({"df_in_qa_neg_dca_xy", "neg dca xy pv", 1000, -1e4, 1e4}, "fNegativeDCAxy"); 
@@ -302,7 +302,8 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_neg_dca_xy_vs_neg_pt = df_in_qa.Histo2D<float,float>({"h_df_in_qa_neg_dca_xy_vs_neg_pt", "neg dca xy pv vs neg pt", 1000, -10000, 10000, 200, 0, 20}, "fNegativeDCAxy", "fNegativePt"); 
   auto h_df_in_qa_neg_hits_vs_pos_hits = df_in_qa.Histo2D<int,int>({"h_df_in_qa_neg_hits_vs_pos_hits", "neg hits vs pos hits", 15, -0.5, 14.5, 15, -0.5, 14.5}, "fNegativeClusters", "fPositiveClusters"); 
   auto h_df_in_qa_neg_dca_xy_vs_pos_dca_xy = df_in_qa.Histo2D<float,float>({"df_in_qa_neg_dca_xy_vs_pos_dca_xy", "neg dca xy pv vs pos dca xy pv", 1000, -10000, 10000, 1000, -10000, 10000}, "fNegativeDCAxy", "fPositiveDCAxy"); 
-  auto h_df_in_qa_neg_beta_vs_neg_pt = df_in_qa.Histo2D({"h_df_in_qa_neg_beta_vs_neg_pt", "neg beta vs neg pt", 200, 0, 20, 1200, 0, 1.2}, "fNegativePt", "fNegBeta"); 
+  auto h_df_in_qa_neg_beta_vs_neg_pt = df_in_qa.Histo2D({"h_df_in_qa_neg_beta_vs_neg_pt", "neg beta vs neg pt", 200, 0, 5, 1200, 0, 1.2}, "fNegativePt", "fNegBeta"); 
+
   auto h_df_in_qa_lmb_dca_xy = df_in_qa.Histo1D({"df_in_qa_lmb_dca_xy", "lmb dca xy pv", 1000, -1e4, 1e4}, "fV0DCAxyToPV");
   auto h_df_in_qa_lmb_dca_z = df_in_qa.Histo1D({"df_in_qa_lmb_dca_z", "lmb dca z pv", 1000, -1e4, 1e4}, "fV0DCAzToPV");
   auto h_df_in_qa_lmb_dca_xy_wide = df_in_qa.Histo1D({"df_in_qa_lmb_dca_xy_wide", "lmb dca xy pv", 1000, -1e5, 1e5}, "fV0DCAxyToPV");
@@ -372,21 +373,21 @@ int main(int argc, char **argv) {
 
   auto df_lmb_qa = df_lmb.Filter("fFirstCandidateXiCC", "df_lmb_h_bool");
   
-  auto h_df_lmb_qa_pos_beta_expected_vs_pos_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_beta_expected_vs_pos_pt", "pos beta exp vs pos pt", 200, 0, 20, 1200, 0, 1.2}, "fPositivePt", "fPosExpectedBeta"); 
+  auto h_df_lmb_qa_pos_beta_expected_vs_pos_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_beta_expected_vs_pos_pt", "pos beta exp vs pos pt", 200, 0, 5, 1200, 0, 1.2}, "fPositivePt", "fPosExpectedBeta"); 
   auto h_df_lmb_qa_pos_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveTOFSignal", "fPositiveExpectedSignal"); 
   auto h_df_lmb_qa_pos_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveTOFSignal", "fPositiveExpectedSignalFromPV"); 
-  auto h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveExpectedSignal","fPosExpPVDV");
+  auto h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fPositiveExpectedSignal","fPosExpPVDV");
 
-  auto h_df_lmb_qa_neg_beta_expected_vs_neg_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_beta_expected_vs_neg_pt", "neg beta exp vs neg pt", 200, 0, 20, 1200, 0, 1.2}, "fNegativePt", "fNegExpectedBeta"); 
+  auto h_df_lmb_qa_neg_beta_expected_vs_neg_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_beta_expected_vs_neg_pt", "neg beta exp vs neg pt", 200, 0, 5, 1200, 0, 1.2}, "fNegativePt", "fNegExpectedBeta"); 
   auto h_df_lmb_qa_neg_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeTOFSignal", "fNegativeExpectedSignal"); 
   auto h_df_lmb_qa_neg_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeTOFSignal", "fNegativeExpectedSignalFromPV"); 
-  auto h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeExpectedSignal","fNegExpPVDV");
+  auto h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fNegativeExpectedSignal","fNegExpPVDV");
 
-  auto h_df_lmb_qa_bach_beta_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_vs_bach_pt", "bach beta vs bach pt", 200, 0, 20, 1200, 0, 1.2}, "fBachelorPt", "fBachBeta"); 
-  auto h_df_lmb_qa_bach_beta_expected_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_expected_vs_bach_pt", "bach beta exp vs bach pt", 200, 0, 20, 1200, 0, 1.2}, "fBachelorPt", "fBachExpectedBeta"); 
+  auto h_df_lmb_qa_bach_beta_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_vs_bach_pt", "bach beta vs bach pt", 200, 0, 5, 1200, 0, 1.2}, "fBachelorPt", "fBachBeta"); 
+  auto h_df_lmb_qa_bach_beta_expected_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_expected_vs_bach_pt", "bach beta exp vs bach pt", 200, 0, 5, 1200, 0, 1.2}, "fBachelorPt", "fBachExpectedBeta"); 
   auto h_df_lmb_qa_bach_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorTOFSignal", "fBachelorExpectedSignal"); 
   auto h_df_lmb_qa_bach_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorTOFSignal", "fBachelorExpectedSignalFromPV"); 
-  auto h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorExpectedSignal", "fBachExpPVDV"); 
+  auto h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fBachelorExpectedSignal", "fBachExpPVDV"); 
 
 
   auto h_df_lmb_qa_bach_pt = df_lmb_qa.Histo1D({"df_lmb_qa_bach_pt", "bach pt", 200, 0, 20}, "fBachelorPt"); 
@@ -485,6 +486,9 @@ int main(int argc, char **argv) {
   auto h_df_xi_qa_pi_one_pt = df_xi_qa.Histo1D({"df_xi_qa_pi_one_pt", "pi c pt", 200, 0, 20}, "fPiC1Pt");  
   auto h_df_xi_qa_pi_two_pt = df_xi_qa.Histo1D({"df_xi_qa_pi_two_pt", "pi c pt", 200, 0, 20}, "fPiC2Pt");  
 
+  auto h_df_xi_qa_pi_one_tof_dv_expected_vs_measured = df_xi_qa.Histo2D({"h_df_xi_qa_pi_one_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPic1TOFSignal", "fPic1ExpectedSignal"); 
+  auto h_df_xi_qa_pi_two_tof_dv_expected_vs_measured = df_xi_qa.Histo2D({"h_df_xi_qa_pi_two_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPic2TOFSignal", "fPic2ExpectedSignal"); 
+
   //study a bit decay length + trad 
   //cut on Trad and check decay lengths to pv and to dv 
   auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
@@ -550,6 +554,8 @@ int main(int argc, char **argv) {
   
   auto h_df_xi_c_qa_xi_cc_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
   auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
+
+  auto h_df_xi_c_qa_pi_tof_dv_expected_vs_measured    = df_xi_c_qa.Histo2D({"h_df_xi_c_qa_pi_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPiccTOFSignal", "fPiccExpectedSignal"); 
 
   //cut on Trad and check decay lengths 
   auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.004","corrStudy_fXiccDecayRadiusStraTrack").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
@@ -1174,7 +1180,11 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_pv_expected_vs_measured);   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected);   
   
-  
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_one_tof_dv_expected_vs_measured);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_two_tof_dv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_pi_tof_dv_expected_vs_measured); 
+
+
   out->Close(); 
   timer.Stop();
   timer.Print();
