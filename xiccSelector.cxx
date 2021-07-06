@@ -264,6 +264,14 @@ int main(int argc, char **argv) {
     .Define("fPosExpectedBeta", beta, {"fPositiveLength", "fPositiveExpectedSignal"})
     .Define("fBachExpectedBeta", beta, {"fBachelorLength", "fBachelorExpectedSignal"})     // .Define("fPic1Beta", beta, {"fNegativeLength", "fNegativeTOFSignal"})
     .Filter("TMath::Abs(fXiCCEta)<0.5")
+    .Filter("TMath::Abs(fXiCEta)<0.5")
+    .Filter("TMath::Abs(fXiEta)<0.5")
+    .Filter("TMath::Abs(fPiCCEta)<0.5")
+    .Filter("TMath::Abs(fPiC1Eta)<0.5")
+    .Filter("TMath::Abs(fPiC2Eta)<0.5")
+    .Filter("TMath::Abs(fBachelorEta)<0.5")
+    .Filter("TMath::Abs(fPositiveEta)<0.5")
+    .Filter("TMath::Abs(fNegativeEta)<0.5")
     .Filter(pTCut, {"lPtXiCCStraTrack"}, "pTXicc")
     ;
 
@@ -323,7 +331,6 @@ int main(int argc, char **argv) {
   //Define future variables and select Lambdas 
 
   auto df_lmb_im = df_in
-    //.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)")
     .Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
     .Define("XiXicDecayRadDiffTopo", "fXiDecayRadius-fXicDecayRadiusTopo")
@@ -349,16 +356,15 @@ int main(int argc, char **argv) {
     .Define("fPosExpPVDV", "fPositiveExpectedSignal - fPositiveExpectedSignalFromPV")
     .Define("fNegExpPVDV", "fNegativeExpectedSignal - fNegativeExpectedSignalFromPV")
     .Define("fBachExpPVDV", "fBachelorExpectedSignal - fBachelorExpectedSignalFromPV")
-    //.Filter(radCut, {"XiV0DecayRadDiff"})
-    // .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
-    // .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    // .Filter("fXiV0DauDCA < 2000","fXiV0DauDCA")
-    // .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
-    // .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
-    // .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
-    // .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
-    // .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
-    // .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
+    .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
+    .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
+    .Filter("fXiV0DauDCA < 2000","fXiV0DauDCA")
+    .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
+    .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
+    .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
+    .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
+    .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
+    .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
@@ -419,10 +425,10 @@ int main(int argc, char **argv) {
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5","fXiDecayRadius")
     .Filter("XiLmbDecayRadDiff > 0","XiLmbDecayRadDiff")
-    // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
-    //.Filter("fXiDecayLength > 0.02","fXiDecayLength")
-    //.Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
-    //.Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
+    .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
+    .Filter("fXiDecayLength > 0.02","fXiDecayLength")
+    .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
+    .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC","df_xi_sel_h_bool").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
