@@ -497,16 +497,16 @@ int main(int argc, char **argv) {
 
   //study a bit decay length + trad 
   //cut on Trad and check decay lengths to pv and to dv 
-  auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
-  auto h_df_xi_qa_trad_xi_c_ddist_dv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.004","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.003","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_dv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.003","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
   
   //cut on dl to pv 
   auto h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.002","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
   auto h_df_xi_qa_dl_pv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.002","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
   
   //cut on dl to dv 
-  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.1","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
-  auto h_df_xi_qa_dl_dv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.1","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.06","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
+  auto h_df_xi_qa_dl_dv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.06","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
 
   //Select the Xi_c 
 
@@ -564,10 +564,10 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_qa_pi_tof_dv_expected_vs_measured    = df_xi_c_qa.Histo2D({"h_df_xi_c_qa_pi_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPiccTOFSignal", "fPiccExpectedSignal"); 
 
   //cut on Trad and check decay lengths 
-  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.004","corrStudy_fXiccDecayRadiusStraTrack").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
+  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.003","corrStudy_fXiccDecayRadiusStraTrack").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
   
   //cut on dl to pv 
-  auto h_df_xi_c_qa_dl_pv_xi_cc_trad_stra = df_xi_c_qa.Filter("fXiccInvDecayLengthToPVStra > 0.004","corrStudy_fXiccInvDecayLengthToPVStra").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadiusStraTrack");
+  auto h_df_xi_c_qa_dl_pv_xi_cc_trad_stra = df_xi_c_qa.Filter("(fXiccInvDecayLengthToPVStra > 0.002) && (fXiccInvDecayLengthToPVStra <  0.06)","corrStudy_fXiccInvDecayLengthToPVStra").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadiusStraTrack");
   
   //some product magic .. 
 
@@ -612,21 +612,23 @@ int main(int argc, char **argv) {
   //Select the Xi_cc
   auto df_xi_cc_im_c2 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0","c2_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c2_fXicDaughterDCAStraTrack")
-    //.Filter("fXicDecayRadiusStraTrack > 0.004","c2_fXicDecayRadiusStraTrack")
-    //.Filter("fXicInvDecayLengthToPVStra > 0.002","c2_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c2_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c2_fXiccDaughterDCAStraTrack")
-    //.Filter("fXiccDecayRadiusStraTrack > 0.005","c2_fXiccDecayRadiusStraTrack")
-    //.Filter("fXiccInvDecayLengthToPVStra > 0.004","c2_fXiccInvDecayLengthToPVStra")
+    .Filter("fXicDaughterDCAStraTrack < 15","c2_fXicDaughterDCAStraTrack")
+    .Filter("fXicDecayRadiusStraTrack > 0.003","c2_fXicDecayRadiusStraTrack")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002","c2_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDVStra < 0.06","c2_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCAStraTrack < 10","c2_fXiccDaughterDCAStraTrack")
+    .Filter("fXiccDecayRadiusStraTrack > 0.003","c2_fXiccDecayRadiusStraTrack")
+    .Filter("(fXiccInvDecayLengthToPVStra > 0.002) && (fXiccInvDecayLengthToPVStra < 0.06)","c2_fXiccInvDecayLengthToPVStra")
     .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c2_fXiDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c2_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c2_fXicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 10","c2_fXicDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10","c2_fXicDCAzToPVStraTrack")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c2_fXiccDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c2_fXiccDCAzToPVStraTrack")    
     .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c2_fXicPionDCAxyToPV1")
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c2_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c2_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c2_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 15","c2_fXicPionDCAzToPV2")
     .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20","c2_fPicDCAxyToPVTopo")
     ;
   
@@ -665,8 +667,6 @@ int main(int argc, char **argv) {
   
   auto df_xi_cc_im_c4 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0","c4_XicXiccDecayRadDiffStra")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_XicXiccDecayRadDiffStra")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_XicXiccDecayRadDiffStra")
     .Filter("fXicDaughterDCAStraTrack < 20","c4_fXicDaughterDCAStraTrack")
     .Filter("fXicDecayRadiusStraTrack > 0.004","c4_fXicDecayRadiusStraTrack")
     .Filter("fXicInvDecayLengthToPVStra > 0.002","c4_fXicInvDecayLengthToPVStra")
@@ -697,8 +697,6 @@ int main(int argc, char **argv) {
   auto df_xi_cc_im_c4_2Hit = df_xi_c
     .Filter("fXiHitsAdded > 1")
     .Filter("XicXiccDecayRadDiffStra > 0","c4_2Hit_XicXiccDecayRadDiffStra")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_2Hit_XicXiccDecayRadDiffStra")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_2Hit_XicXiccDecayRadDiffStra")
     .Filter("fXicDaughterDCAStraTrack < 20","c4_2Hit_fXicDaughterDCAStraTrack")
     .Filter("fXicDecayRadiusStraTrack > 0.004","c4_2Hit_fXicDecayRadiusStraTrack")
     .Filter("fXicInvDecayLengthToPVStra > 0.002","c4_2Hit_fXicInvDecayLengthToPVStra")
@@ -728,8 +726,6 @@ int main(int argc, char **argv) {
   auto df_xi_cc_im_c4_3Hit = df_xi_c
     .Filter("fXiHitsAdded > 2")
     .Filter("XicXiccDecayRadDiffStra > 0","c4_3Hit_XicXiccDecayRadDiffStra")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_3Hit_XicXiccDecayRadDiffStra")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_3Hit_XicXiccDecayRadDiffStra")
     .Filter("fXicDaughterDCAStraTrack < 20","c4_3Hit_fXicDaughterDCAStraTrack")
     .Filter("fXicDecayRadiusStraTrack > 0.004","c4_3Hit_fXicDecayRadiusStraTrack")
     .Filter("fXicInvDecayLengthToPVStra > 0.002","c4_3Hit_fXicInvDecayLengthToPVStra")
@@ -758,22 +754,25 @@ int main(int argc, char **argv) {
   //Select the Xi_cc
   auto df_xi_cc_im_c5 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0","c5_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c5_fXicDaughterDCAStraTrack")
-    //.Filter("fXicDecayRadiusStraTrack > 0.004","c5_fXicDecayRadiusStraTrack")
-    //.Filter("fXicInvDecayLengthToPVStra > 0.002","c5_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c5_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c5_fXiccDaughterDCAStraTrack")
-    //.Filter("fXiccDecayRadiusStraTrack > 0.005","c5_fXiccDecayRadiusStraTrack")
-    //.Filter("fXiccInvDecayLengthToPVStra > 0.004","c5_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c5_fXiDCAxyToPVStraTrack")
+    .Filter("fXicDaughterDCAStraTrack < 10","c5_fXicDaughterDCAStraTrack")
+    .Filter("fXicDecayRadiusStraTrack > 0.003","c5_fXicDecayRadiusStraTrack")
+    .Filter("fXicInvDecayLengthToPVStra > 0.002","c5_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDVStra < 0.06","c5_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCAStraTrack < 5","c5_fXiccDaughterDCAStraTrack")
+    .Filter("fXiccDecayRadiusStraTrack > 0.003","c5_fXiccDecayRadiusStraTrack")
+    .Filter("(fXiccInvDecayLengthToPVStra > 0.002) && (fXiccInvDecayLengthToPVStra < 0.06)","c5_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 10","c5_fXiDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c5_fXiDCAzToPVStraTrack")
-    //.Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c5_fXicDCAxyToPVStraTrack")
-    //.Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10","c5_fXicDCAzToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c5_fXicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 15","c5_fXicDCAzToPVStraTrack")
     .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c5_fXicPionDCAxyToPV1")
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c5_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c5_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c5_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 15","c5_fXicPionDCAzToPV2")
     .Filter("TMath::Abs(fPicDCAxyToPVTopo) > 20","c5_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c5_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 20","c5_fXiccDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 20","c5_fXiccDCAzToPVStraTrack")    
     ;
   
   //Fill some final histograms  
