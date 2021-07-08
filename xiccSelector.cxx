@@ -147,6 +147,7 @@ int main(int argc, char **argv) {
     // if file does not exist, loop over subdirs to find TFiles 
     TSystemDirectory dir("ZeDirectory", filePath);
     auto files = dir.GetListOfFiles();
+    bool oneTimeError = true; 
     for (auto fileObj : *files)  {
       auto file = (TSystemFile*) fileObj;
       TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
@@ -180,6 +181,19 @@ int main(int argc, char **argv) {
 	    ptXipteta||!ptXipty||
 	    !ptXicGen||!ptXicpteta||!ptXicpty||
 	    !ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+	  if (oneTimeError) { 
+	    if(!hLongTracks )std::cout << " Missing hLongTracks \n"; 
+	    if(!evtCounter  )std::cout << " Missing evtCounter  \n";
+	    if(!ptXipteta   )std::cout << " Missing ptXipteta   \n";
+	    if(!ptXipty     )std::cout << " Missing ptXipty     \n";
+	    if(!ptXicGen    )std::cout << " Missing ptXicGen    \n";
+	    if(!ptXicpteta  )std::cout << " Missing ptXicpteta  \n";
+	    if(!ptXicpty    )std::cout << " Missing ptXicpty    \n";
+	    if(!ptXiccGen   )std::cout << " Missing ptXiccGen   \n";
+	    if(!ptXiccpteta )std::cout << " Missing ptXiccpteta \n";
+	    if(!ptXiccpty   )std::cout << " Missing ptXiccpty   \n";
+	    oneTimeError = false; 
+	  }
 	  inFile->Close(); 
 	  inputFailures++; 
 	  continue; 
