@@ -165,7 +165,6 @@ int main(int argc, char **argv) {
 	TH1D* hLongTracks = (TH1D*)inFile->Get("hNLongTracks");
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
 
-	TH1D* ptXiGen = (TH1D*)inFile->Get("hXiGeneratedPt");
 	TH2D* ptXipteta = (TH2D*)inFile->Get("hPtEtaGeneratedXi"); 
 	TH2D* ptXipty = (TH2D*)inFile->Get("hPtYGeneratedXi"); 
     
@@ -178,9 +177,10 @@ int main(int argc, char **argv) {
 	TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 	
 	if (!hLongTracks||!evtCounter||
-	    !ptXiGen||!ptXipteta||!ptXipty||
+	    ptXipteta||!ptXipty||
 	    !ptXicGen||!ptXicpteta||!ptXicpty||
 	    !ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+	  inFile->Close(); 
 	  inputFailures++; 
 	  continue; 
 	} else { 
