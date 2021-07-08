@@ -71,6 +71,8 @@ int main(int argc, char **argv) {
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
   TString filePath = TString::Format("%s", fileName); 
   
+  auto h_LongTracks = new TH1D("NLongTrack", "NLongTrack", 10000, 0, 10000); 
+  
   auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
   auto h_gen_xi_c_counter = new TH1D("ptXicGen", "candCounter", 200, 0, 20); 
   auto h_gen_xi_c_pt_eta_counter = new TH2D("ptetaXicGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
@@ -85,6 +87,7 @@ int main(int argc, char **argv) {
   int inputFailures = 0; 
   if (filePath.Contains(".root")) { 
     TFile *inFile = TFile::Open(filePath);
+    TH1D* hLongTracks = (TH1D*)inFile->Get("hNLongTracks");
     TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
     TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
     TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
@@ -93,10 +96,12 @@ int main(int argc, char **argv) {
     TH2D* ptXiccpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiCC"); 
     TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 
-    if (!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+    if (!hLongTracks||!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
       inputFailures++; 
       std::cout << "Zis is vehry bad, ze generation histograms are missing, Guenther! No histogram, no chain! \n"; 
     } else { 
+      h_LongTracks->Add(hLongTracks);
+      
       h_cand_counter->Add(evtCounter); 
       h_gen_xi_c_counter->Add(ptXicGen); 
       h_gen_xi_cc_counter->Add(ptXiccGen); 
@@ -130,6 +135,7 @@ int main(int argc, char **argv) {
 	  inputFailures++;
 	  continue; 
 	} 
+	TH1D* hLongTracks = (TH1D*)inFile->Get("hNLongTracks");
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
 	TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
 	TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
@@ -138,10 +144,12 @@ int main(int argc, char **argv) {
 	TH2D* ptXiccpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiCC"); 
 	TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 
-	if (!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+	if (!hLongTracks||!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
 	  inputFailures++;
 	  continue; 
 	}
+	h_LongTracks->Add(hLongTracks);
+	
 	h_cand_counter->Add(evtCounter); 
 	h_gen_xi_c_counter->Add(ptXicGen); 
 	h_gen_xi_cc_counter->Add(ptXiccGen); 
@@ -1140,7 +1148,8 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9); 
 
-
+  HarryPlotter::CheckAndStore(out, hLongTracks); 
+  
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_eta_counter); 
