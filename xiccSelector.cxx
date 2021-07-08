@@ -74,6 +74,10 @@ int main(int argc, char **argv) {
   auto h_LongTracks = new TH1D("NLongTrack", "NLongTrack", 10000, 0, 10000); 
   
   auto h_cand_counter = new TH1D("df_xi_c_candCounter", "candCounter", 1, 0, 1); 
+
+  auto h_gen_xi_pt_eta_counter = new TH2D("ptetaXiGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
+  auto h_gen_xi_pt_y_counter = new TH2D("ptyXiGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
+
   auto h_gen_xi_c_counter = new TH1D("ptXicGen", "candCounter", 200, 0, 20); 
   auto h_gen_xi_c_pt_eta_counter = new TH2D("ptetaXicGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
   auto h_gen_xi_c_pt_y_counter = new TH2D("ptyXicGen", "candCounter", 200, 0, 20, 30, -1.5, 1.5); 
@@ -89,26 +93,48 @@ int main(int argc, char **argv) {
     TFile *inFile = TFile::Open(filePath);
     TH1D* hLongTracks = (TH1D*)inFile->Get("hNLongTracks");
     TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
-    TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
-    TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
+
+    TH2D* ptXipteta = (TH2D*)inFile->Get("hPtEtaGeneratedXi"); 
+    TH2D* ptXipty = (TH2D*)inFile->Get("hPtYGeneratedXi"); 
+    
+    TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt");
     TH2D* ptXicpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiC"); 
     TH2D* ptXicpty = (TH2D*)inFile->Get("hPtYGeneratedXiC"); 
+    
+    TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt");
     TH2D* ptXiccpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiCC"); 
     TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 
-    if (!hLongTracks||!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+    if (!hLongTracks||!evtCounter||
+	!ptXipteta||!ptXipty||
+	!ptXicGen||!ptXicpteta||!ptXicpty||
+	!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
       inputFailures++; 
       std::cout << "Zis is vehry bad, ze generation histograms are missing, Guenther! No histogram, no chain! \n"; 
+      
+      if(!hLongTracks )std::cout << " Missing hLongTracks \n"; 
+      if(!evtCounter  )std::cout << " Missing evtCounter  \n";
+      if(!ptXipteta   )std::cout << " Missing ptXipteta   \n";
+      if(!ptXipty     )std::cout << " Missing ptXipty     \n";
+      if(!ptXicGen    )std::cout << " Missing ptXicGen    \n";
+      if(!ptXicpteta  )std::cout << " Missing ptXicpteta  \n";
+      if(!ptXicpty    )std::cout << " Missing ptXicpty    \n";
+      if(!ptXiccGen   )std::cout << " Missing ptXiccGen   \n";
+      if(!ptXiccpteta )std::cout << " Missing ptXiccpteta \n";
+      if(!ptXiccpty   )std::cout << " Missing ptXiccpty   \n";
     } else { 
       h_LongTracks->Add(hLongTracks);
       
       h_cand_counter->Add(evtCounter); 
-      h_gen_xi_c_counter->Add(ptXicGen); 
-      h_gen_xi_cc_counter->Add(ptXiccGen); 
-	
+      
+      h_gen_xi_pt_eta_counter->Add(ptXipteta); 
+      h_gen_xi_pt_y_counter->Add(ptXipty); 
+      
+      h_gen_xi_c_counter->Add(ptXicGen); 	
       h_gen_xi_c_pt_eta_counter->Add(ptXicpteta); 
       h_gen_xi_c_pt_y_counter->Add(ptXicpty); 
-	
+      
+      h_gen_xi_cc_counter->Add(ptXiccGen); 	
       h_gen_xi_cc_pt_eta_counter->Add(ptXiccpteta); 
       h_gen_xi_cc_pt_y_counter->Add(ptXiccpty); 
 	
@@ -135,38 +161,51 @@ int main(int argc, char **argv) {
 	  inputFailures++;
 	  continue; 
 	} 
+
 	TH1D* hLongTracks = (TH1D*)inFile->Get("hNLongTracks");
 	TH1D* evtCounter = (TH1D*)inFile->Get("hEventCounter"); 
-	TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt"); 
-	TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt"); 
+
+	TH1D* ptXiGen = (TH1D*)inFile->Get("hXiGeneratedPt");
+	TH2D* ptXipteta = (TH2D*)inFile->Get("hPtEtaGeneratedXi"); 
+	TH2D* ptXipty = (TH2D*)inFile->Get("hPtYGeneratedXi"); 
+    
+	TH1D* ptXicGen = (TH1D*)inFile->Get("hXiCGeneratedPt");
 	TH2D* ptXicpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiC"); 
 	TH2D* ptXicpty = (TH2D*)inFile->Get("hPtYGeneratedXiC"); 
+    
+	TH1D* ptXiccGen = (TH1D*)inFile->Get("hXiCCGeneratedPt");
 	TH2D* ptXiccpteta = (TH2D*)inFile->Get("hPtEtaGeneratedXiCC"); 
 	TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
-
-	if (!hLongTracks||!evtCounter||!ptXicGen||!ptXicpteta||!ptXicpty||!ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
-	  inputFailures++;
+	
+	if (!hLongTracks||!evtCounter||
+	    !ptXiGen||!ptXipteta||!ptXipty||
+	    !ptXicGen||!ptXicpteta||!ptXicpty||
+	    !ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
+	  inputFailures++; 
 	  continue; 
+	} else { 
+	  h_LongTracks->Add(hLongTracks);
+      
+	  h_cand_counter->Add(evtCounter); 
+      
+	  h_gen_xi_pt_eta_counter->Add(ptXipteta); 
+	  h_gen_xi_pt_y_counter->Add(ptXipty); 
+      
+	  h_gen_xi_c_counter->Add(ptXicGen); 	
+	  h_gen_xi_c_pt_eta_counter->Add(ptXicpteta); 
+	  h_gen_xi_c_pt_y_counter->Add(ptXicpty); 
+      
+	  h_gen_xi_cc_counter->Add(ptXiccGen); 	
+	  h_gen_xi_cc_pt_eta_counter->Add(ptXiccpteta); 
+	  h_gen_xi_cc_pt_y_counter->Add(ptXiccpty); 
+
+	  input.Add(inSubDirFile);
+	  inputFiles++;
+	  inFile->Close();
 	}
-	h_LongTracks->Add(hLongTracks);
-	
-	h_cand_counter->Add(evtCounter); 
-	h_gen_xi_c_counter->Add(ptXicGen); 
-	h_gen_xi_cc_counter->Add(ptXiccGen); 
-	
-	h_gen_xi_c_pt_eta_counter->Add(ptXicpteta); 
-	h_gen_xi_c_pt_y_counter->Add(ptXicpty); 
-	
-	h_gen_xi_cc_pt_eta_counter->Add(ptXiccpteta); 
-	h_gen_xi_cc_pt_y_counter->Add(ptXiccpty); 
-	
-	input.Add(inSubDirFile);
-	inputFiles++;
-	inFile->Close();
       }
     }
   }
-  
   std::cout << "Added " << inputFiles << " files to the chain, failed in " << inputFailures << " cases \n"; 
 
   //TOF things
@@ -462,17 +501,17 @@ int main(int argc, char **argv) {
   
   auto df_xi_qa = df_xi.Filter("fFirstCandidateXiCC","df_xi_h_bool");
   /*
-  auto h_df_xi_qa_trad_diff_xi_xi_c_topo = df_xi_qa.Histo1D({"df_xi_qa_trad_diff_xi_xi_c_topo", "xi-xi_c trad", 500, -50, 100}, "XiXicDecayRadDiffTopo") ;
+    auto h_df_xi_qa_trad_diff_xi_xi_c_topo = df_xi_qa.Histo1D({"df_xi_qa_trad_diff_xi_xi_c_topo", "xi-xi_c trad", 500, -50, 100}, "XiXicDecayRadDiffTopo") ;
 
-  auto h_df_xi_qa_xi_c_mass_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_mass_topo", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassTopo"); 
+    auto h_df_xi_qa_xi_c_mass_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_mass_topo", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassTopo"); 
   
-  auto h_df_xi_qa_xi_c_ddca_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_ddca_topo", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCATopo"); 
-  auto h_df_xi_qa_xi_c_ddist_pv_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_pv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVTopo"); 
-  auto h_df_xi_qa_xi_c_ddist_dv_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVTopo");   
-  auto h_df_xi_qa_xi_c_trad_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_trad_topo", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusTopo"); 
+    auto h_df_xi_qa_xi_c_ddca_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_ddca_topo", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCATopo"); 
+    auto h_df_xi_qa_xi_c_ddist_pv_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_pv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVTopo"); 
+    auto h_df_xi_qa_xi_c_ddist_dv_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVTopo");   
+    auto h_df_xi_qa_xi_c_trad_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_trad_topo", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusTopo"); 
   
-  auto h_df_xi_qa_xi_dca_xy_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy_topo", "xi dca xy topo", 1000, -500, 500}, "fXiDCAxyToPVTopo");  
-  auto h_df_xi_qa_xi_dca_z_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z_topo", "xi dca z topo", 1000, -500, 500}, "fXiDCAzToPVTopo");  
+    auto h_df_xi_qa_xi_dca_xy_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy_topo", "xi dca xy topo", 1000, -500, 500}, "fXiDCAxyToPVTopo");  
+    auto h_df_xi_qa_xi_dca_z_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z_topo", "xi dca z topo", 1000, -500, 500}, "fXiDCAzToPVTopo");  
   */
   //Stra
 
@@ -535,17 +574,17 @@ int main(int argc, char **argv) {
   
   //Topo
   /*
-  auto h_df_xi_c_qa_trad_diff_xi_xi_c_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_c_xi_cc_topo", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffTopo") ;
+    auto h_df_xi_c_qa_trad_diff_xi_xi_c_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_c_xi_cc_topo", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffTopo") ;
 
-  auto h_df_xi_c_qa_xi_cc_ddca_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca_topo", "xi_cc prong dca", 500, 0, 500}, "fXiccDaughterDCATopo"); 
-  auto h_df_xi_c_qa_xi_cc_ddist_pv_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dist_pv_topo", "xi_cc decay dist", 3000, 0, 0.5}, "fXiccInvDecayLengthToPVTopo"); 
-  auto h_df_xi_c_qa_xi_cc_trad_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_trad_topo", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusTopo"); 
+    auto h_df_xi_c_qa_xi_cc_ddca_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca_topo", "xi_cc prong dca", 500, 0, 500}, "fXiccDaughterDCATopo"); 
+    auto h_df_xi_c_qa_xi_cc_ddist_pv_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dist_pv_topo", "xi_cc decay dist", 3000, 0, 0.5}, "fXiccInvDecayLengthToPVTopo"); 
+    auto h_df_xi_c_qa_xi_cc_trad_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_trad_topo", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusTopo"); 
 
-  auto h_df_xi_c_qa_xi_c_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_xy_topo", "xi_c dca xy topo", 1000, -500, 500}, "fXicDCAxyToPVTopo");  
-  auto h_df_xi_c_qa_xi_c_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_z_topo", "xi_c dca z topo", 1000, -500, 500}, "fXicDCAzToPVTopo");  
+    auto h_df_xi_c_qa_xi_c_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_xy_topo", "xi_c dca xy topo", 1000, -500, 500}, "fXicDCAxyToPVTopo");  
+    auto h_df_xi_c_qa_xi_c_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_z_topo", "xi_c dca z topo", 1000, -500, 500}, "fXicDCAzToPVTopo");  
 
-  auto h_df_xi_c_qa_xi_cc_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_xy_topo", "xi_cc dca xy topo", 1000, -500, 500}, "fXiccDCAxyToPVTopo");  
-  auto h_df_xi_c_qa_xi_cc_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_z_topo", "xi_cc dca z topo", 1000, -500, 500}, "fXiccDCAzToPVTopo");  
+    auto h_df_xi_c_qa_xi_cc_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_xy_topo", "xi_cc dca xy topo", 1000, -500, 500}, "fXiccDCAxyToPVTopo");  
+    auto h_df_xi_c_qa_xi_cc_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_z_topo", "xi_cc dca z topo", 1000, -500, 500}, "fXiccDCAzToPVTopo");  
   */
   //Stra
 
@@ -1041,16 +1080,16 @@ int main(int argc, char **argv) {
   //to xi_c
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_mass);
   /*
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass_topo); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass_topo); 
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c_topo);
  
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddca_topo); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_pv_topo); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_dv_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_trad_topo); 
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddca_topo); 
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_pv_topo); 
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_dv_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_trad_topo); 
     
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z_topo);
   */
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass_stra); 
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_pt); 
@@ -1083,14 +1122,14 @@ int main(int argc, char **argv) {
   
   //to xi_cc
   /*
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_topo);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_topo);
+    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_topo);
   */
 
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_stra);
@@ -1151,6 +1190,10 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_LongTracks); 
   
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
+  
+  HarryPlotter::CheckAndStore(out, h_gen_xi_pt_eta_counter); 
+  HarryPlotter::CheckAndStore(out, h_gen_xi_pt_y_counter); 
+  
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_eta_counter); 
   HarryPlotter::CheckAndStore(out, h_gen_xi_c_pt_y_counter); 
