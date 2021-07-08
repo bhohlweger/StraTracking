@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
 	TH2D* ptXiccpty = (TH2D*)inFile->Get("hPtYGeneratedXiCC"); 
 	
 	if (!hLongTracks||!evtCounter||
-	    ptXipteta||!ptXipty||
+	    !ptXipteta||!ptXipty||
 	    !ptXicGen||!ptXicpteta||!ptXicpty||
 	    !ptXiccGen||!ptXiccpteta||!ptXiccpty) { 
 	  if (oneTimeError) { 
