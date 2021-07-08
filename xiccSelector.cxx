@@ -690,8 +690,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c4_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c4_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c4_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c4_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_fPicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c4_fPicDCAzToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c4_fXiccDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c4_fXiccDCAzToPVStraTrack")    
     ;
@@ -721,7 +721,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c4_2Hit_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c4_2Hit_fXicPionDCAzToPV2")
     .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_2Hit_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c4_2Hit_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c4_2Hit_fPicDCAzToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c4_2Hit_fXiccDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c4_2Hit_fXiccDCAzToPVStraTrack")    
     ;
@@ -749,8 +749,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c4_3Hit_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c4_3Hit_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c4_3Hit_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_3Hit_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c4_3Hit_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_3Hit_fPicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c4_3Hit_fPicDCAzToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c4_3Hit_fXiccDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c4_3Hit_fXiccDCAzToPVStraTrack")    
     ;
@@ -777,8 +777,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c5_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c5_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 15","c5_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c5_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c5_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c5_fPicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c5_fPicDCAzToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 20","c5_fXiccDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 20","c5_fXiccDCAzToPVStraTrack")    
     ;
@@ -807,7 +807,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c6_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c6_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c6_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c6_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c6_fPicDCAxyToPVStraTrack")
     ;
   
   //Fill some final histograms  
@@ -835,7 +835,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c7_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c7_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c7_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c7_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c7_fPicDCAxyToPVStraTrack")
     ;
   
   //Fill some final histograms  
@@ -861,7 +861,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c8_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c8_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c8_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c8_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c8_fPicDCAxyToPVStraTrack")
     .Filter("fPiC1Pt > 0.35", "c8_fPiC1Pt")
     .Filter("fPiC2Pt > 0.35", "c8_fPiC2Pt")
     .Filter("fPiCCPt > 0.35", "c8_fPiCCPt")
@@ -891,8 +891,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c9_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c9_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c9_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c9_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVTopo) > 20","c9_fPicDCAzToPVTopo")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c9_fPicDCAxyToPVStraTrack")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c9_fPicDCAzToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c9_fXiccDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c9_fXiccDCAzToPVStraTrack")    
     .Filter("fPiC1Pt > 0.35", "c9_fPiC1Pt")
