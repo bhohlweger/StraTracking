@@ -619,7 +619,13 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_qa_pi_dca_xy = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_xy", "xi_c dca xy stra", 1000, -500, 500}, "fPicDCAxyToPVStraTrack");  
   auto h_df_xi_c_qa_pi_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_z", "xi_c dca z stra", 1000, -500, 500}, "fPicDCAzToPVStraTrack");  
   
-  auto h_df_xi_c_qa_xi_cc_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
+  auto h_df_xi_c_qa_xi_cc_pt = df_xi_c_qa
+    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 10")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 10")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10")
+    .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
   auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
 
   auto h_df_xi_c_qa_pi_tof_dv_expected_vs_measured    = df_xi_c_qa.Histo2D({"h_df_xi_c_qa_pi_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPiccTOFSignal", "fPiccExpectedSignal"); 
