@@ -80,18 +80,18 @@ void Fitme(TH1* hist, double mass) {
 
 
 void massFitter() { 
-  double xiccMass = 3.596; //3.621; 
+  double xiccMass = 3.621; //3.621; 
   double xicMass = 2.468;
 
   double xiccWindow = 0.08;
 
 
-  TFile* xicc = TFile::Open("outxiccSelector_xicc_fulltracker.root", "read"); 
+  TFile* xicc = TFile::Open("outxiccSelector_xicc_capra.root", "read"); 
   
   TH1D* lambda_mass = (TH1D*)xicc->Get("df_lmb_im_lmb_mass"); 
   TH1D* xi_mass = (TH1D*)xicc->Get("df_xi_im_xi_mass"); 
   TH1D* xic_mass = (TH1D*)xicc->Get("df_xi_c_im_xi_c_mass_stra"); 
-  TH1D* xicc_mass = (TH1D*)xicc->Get("df_xi_cc_im_xi_cc_mass_stra_c1"); 
+  TH1D* xicc_mass = (TH1D*)xicc->Get("df_xi_c_xi_cc_mass_stra"); 
   
   TFile* output = TFile::Open("outMassFit.root", "recreate"); 
   output->cd(); 
