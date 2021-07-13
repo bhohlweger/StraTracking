@@ -243,16 +243,15 @@ int main(int argc, char **argv) {
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
     .Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"})
     .Define("fXiInvDecayLengthToPV", decLengthXi, {"fXiDecayLength", "fXiTotalMomentum"})
-    //.Filter(radCut, {"XiV0DecayRadDiff"})
-    // .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
-    // .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    // .Filter("fXiV0DauDCA < 2000","fXiV0DauDCA")
-    // .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
-    // .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
-    // .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
-    // .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
-    // .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
-    // .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
+    .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
+    .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
+    .Filter("fXiV0DauDCA < 1000","fXiV0DauDCA")
+    .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
+    .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
+    .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
+    .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
+    .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
+    .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
@@ -294,10 +293,10 @@ int main(int argc, char **argv) {
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5","fXiDecayRadius")
     .Filter("XiLmbDecayRadDiff > 0","XiLmbDecayRadDiff")
-    // .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400")
-    //.Filter("fXiDecayLength > 0.02","fXiDecayLength")
-    //.Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
-    //.Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
+    .Filter("fXiCascDauDCA < 1200","fXiCascDauDCA")
+    .Filter("fXiDecayLength > 0.02","fXiDecayLength")
+    .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
+    .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
