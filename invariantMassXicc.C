@@ -1,5 +1,5 @@
 void invariantMassXicc(TString addon) { 
-  double xiccMass = 3.596; //3.621; 
+  double xiccMass = 3.621; 
   double xiccWindow = 0.12;
   
   TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
@@ -8,19 +8,37 @@ void invariantMassXicc(TString addon) {
   TFile* output = TFile::Open(TString::Format("outIMXicc%s.root"         , addon.Data()), "recreate"); 
   
   TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
-  TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
   
-  double normXi = 1/(1.63e-6*h_xiCounter->GetBinContent(1)); 
+  TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
+
+  int xi_eta_min = h_xipteta->GetYaxis()->FindBin(-0.5); 
+  int xi_eta_max = h_xipteta->GetYaxis()->FindBin(0.5); 
+  int nEvtsXi = h_xipteta->ProjectionY()->Integral(xi_eta_min, xi_eta_max); 
+  
+  double normXi = 1/(1.63e-6*nEvtsXi); 
 
   TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
-  TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
+  TH2D* h_xicpteta = (TH2D*)xic->Get("ptetaXicGen"); 
 
-  double normXic = 1/(2.1e-4*h_xicCounter->GetBinContent(1)); 
+  int xic_eta_min = h_xicpteta->GetYaxis()->FindBin(-0.5); 
+  int xic_eta_max = h_xicpteta->GetYaxis()->FindBin(0.5); 
+  int nEvtsXic = h_xicpteta->ProjectionY()->Integral(xic_eta_min, xic_eta_max); 
+    
+  double normXic = 1/(2.1e-4*nEvtsXic); 
   
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
-  TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
+  TH2D* h_xiccpteta = (TH2D*)xicc->Get("ptetaXiccGen"); 
+    
+  int xicc_eta_min = h_xiccpteta->GetYaxis()->FindBin(-0.5); 
+  int xicc_eta_max = h_xiccpteta->GetYaxis()->FindBin(0.5); 
+  int nEvtsXicc = h_xiccpteta->ProjectionY()->Integral(xicc_eta_min, xicc_eta_max); 
   
-  double normXicc = (1.)/(h_xiccCounter->GetBinContent(1)); 
+  TH1D* xiccGenPt = (TH1D*)h_xiccpteta->ProjectionX("pTXiccGenerados",xicc_eta_min, xicc_eta_max);
+  xiccGenPt->Sumw2(); 
+  output->cd(); 
+  xiccGenPt->Write(); 
+
+  double normXicc = (1.)/(nEvtsXicc); 
   
   TList* inList = xi->GetListOfKeys(); 
   TIter next(inList); 
@@ -32,7 +50,6 @@ void invariantMassXicc(TString addon) {
   double redXi; 
   double redXic;
   double redXicc; 
-
 
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
@@ -49,7 +66,19 @@ void invariantMassXicc(TString addon) {
     TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
     TH1D* xicHist = (TH1D*)xic->Get(obj->GetName()); 
     TH1D* xiccHist = (TH1D*)xicc->Get(obj->GetName()); 
+
+    TString toReplace = "mass_stra"; 
+    TString replacement = "pt_vs_y"; 
     
+    TString pTIdent = objName.ReplaceAll(toReplace, toReplace.Length(), replacement, replacement.Length()); 
+    
+    TH2D* pT_vs_eta = (TH2D*)xicc->Get(pTIdent.Data()); 
+    TH1D* pT_Identified = nullptr; 
+    if (pT_vs_eta) { 
+      pT_Identified = pT_vs_eta->ProjectionX(TString::Format("Efficiency_%s", objName.Data())); 
+      pT_Identified->Sumw2();
+      pT_Identified->Divide(xiccGenPt); 
+    }
     xiHist->Rebin(4);       
     xicHist->Rebin(4); 
     xiccHist->Rebin(4); 
@@ -229,6 +258,8 @@ void invariantMassXicc(TString addon) {
     output->cd();     
     myavgBkg->Write();
     avgBkg->Write(); 
+    if (pT_vs_eta) pT_vs_eta->Write(); 
+    if (pT_Identified) pT_Identified->Write();
     xiccHist->Write(TString::Format("xicc_%s",xiccHist->GetName())); 
     xicHist->Write(TString::Format("xic_%s",xiccHist->GetName())); 
     xiHist->Write(TString::Format("xi_%s",xiccHist->GetName())); 
