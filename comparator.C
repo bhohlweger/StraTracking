@@ -1,5 +1,5 @@
 void comparator(TString addon, TString mode) { 
-  double xiccMass = 3.596; //3.621; 
+  double xiccMass = 3.621; 
   double xiccWindow = 0.12;
   
   std::vector<TFile*> inFiles; 
@@ -7,14 +7,18 @@ void comparator(TString addon, TString mode) {
   TSystemDirectory dir("ZeDirectory", gSystem->pwd());
   auto files = dir.GetListOfFiles();
   bool xifile = false; 
+  bool mbfile = false; 
   for (auto fileObj : *files)  {
     auto file = (TSystemFile*) fileObj;
     TString fileName = TString::Format("%s", file->GetName()); 
-    if (fileName.Contains(addon) && !fileName.Contains("outComp_cut")) { 
+    if (fileName.Contains(addon) && fileName.Contains("outxiccSelector")) { 
       std::cout << "Reading file " << file->GetName() << std::endl;
       inFiles.emplace_back(TFile::Open(file->GetName(), "read"));
       if (fileName.Contains("_xi_")) { 
 	xifile = true;
+      }
+      if (fileName.Contains("_mb_")) { 
+	mbfile = true;
       }
     }
   }
@@ -26,7 +30,9 @@ void comparator(TString addon, TString mode) {
     histnames =  {"0-2 GeV/#it{c}", "10-20 GeV/#it{c}", "2-4 GeV/#it{c}", "4-7 GeV/#it{c}", "7-10 GeV/#it{c}"};
   } else if (mode.Contains("sgnbkgcomp")) {
     std::cout <<"You chose mode Signal/Background comparison!\n"; 
-    if (xifile) { 
+    if (xifile && mbfile) { 
+      histnames = {"p + 5#times#pi (Pythia MB)", "#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
+    }  else if (xifile) { 
       histnames = {"#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
     }  else {
       histnames = {"#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
