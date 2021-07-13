@@ -305,8 +305,32 @@ int main(int argc, char **argv) {
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   }
-  
-  auto df_ForceXi = ForceNoXi?df.Filter("!fTrueXi","noTrueXis"):df.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
+  auto df_precut = df
+    .Filter("fV0DecayRadius > 0.45")
+    .Filter("fXiDecayRadius > 0.45")
+    .Filter("fPositiveDCAxy> 0.0025")
+    .Filter("fPositiveDCAxy< 5000")
+    .Filter("fPositiveDCAz > 0.0025")
+    .Filter("fNegativeDCAxy> 0.0025")
+    .Filter("fNegativeDCAz > 0.0025")
+    .Filter("fBachelorDCAxy> 0.0025")
+    .Filter("fBachelorDCAz > 0.0025")
+    .Filter("fXicPionDCAxyToPV1     > 0.0010")
+    .Filter("fXicPionDCAzToPV1      > 0.0010")
+    .Filter("fXicPionDCAxyToPV2     > 0.0010")
+    .Filter("fXicPionDCAzToPV2      > 0.0010")
+    .Filter("fPicDCAxyToPVStraTrack > 0.0010")
+    .Filter("fPicDCAzToPVStraTrack  > 0.0010")
+    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036")
+    .Filter("fXiPtStraTrack > 0.2")
+    .Filter("fXiV0DauDCA   < 1000")
+    .Filter("TMath::Abs(fXiMass-1.322) < 0.036")
+    .Filter("fXiCascDauDCA < 1200")
+    .Filter("TMath::Abs(fXicMassStraTrack-2.468) < 0.24")
+    .Filter("TMath::Abs(fXiccMassStraTrack-3.621) < 1e4")
+    ; 
+
+  auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
 
   auto df_in = (
 		ExclusiveSignal?
@@ -419,7 +443,7 @@ int main(int argc, char **argv) {
     .Define("fBachExpPVDV", "fBachelorExpectedSignal - fBachelorExpectedSignalFromPV")
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fXiV0DauDCA < 2000","fXiV0DauDCA")
+    .Filter("fXiV0DauDCA < 1000","fXiV0DauDCA")
     .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
     .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
@@ -486,7 +510,7 @@ int main(int argc, char **argv) {
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5","fXiDecayRadius")
     .Filter("XiLmbDecayRadDiff > 0","XiLmbDecayRadDiff")
-    .Filter("fXiCascDauDCA> 4 && fXiCascDauDCA < 1400","fXiCascDauDCA")
+    .Filter("fXiCascDauDCA < 1200","fXiCascDauDCA")
     .Filter("fXiDecayLength > 0.02","fXiDecayLength")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
