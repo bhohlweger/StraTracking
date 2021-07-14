@@ -306,7 +306,7 @@ int main(int argc, char **argv) {
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   }
   auto df_precut = df
-    .Filter("fV0DecayRadius > 0.45")
+    .Filter("fV0DecayRadius > 0.45", "safeteyPrecutsIn")
     .Filter("fXiDecayRadius > 0.45")
     .Filter("fPositiveDCAxy> 0.0025")
     .Filter("fPositiveDCAxy< 5000")
@@ -327,7 +327,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXiMass-1.322) < 0.036")
     .Filter("fXiCascDauDCA < 1200")
     .Filter("TMath::Abs(fXicMassStraTrack-2.468) < 0.24")
-    .Filter("TMath::Abs(fXiccMassStraTrack-3.621) < 1e4")
+    .Filter("TMath::Abs(fXiccMassStraTrack-3.621) < 1e4", "safeteyPrecutsOut")
     ; 
 
   auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
@@ -335,9 +335,9 @@ int main(int argc, char **argv) {
   auto df_in = (
 		ExclusiveSignal?
 		df_ForceXi
-		.Filter("fTrueXicc")
+		.Filter("fTrueXicc","trueXiccs")
 		:df_ForceXi
-		.Filter("!fTrueXicc")
+		.Filter("!fTrueXicc","fakeXiccs")
 		)
     .Filter(associations,{"fTrueXicc", "fTrueXic", "fPiccUsed", "fPicUsed"}, "Associations")
     .Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;})
