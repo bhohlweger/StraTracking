@@ -8,13 +8,20 @@ void invariantMassXicc(TString addon) {
   TFile* output = TFile::Open(TString::Format("outIMXicc%s.root"         , addon.Data()), "recreate"); 
   
   TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
-  
+
+  TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
+  std::cout << h_xiCounter->GetBinContent(1) << std::endl;
+  TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
+  std::cout << h_xicCounter->GetBinContent(1) << std::endl;
+  TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
+  std::cout << h_xiccCounter->GetBinContent(1) << std::endl;
+
   TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
 
   int xi_eta_min = h_xipteta->GetYaxis()->FindBin(-0.5); 
   int xi_eta_max = h_xipteta->GetYaxis()->FindBin(0.5); 
   int nEvtsXi = h_xipteta->ProjectionY()->Integral(xi_eta_min, xi_eta_max); 
-  
+  std::cout <<" nEvts xi: " << nEvtsXi << std::endl;
   double normXi = 1/(1.63e-6*nEvtsXi); 
 
   TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
@@ -23,7 +30,7 @@ void invariantMassXicc(TString addon) {
   int xic_eta_min = h_xicpteta->GetYaxis()->FindBin(-0.5); 
   int xic_eta_max = h_xicpteta->GetYaxis()->FindBin(0.5); 
   int nEvtsXic = h_xicpteta->ProjectionY()->Integral(xic_eta_min, xic_eta_max); 
-    
+  std::cout <<" nEvts xic: " << nEvtsXic << std::endl;
   double normXic = 1/(2.1e-4*nEvtsXic); 
   
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
@@ -32,7 +39,8 @@ void invariantMassXicc(TString addon) {
   int xicc_eta_min = h_xiccpteta->GetYaxis()->FindBin(-0.5); 
   int xicc_eta_max = h_xiccpteta->GetYaxis()->FindBin(0.5); 
   int nEvtsXicc = h_xiccpteta->ProjectionY()->Integral(xicc_eta_min, xicc_eta_max); 
-  
+  std::cout <<" nEvts xicc: " << nEvtsXicc << std::endl;
+    
   TH1D* xiccGenPt = (TH1D*)h_xiccpteta->ProjectionX("pTXiccGenerados",xicc_eta_min, xicc_eta_max);
   xiccGenPt->Sumw2(); 
   output->cd(); 

@@ -9,30 +9,50 @@ void invariantMassXiccBefCuts(TString addon) {
   TFile* output = TFile::Open(TString::Format("outIMXiccBefCuts%s.root"         , addon.Data()), "recreate"); 
   
   TH1D* h_mbRedCounter = (TH1D*)mb->Get("cutCounter");
-  TH1D* h_mbCounter = (TH1D*)mb->Get("df_xi_c_candCounter");
-  double normMb = 1/(1.614e-8*h_mbCounter->GetBinContent(1)); 
-  std::cout << "Nevt mb = " << h_mbCounter->GetBinContent(1) << std::endl; 
 
+  TH1D* h_mbCounter = (TH1D*)mb->Get("df_xi_c_candCounter");
+  int nEvtsMb = h_mbCounter->GetBinContent(1); 
+  std::cout <<" nEvts mb: " << nEvtsMb << std::endl;
+  double normMb = 1/(1.614e-8*nEvtsMb); 
+
+  TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
   TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
-  TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
-  double normXi = 1/(1.63e-6*h_xiCounter->GetBinContent(1)); 
-  std::cout << "Nevt xi = " << h_xiCounter->GetBinContent(1) << std::endl; 
+  
+  int xi_eta_min = h_xipteta->GetYaxis()->FindBin(-0.5); 
+  int xi_eta_max = h_xipteta->GetYaxis()->FindBin(0.5); 
+  int nEvtsXi = h_xipteta->ProjectionY()->Integral(xi_eta_min, xi_eta_max); 
+  std::cout <<" nEvts xi: " << nEvtsXi << std::endl;
+  double normXi = 1/(1.63e-6*nEvtsXi); 
 
   TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
-  TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
-  double normXic = 1/(2.1e-4*h_xicCounter->GetBinContent(1)); 
-  std::cout << "Nevt xic = " << h_xicCounter->GetBinContent(1) << std::endl; 
+  TH2D* h_xicpteta = (TH2D*)xic->Get("ptetaXicGen"); 
 
+  int xic_eta_min = h_xicpteta->GetYaxis()->FindBin(-0.5); 
+  int xic_eta_max = h_xicpteta->GetYaxis()->FindBin(0.5); 
+  int nEvtsXic = h_xicpteta->ProjectionY()->Integral(xic_eta_min, xic_eta_max); 
+  std::cout <<" nEvts xic: " << nEvtsXic << std::endl;
+  double normXic = 1/(2.1e-4*nEvtsXic); 
+  
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
-  TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
-  double normXicc = (1.)/(h_xiccCounter->GetBinContent(1)); 
-  std::cout << "Nevt xicc = " << h_xiccCounter->GetBinContent(1) << std::endl; 
+  TH2D* h_xiccpteta = (TH2D*)xicc->Get("ptetaXiccGen"); 
+    
+  int xicc_eta_min = h_xiccpteta->GetYaxis()->FindBin(-0.5); 
+  int xicc_eta_max = h_xiccpteta->GetYaxis()->FindBin(0.5); 
+  int nEvtsXicc = h_xiccpteta->ProjectionY()->Integral(xicc_eta_min, xicc_eta_max); 
+  std::cout <<" nEvts xicc: " << nEvtsXicc << std::endl;
+    
+  TH1D* xiccGenPt = (TH1D*)h_xiccpteta->ProjectionX("pTXiccGenerados",xicc_eta_min, xicc_eta_max);
+  xiccGenPt->Sumw2(); 
+  output->cd(); 
+  xiccGenPt->Write(); 
+  
+  double normXicc = (1.)/(nEvtsXicc); 
  
   TH1D* sumHist = nullptr;
   TH1D* sumHistBkg = nullptr;
   TH1D* avgBkg; 
   int counter = 0; 
-  std::vector<TString> histNames = {"h_df_in_im_xi_cc_mass_stra", "h_df_lmb_xi_cc_mass_stra", "h_df_xi_xi_cc_mass_stra", "df_xi_c_xi_cc_mass_stra"}; 
+  std::vector<TString> histNames = {"h_df_in_im_xi_cc_mass_stra", "h_df_lmb_xi_cc_mass_stra", "h_df_xi_xi_cc_mass_stra", "df_xi_c_xi_cc_mass_stra", "df_xi_cc_im_xi_cc_mass_stra_c5"}; 
   //TString histName = "h_df_in_im_xi_cc_mass_stra";
   for ( auto histName : histNames) { 
     //TString histName = "df_xi_c_xi_cc_mass_stra"; 
