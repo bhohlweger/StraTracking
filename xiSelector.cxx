@@ -57,6 +57,7 @@ int main(int argc, char **argv) {
   bool ExclusiveSignal = (xiDec == 0)?false:true;
   
   int pTbin = argv[4]?atoi(argv[4]):-1; 
+  
   if (pTbin >= 0 && pTbin > ptbins.size()-1) { 
     std::cout << "Crashing cause the requested pT bin is out of range ( requested = " << pTbin << " , max. available = " << ptbins.size()-1 << " )\n";
     return -999; 
@@ -184,7 +185,7 @@ int main(int argc, char **argv) {
     .Filter(pTCut, {"fXiPtStraTrack"}, "pTXi")
     ;
   
-  auto h_df_in_im_xi_mass_stra = df_in.Histo1D({"h_df_in_im_xi_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiMass"); 
+  auto h_df_in_im_xi_mass_stra = df_in.Histo1D({"h_df_in_im_xi_mass_stra", "xi_cc inv mass", 750, 1.2, 2}, "fXiMass"); 
   auto in_counter = df_in.Count(); 
   
   auto df_in_qa = df_in; 
@@ -300,6 +301,22 @@ int main(int argc, char **argv) {
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
+  
+  auto h_df_lmb_qa_pos_beta_expected_vs_pos_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_beta_expected_vs_pos_pt", "pos beta exp vs pos pt", 200, 0, 5, 1200, 0, 1.2}, "fPositivePt", "fPosExpectedBeta"); 
+  auto h_df_lmb_qa_pos_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveTOFSignal", "fPositiveExpectedSignal"); 
+  auto h_df_lmb_qa_pos_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveTOFSignal", "fPositiveExpectedSignalFromPV"); 
+  auto h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fPositiveExpectedSignal","fPosExpPVDV");
+
+  auto h_df_lmb_qa_neg_beta_expected_vs_neg_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_beta_expected_vs_neg_pt", "neg beta exp vs neg pt", 200, 0, 5, 1200, 0, 1.2}, "fNegativePt", "fNegExpectedBeta"); 
+  auto h_df_lmb_qa_neg_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeTOFSignal", "fNegativeExpectedSignal"); 
+  auto h_df_lmb_qa_neg_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeTOFSignal", "fNegativeExpectedSignalFromPV"); 
+  auto h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fNegativeExpectedSignal","fNegExpPVDV");
+
+  auto h_df_lmb_qa_bach_beta_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_vs_bach_pt", "bach beta vs bach pt", 200, 0, 5, 1200, 0, 1.2}, "fBachelorPt", "fBachBeta"); 
+  auto h_df_lmb_qa_bach_beta_expected_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_expected_vs_bach_pt", "bach beta exp vs bach pt", 200, 0, 5, 1200, 0, 1.2}, "fBachelorPt", "fBachExpectedBeta"); 
+  auto h_df_lmb_qa_bach_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorTOFSignal", "fBachelorExpectedSignal"); 
+  auto h_df_lmb_qa_bach_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorTOFSignal", "fBachelorExpectedSignalFromPV"); 
+  auto h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fBachelorExpectedSignal", "fBachExpPVDV"); 
 
   //Select Xis including Hits
   auto df_xi_im = df_xi_sel.
@@ -418,10 +435,20 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy_vs_hits);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy_vs_lmb_dl_pv);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy_vs_pos_pt);   
+
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_beta_expected_vs_pos_pt);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_dv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_pv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected);   
   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_hits);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_lmb_dl_pv);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_neg_pt);   
+
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_beta_expected_vs_neg_pt);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_dv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_pv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected);   
   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_hits_vs_pos_hits);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_pos_dca_xy);   
@@ -430,6 +457,12 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_in_qa_bach_dca_xy_vs_lmb_dl_pv);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_bach_dca_xy_vs_bach_pt);   
   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_beta_vs_bach_pt);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_beta_expected_vs_bach_pt);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_dv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_pv_expected_vs_measured);   
+  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected);     
+
   out->Close(); 
   timer.Stop();
   timer.Print();
