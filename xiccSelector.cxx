@@ -348,7 +348,7 @@ int main(int argc, char **argv) {
     .Define("fNegExpectedBeta", beta, {"fNegativeLength", "fNegativeExpectedSignal"})
     .Define("fPosExpectedBeta", beta, {"fPositiveLength", "fPositiveExpectedSignal"})
     .Define("fBachExpectedBeta", beta, {"fBachelorLength", "fBachelorExpectedSignal"})     // .Define("fPic1Beta", beta, {"fNegativeLength", "fNegativeTOFSignal"})
-    .Filter("TMath::Abs(fXiCCEta)<1.0", "XiccEta")
+    .Filter("TMath::Abs(fXiCCEta)<1.5", "XiccEta")
     // .Filter("TMath::Abs(fXiCEta)<0.5")
     // .Filter("TMath::Abs(fXiEta)<0.5")
     // .Filter("TMath::Abs(fPiCCEta)<0.5")
