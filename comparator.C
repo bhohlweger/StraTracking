@@ -71,6 +71,7 @@ void comparator(TString addon, TString mode) {
     for (auto it : inFiles) { 
       TH1D* Hist = (TH1D*)it->Get(obj->GetName()); 
       if (!Hist) { 
+	std::cout <<" Continue for file " << it->GetName() << " and Histogram " << obj->GetName() << std::endl; 
 	continue;
       }
       Hist->SetLineColor(colors[fileCounter]); 
