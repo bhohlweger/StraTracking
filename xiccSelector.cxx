@@ -308,19 +308,19 @@ int main(int argc, char **argv) {
   auto df_precut = df
     .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")
     .Filter("fXiDecayRadius > 0.45", "safeteyPrecuts_2")
-    .Filter("TMath::Abs(fPositiveDCAxy)> 0.0025", "safeteyPrecuts_3")
+    .Filter("TMath::Abs(fPositiveDCAxy)> 25", "safeteyPrecuts_3")
     .Filter("TMath::Abs(fPositiveDCAxy)< 5000", "safeteyPrecuts_4")
-    .Filter("TMath::Abs(fPositiveDCAz )> 0.0025", "safeteyPrecuts_5")
-    .Filter("TMath::Abs(fNegativeDCAxy)> 0.0025", "safeteyPrecuts_6")
-    .Filter("TMath::Abs(fNegativeDCAz )> 0.0025", "safeteyPrecuts_7")
-    .Filter("TMath::Abs(fBachelorDCAxy)> 0.0025", "safeteyPrecuts_8")
-    .Filter("TMath::Abs(fBachelorDCAz )> 0.0025", "safeteyPrecuts_9")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1     )> 0.0010", "safeteyPrecuts_10")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1      )> 0.0010", "safeteyPrecuts_11")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2     )> 0.0010", "safeteyPrecuts_12")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2      )> 0.0010", "safeteyPrecuts_13")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack )> 0.0010", "safeteyPrecuts_14")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack  )> 0.0010", "safeteyPrecuts_15")
+    .Filter("TMath::Abs(fPositiveDCAz )> 25", "safeteyPrecuts_5")
+    .Filter("TMath::Abs(fNegativeDCAxy)> 25", "safeteyPrecuts_6")
+    .Filter("TMath::Abs(fNegativeDCAz )> 25", "safeteyPrecuts_7")
+    .Filter("TMath::Abs(fBachelorDCAxy)> 25", "safeteyPrecuts_8")
+    .Filter("TMath::Abs(fBachelorDCAz )> 25", "safeteyPrecuts_9")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV1     )> 10", "safeteyPrecuts_10")
+    .Filter("TMath::Abs(fXicPionDCAzToPV1      )> 10", "safeteyPrecuts_11")
+    .Filter("TMath::Abs(fXicPionDCAxyToPV2     )> 10", "safeteyPrecuts_12")
+    .Filter("TMath::Abs(fXicPionDCAzToPV2      )> 10", "safeteyPrecuts_13")
+    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack )> 10", "safeteyPrecuts_14")
+    .Filter("TMath::Abs(fPicDCAzToPVStraTrack  )> 10", "safeteyPrecuts_15")
     .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036", "safeteyPrecuts_16")
     .Filter("fXiPtStraTrack > 0.2", "safeteyPrecuts_17")
     .Filter("fXiV0DauDCA   < 1000", "safeteyPrecuts_18")
@@ -1176,10 +1176,11 @@ int main(int argc, char **argv) {
     HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_topo);
   */
 
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_stra);
+  HarryPlotter::CheckAndStore(out, h_wdf_xi_c_qa_trad_diff_xi_xi_c_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad_stra);
+  HarryPlotter::CheckAndStore(out, h_
+df_xi_c_qa_xi_cc_trad_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_stra);
