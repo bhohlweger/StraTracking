@@ -1176,11 +1176,10 @@ int main(int argc, char **argv) {
     HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_topo);
   */
 
-  HarryPlotter::CheckAndStore(out, h_wdf_xi_c_qa_trad_diff_xi_xi_c_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv_stra);
-  HarryPlotter::CheckAndStore(out, h_
-df_xi_c_qa_xi_cc_trad_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z_stra);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_stra);
