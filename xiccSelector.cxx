@@ -260,7 +260,7 @@ int main(int argc, char **argv) {
   auto invMassXiccCut = [&invMassDiffXicc, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXicc); }; 
 
   float xiccpTmin = pTbin >=0?ptbins[pTbin]:0; 
-  float xiccpTmax = pTbin >=0?ptbins[pTbin+1]:20.0; 
+  float xiccpTmax = pTbin >=0?ptbins[pTbin+1]:10.0; 
   
   std::cout << "Xicc pT range set to " << xiccpTmin << " to " << xiccpTmax << std::endl; 
   
