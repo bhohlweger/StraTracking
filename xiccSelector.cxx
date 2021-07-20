@@ -698,7 +698,7 @@ int main(int argc, char **argv) {
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c1 = df_xi_cc_im_c1.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c1", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c1_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   auto out_counter_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
   
   //Select the Xi_cc
@@ -727,7 +727,7 @@ int main(int argc, char **argv) {
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c2 = df_xi_cc_im_c2.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c2", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c2", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c2_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c2", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   
   auto out_counter_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
   
@@ -755,7 +755,7 @@ int main(int argc, char **argv) {
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c3", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c3", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c3_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c3", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   
   auto out_counter_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
   
@@ -784,7 +784,7 @@ int main(int argc, char **argv) {
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c4_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   
   auto out_counter_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
  
@@ -814,7 +814,7 @@ int main(int argc, char **argv) {
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c4_2Hit = df_xi_cc_im_c4_2Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4_2Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_2Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c4_2Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_2Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   auto out_counter_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
   
   auto df_xi_cc_im_c4_3Hit = df_xi_c
@@ -842,7 +842,7 @@ int main(int argc, char **argv) {
     ;
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c4_3Hit = df_xi_cc_im_c4_3Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4_3Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_3Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c4_3Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_3Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   auto out_counter_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
 
   //Select the Xi_cc
@@ -871,7 +871,7 @@ int main(int argc, char **argv) {
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c5", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c5", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c5_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c5", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
   
   auto out_counter_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
 
@@ -1092,14 +1092,6 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4_3Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c5); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c5); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c6); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c6); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c7); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c7); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c8); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c8); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c9); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c9); 
 
   HarryPlotter::CheckAndStore(out, h_LongTracks); 
   
