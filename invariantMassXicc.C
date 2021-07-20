@@ -17,9 +17,9 @@ void invariantMassXicc(TString addon) {
   std::cout << h_xiccCounter->GetBinContent(1) << std::endl;
 
   TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
-
-  int xi_eta_min = h_xipteta->GetYaxis()->FindBin(-0.5); 
-  int xi_eta_max = h_xipteta->GetYaxis()->FindBin(0.5); 
+  double etaCut = 1.5; 
+  int xi_eta_min = h_xipteta->GetYaxis()->FindBin(-etaCut); 
+  int xi_eta_max = h_xipteta->GetYaxis()->FindBin(etaCut); 
   int nEvtsXi = h_xipteta->ProjectionY()->Integral(xi_eta_min, xi_eta_max); 
   std::cout <<" nEvts xi: " << nEvtsXi << std::endl;
   double normXi = 1/(1.63e-6*nEvtsXi); 
@@ -27,8 +27,8 @@ void invariantMassXicc(TString addon) {
   TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
   TH2D* h_xicpteta = (TH2D*)xic->Get("ptetaXicGen"); 
 
-  int xic_eta_min = h_xicpteta->GetYaxis()->FindBin(-0.5); 
-  int xic_eta_max = h_xicpteta->GetYaxis()->FindBin(0.5); 
+  int xic_eta_min = h_xicpteta->GetYaxis()->FindBin(-etaCut); 
+  int xic_eta_max = h_xicpteta->GetYaxis()->FindBin(etaCut); 
   int nEvtsXic = h_xicpteta->ProjectionY()->Integral(xic_eta_min, xic_eta_max); 
   std::cout <<" nEvts xic: " << nEvtsXic << std::endl;
   double normXic = 1/(2.1e-4*nEvtsXic); 
@@ -36,8 +36,8 @@ void invariantMassXicc(TString addon) {
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
   TH2D* h_xiccpteta = (TH2D*)xicc->Get("ptetaXiccGen"); 
     
-  int xicc_eta_min = h_xiccpteta->GetYaxis()->FindBin(-0.5); 
-  int xicc_eta_max = h_xiccpteta->GetYaxis()->FindBin(0.5); 
+  int xicc_eta_min = h_xiccpteta->GetYaxis()->FindBin(-etaCut); 
+  int xicc_eta_max = h_xiccpteta->GetYaxis()->FindBin(etaCut); 
   int nEvtsXicc = h_xiccpteta->ProjectionY()->Integral(xicc_eta_min, xicc_eta_max); 
   std::cout <<" nEvts xicc: " << nEvtsXicc << std::endl;
     
