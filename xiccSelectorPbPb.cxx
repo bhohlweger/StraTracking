@@ -305,7 +305,7 @@ int main(int argc, char **argv) {
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   } 
   auto df_precut = df
-    .Filter("fNLongPrimaryTracks > 2473") //corresponds to 0-10 percent centrality
+    //.Filter("fNLongPrimaryTracks > 2473") //corresponds to 0-10 percent centrality
     .Filter("fV0DecayRadius > 0.5", "safeteyPrecuts_1")
     .Filter("fXiDecayRadius > 0.5", "safeteyPrecuts_2")
     .Filter("TMath::Abs(fPositiveDCAxy)> 50", "safeteyPrecuts_3")
