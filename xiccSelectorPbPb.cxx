@@ -328,11 +328,15 @@ int main(int argc, char **argv) {
     .Filter("fXiCascDauDCA < 1200", "safeteyPrecuts_20")
     .Filter("TMath::Abs(fXicMassStraTrack-2.468) < 0.24", "safeteyPrecuts_21")
     .Filter("TMath::Abs(fXiccMassStraTrack-3.621) < 1e4", "safeteyPrecuts_22")
-    .Filter("TMath::Abs(fBachelorInnerExpectedSignal - fBachelorInnerTOF20Signal) < 150", "safeteyPrecuts_23")
-    .Filter("TMath::Abs(fPositiveInnerExpectedSignal - fPositiveInnerTOF20Signal) < 150", "safeteyPrecuts_24")
-    .Filter("TMath::Abs(fNegativeInnerExpectedSignal - fNegativeInnerTOF20Signal) < 150", "safeteyPrecuts_25")
-    .Filter("TMath::Abs(fPic1ExpectedSignal - fPic1TOFSignal) < 200", "safeteyPrecuts_26")
-    .Filter("TMath::Abs(fPic2ExpectedSignal - fPic2TOFSignal) < 200", "safeteyPrecuts_27")
+    .Filter("fXicDaughterDCAStraTrack < 40","safeteyPrecuts_23")
+    .Filter("fXiccDaughterDCAStraTrack < 40","safeteyPrecuts_24")
+    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","safeteyPrecuts_25")
+    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","safeteyPrecuts_26")
+    .Filter("TMath::Abs(fBachelorInnerExpectedSignal - fBachelorInnerTOF20Signal) < 150", "safeteyPrecuts_27")
+    .Filter("TMath::Abs(fPositiveInnerExpectedSignal - fPositiveInnerTOF20Signal) < 150", "safeteyPrecuts_28")
+    .Filter("TMath::Abs(fNegativeInnerExpectedSignal - fNegativeInnerTOF20Signal) < 150", "safeteyPrecuts_29")
+    .Filter("TMath::Abs(fPic1ExpectedSignal - fPic1TOFSignal) < 200", "safeteyPrecuts_30")
+    .Filter("TMath::Abs(fPic2ExpectedSignal - fPic2TOFSignal) < 200", "safeteyPrecuts_31")
     .Filter("TMath::Abs(fPiccExpectedSignal - fPiccTOFSignal) < 200", "safeteyPrecuts_out")
     ; 
 
@@ -900,6 +904,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 20","c5_fXiccDCAxyToPVStraTrack")
     .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 20","c5_fXiccDCAzToPVStraTrack")    
     ;
+
+
   
   //Fill some final histograms  
   auto h_df_xi_cc_im_xi_cc_mass_stra_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c5", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
