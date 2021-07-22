@@ -680,9 +680,9 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 10")
     .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 10")
     .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10")
-    .Filter("TMath::Abs(fPic1TOFDiffOuter) < 200", "Pic1TOF")
-    .Filter("TMath::Abs(fPic2TOFDiffOuter) < 200", "Pic2TOF")
-    .Filter("TMath::Abs(fPiccTOFDiffOuter) < 200", "PiccTOF")
+    .Filter("!(fPic1TOFSignal>0)||TMath::Abs(fPic1TOFDiffOuter) < 200", "Pic1TOF")
+    .Filter("!(fPic2TOFSignal>0)||TMath::Abs(fPic2TOFDiffOuter) < 200", "Pic2TOF")
+    .Filter("!(fPiccTOFSignal>0)||TMath::Abs(fPiccTOFDiffOuter) < 200", "PiccTOF")
     .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
   auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
 
