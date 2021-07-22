@@ -656,7 +656,7 @@ int main(int argc, char **argv) {
 
   auto h_df_xi_c_qa_trad_diff_xi_xi_c_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_c_xi_cc_stra", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffStra") ;
 
-  auto h_df_xi_c_qa_xi_cc_ddca_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca_stra", "xi_cc prong dca", 500, 0, 500}, "fXiccDaughterDCAStraTrack"); 
+  auto h_df_xi_c_qa_xi_cc_ddca_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca_stra", "xi_cc prong dca", 500, 0, 100}, "fXiccDaughterDCAStraTrack"); 
   auto h_df_xi_c_qa_xi_cc_ddist_pv_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
   auto h_df_xi_c_qa_xi_cc_trad_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusStraTrack"); 
   
