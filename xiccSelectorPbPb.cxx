@@ -689,7 +689,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 10")
     .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10")
     .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
-  auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
+  auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "lPtMCXiCC");  
 
   auto h_df_xi_c_qa_pi_tof_dv_expected_vs_measured    = df_xi_c_qa.Histo2D({"h_df_xi_c_qa_pi_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPiccTOFSignal", "fPiccExpectedSignal"); 
 
@@ -711,7 +711,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_qa_dcaxy_prod_xic_pi   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_xy_prod_xic_pi", "dca xy prod", 1000, -1000, 1000},"DCAxyProdXicPi"  ); 
   auto h_df_xi_c_qa_dcaz_prod_xic_pi   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_z_prod_xic_pi", "dca z prod", 1000, -1000, 1000},"DCAzProdXicPi"  ); 
   
-  auto h_df_xi_c_xi_cc_mass_stra = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0").Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_c_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_c_xi_cc_mass_stra = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0").Histo1D({"df_xi_c_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   
   //Select the Xi_cc
   auto df_xi_cc_im_c1 = df_xi_c
