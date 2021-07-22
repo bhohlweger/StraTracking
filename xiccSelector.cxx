@@ -304,6 +304,8 @@ int main(int argc, char **argv) {
 
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
+  } else { 
+    std::cout << "Utilizing the full beauty of strangeness hits\n";
   }
   auto df_precut = df
     .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")

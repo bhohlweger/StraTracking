@@ -303,7 +303,10 @@ int main(int argc, char **argv) {
   
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
-  } 
+  }  else { 
+    std::cout << "Utilizing the full beauty of strangeness hits, requested nHits = "<<  addedHitsMin << "\n";
+  }
+
   auto df_precut = df
     //.Filter("fNLongPrimaryTracks > 2473") //corresponds to 0-10 percent centrality
     .Filter("fV0DecayRadius > 0.5", "safeteyPrecuts_1")
