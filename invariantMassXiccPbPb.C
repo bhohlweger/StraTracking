@@ -1,37 +1,22 @@
-void invariantMassXicc(TString addon) { 
+void invariantMassXiccPbPb(TString addon) { 
   double xiccMass = 3.621; 
   double xiccWindow = 0.12;
-  
-  TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
-  TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
-  TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_xicc%s.root", addon.Data()), "read"); 
-  TFile* output = TFile::Open(TString::Format("outIMXicc%s.root"         , addon.Data()), "recreate"); 
-  
-  TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
 
-  TH1D* h_xiCounter = (TH1D*)xi->Get("df_xi_c_candCounter");
-  std::cout << h_xiCounter->GetBinContent(1) << std::endl;
-  TH1D* h_xicCounter = (TH1D*)xic->Get("df_xi_c_candCounter");
-  std::cout << h_xicCounter->GetBinContent(1) << std::endl;
+  TFile* mb = TFile::Open(    TString::Format("outxiccSelector_mb%s.root"  , addon.Data()), "read"); 
+  TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_xicc%s.root", addon.Data()), "read"); 
+  TFile* output = TFile::Open(TString::Format("outIMXiccPBPB%s.root"         , addon.Data()), "recreate"); 
+
+  double etaCut = 1.5; 
+
+
+  TH1D* h_mbRedCounter = (TH1D*)mb->Get("cutCounter");
+  TH1D* h_mbCounter = (TH1D*)mb->Get("df_xi_c_candCounter");
+  int nEvtsMb = h_mbCounter->GetBinContent(1); 
+  std::cout <<" nEvts mb: " << nEvtsMb << std::endl;
+  double normMb = 137/(0.05*nEvtsMb); //missing branching ratio ...
+  
   TH1D* h_xiccCounter = (TH1D*)xicc->Get("df_xi_c_candCounter");
   std::cout << h_xiccCounter->GetBinContent(1) << std::endl;
-
-  TH2D* h_xipteta = (TH2D*)xi->Get("ptetaXiGen"); 
-  double etaCut = 1.5; 
-  int xi_eta_min = h_xipteta->GetYaxis()->FindBin(-etaCut); 
-  int xi_eta_max = h_xipteta->GetYaxis()->FindBin(etaCut); 
-  int nEvtsXi = h_xipteta->ProjectionY()->Integral(xi_eta_min, xi_eta_max); 
-  std::cout <<" nEvts xi: " << nEvtsXi << std::endl;
-  double normXi = 1/(1.63e-6*nEvtsXi); 
-
-  TH1D* h_xicRedCounter = (TH1D*)xic->Get("cutCounter");  
-  TH2D* h_xicpteta = (TH2D*)xic->Get("ptetaXicGen"); 
-
-  int xic_eta_min = h_xicpteta->GetYaxis()->FindBin(-etaCut); 
-  int xic_eta_max = h_xicpteta->GetYaxis()->FindBin(etaCut); 
-  int nEvtsXic = h_xicpteta->ProjectionY()->Integral(xic_eta_min, xic_eta_max); 
-  std::cout <<" nEvts xic: " << nEvtsXic << std::endl;
-  double normXic = 1/(2.1e-4*nEvtsXic); 
   
   TH1D* h_xiccRedCounter = (TH1D*)xicc->Get("cutCounter");
   TH2D* h_xiccpteta = (TH2D*)xicc->Get("ptetaXiccGen"); 
@@ -48,31 +33,30 @@ void invariantMassXicc(TString addon) {
 
   double normXicc = (1.)/(nEvtsXicc); 
   
-  TList* inList = xi->GetListOfKeys(); 
+  TList* inList = mb->GetListOfKeys(); 
   TIter next(inList); 
   TObject* obj = nullptr; 
   TH1D* sumHist = nullptr;
-  TH1D* sumHistBkg = nullptr;
+  TH1D* mbHist = nullptr;
   TH1D* avgBkg; 
   int counter = -4;  // four non tracked histos
-  //double redXi; 
-  //double redXic;
-  //double redXicc; 
-
+  /*
+  double redMB;
+  double redXicc; 
+  */
   while ((obj = next())) {
     TString objName = TString::Format("%s",obj->GetName()); 
     if (objName.Contains("Counter")  || objName.Contains("_vs_")|| !(objName.Contains("mass") && objName.Contains("xi_cc"))) { 
       continue; 
     }
     
-    if (sumHist || sumHistBkg) { 
+    if (sumHist || mbHist) { 
       sumHist = nullptr;
-      sumHistBkg = nullptr;
+      mbHist = nullptr;
       avgBkg = nullptr;
     }
     std::cout <<"=========================================\n" << obj->GetName() << "\n=========================================\n"; 
-    TH1D* xiHist = (TH1D*)xi->Get(obj->GetName()); 
-    TH1D* xicHist = (TH1D*)xic->Get(obj->GetName()); 
+    TH1D* mbHist = (TH1D*)mb->Get(obj->GetName()); 
     TH1D* xiccHist = (TH1D*)xicc->Get(obj->GetName()); 
 
     TString toReplace = "mass_stra"; 
@@ -85,49 +69,42 @@ void invariantMassXicc(TString addon) {
     if (pT_vs_eta) { 
       pT_Identified = pT_vs_eta->ProjectionX(TString::Format("Efficiency_%s", objName.Data())); 
       pT_Identified->Sumw2();
+      output->cd();
+      pT_Identified->Write(TString::Format("pTSpectrum_%s", objName.Data())); 
       pT_Identified->Divide(xiccGenPt); 
     }
-    xiHist->Rebin(4);       
-    xicHist->Rebin(4); 
+    mbHist->Rebin(4); 
     xiccHist->Rebin(4); 
 
     double signalCounts = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow), xiccHist->FindBin(xiccMass+xiccWindow)); 
-    double bkgCounts = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow), xicHist->FindBin(xiccMass+xiccWindow)) + xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow), xiHist->FindBin(xiccMass+xiccWindow)); 
+    double bkgCounts = mbHist->Integral(mbHist->FindBin(xiccMass-xiccWindow), mbHist->FindBin(xiccMass+xiccWindow)); 
     
     double relErrSignal = TMath::Sqrt(signalCounts)/signalCounts; 
     double relErrBkg = TMath::Sqrt(bkgCounts)/bkgCounts; 
     
-    xiHist->Scale(normXi); 
-    xicHist->Scale(normXic); 
+    mbHist->Scale(normMb); 
     xiccHist->Scale(normXicc); 
 
     double signalCountsScaled = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow), xiccHist->FindBin(xiccMass+xiccWindow)); 
-    double bkgCountsScaled = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow), xicHist->FindBin(xiccMass+xiccWindow)) + xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow), xiHist->FindBin(xiccMass+xiccWindow)); 
+    double bkgCountsScaled = mbHist->Integral(mbHist->FindBin(xiccMass-xiccWindow), mbHist->FindBin(xiccMass+xiccWindow));
+
     std::cout << "Signal Efficiency pT integrated = " << TString::Format("%.3e",signalCounts*normXicc).Data() << std::endl; 
     std::cout << "Signal counts = " << signalCounts << " rel. Err. = " << relErrSignal << "\nSignal counts after scaling = " << signalCountsScaled << " Abs. Err. = " << relErrSignal*signalCountsScaled << std::endl; 
     std::cout << "Bkg counts = " << bkgCounts << " rel. Err. = " << relErrBkg << "\nBkg counts after scaling = " << bkgCountsScaled << " Abs Err. = " << relErrBkg*bkgCountsScaled << std::endl; 
-    
     /*
-    redXi = h_xiRedCounter->GetBinContent(counter); 
-    redXi = TMath::Abs(redXi) > 1e-30?1./redXi:-99; 
-    redXic = h_xicRedCounter->GetBinContent(counter);
-    redXic = TMath::Abs(redXic) > 1e-30?1./redXic:-99; 
+    redMB = h_mbRedCounter->GetBinContent(counter);
+    redMB = TMath::Abs(redMB) > 1e-30?1./redMB:-99; 
     redXicc = h_xiccRedCounter->GetBinContent(counter); 
     redXicc = TMath::Abs(redXicc) > 1e-30?1./redXicc:-99; 
-    */
     counter++; 
-    
-    sumHist = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
-    sumHist->Add(xicHist); 
+    */
+    sumHist = (TH1D*)mbHist->Clone(TString::Format("sumHist_%s", mbHist->GetName())); 
     sumHist->Add(xiccHist); 
     
-    sumHistBkg = (TH1D*)xiHist->Clone(TString::Format("sumHist_%s", xiHist->GetName())); 
-    sumHistBkg->Add(xicHist); 
-    
-    avgBkg = (TH1D*)sumHistBkg->Clone(TString::Format("avg%s", sumHistBkg->GetName()).Data()); 
+    avgBkg = (TH1D*)mbHist->Clone(TString::Format("avg%s", mbHist->GetName()).Data()); 
     
     int whiteBins = 0; 
-    TH1D* myavgBkg = (TH1D*)sumHistBkg->Clone(TString::Format("myavg%s", sumHistBkg->GetName()).Data()); 
+    TH1D* myavgBkg = (TH1D*)mbHist->Clone(TString::Format("myavg%s", mbHist->GetName()).Data()); 
     for (int iBin = 1; iBin < myavgBkg->GetNbinsX(); ++iBin) { 
       double cent = myavgBkg->GetBinCenter(iBin); 
       if (cent < 3 || cent > 4) { 
@@ -160,10 +137,8 @@ void invariantMassXicc(TString addon) {
     HoldTheLine->SetLineWidth(4); 
     HoldTheLine->SetLineStyle(2); 
         
-    xiHist->SetLineColor(kPink+7); 
-    xiHist->SetMarkerColor(kPink+7); 
-    xicHist->SetLineColor(38); 
-    xicHist->SetMarkerColor(38); 
+    mbHist->SetLineColor(38); 
+    mbHist->SetMarkerColor(38); 
     xiccHist->SetLineColor(kGreen+3); 
     xiccHist->SetMarkerColor(kGreen+3); 
     
@@ -180,9 +155,9 @@ void invariantMassXicc(TString addon) {
     sumHist->GetYaxis()->SetMaxDigits(3); 
     sumHist->GetYaxis()->SetNdivisions(504); 
       
-    sumHistBkg->SetTitle("Sum Background"); 
-    sumHistBkg->GetYaxis()->SetTitle("Counts relative to #Xi_{cc}^{++}");       
-    sumHistBkg->SetLineColor(kAzure-3); 
+    mbHist->SetTitle("MB"); 
+    mbHist->GetYaxis()->SetTitle("Counts relative to #Xi_{cc}^{++}");       
+    mbHist->SetLineColor(kAzure-3); 
           
     avgBkg->SetTitle("Average Background"); 
     avgBkg->GetXaxis()->SetTitle("IM(#Xi_{c}^{+},#pi^{+}) (GeV/#it{c}^{2})");
@@ -197,61 +172,49 @@ void invariantMassXicc(TString addon) {
     avgBkg->SetLineColor(kOrange+7); 
     avgBkg->SetLineStyle(2);
 
-    xiHist->SetTitle("#Xi^{#minus} + 3#times#pi_{Pythia}"); 
-    xicHist->SetTitle("#Xi^{+}_{c} + #pi_{Pythia}"); 
     xiccHist->SetTitle("#Xi_{cc}^{++}");
     xiccHist->SetFillColor(kGreen+3);
     xiccHist->SetFillStyle(1001); 
 
     leg->AddEntry(xiccHist, xiccHist->GetTitle(), "l");
-    leg->AddEntry(xicHist, xicHist->GetTitle(), "l");
-    leg->AddEntry(xiHist, xiHist->GetTitle(), "l");
-    leg->AddEntry(sumHist, sumHist->GetTitle(), "l");      
+    leg->AddEntry(mbHist, mbHist->GetTitle(), "l");
+    //leg->AddEntry(sumHist, sumHist->GetTitle(), "l");      
 
     leg2->SetFillStyle(0); 
     leg2->AddEntry(xiccHist, xiccHist->GetTitle(), "l");
     leg2->AddEntry(avgBkg, avgBkg->GetTitle(), "l");
 
     //get some number bby 
-    double nxi = xiHist->Integral(xiHist->FindBin(xiccMass-xiccWindow),xiHist->FindBin(xiccMass+xiccWindow)); 
-    double nxic = xicHist->Integral(xicHist->FindBin(xiccMass-xiccWindow),xicHist->FindBin(xiccMass+xiccWindow)); 
+    double nmb = mbHist->Integral(mbHist->FindBin(xiccMass-xiccWindow),mbHist->FindBin(xiccMass+xiccWindow)); 
     double nxicc = xiccHist->Integral(xiccHist->FindBin(xiccMass-xiccWindow),xiccHist->FindBin(xiccMass+xiccWindow)); 
     double nbkgavg = avgBkg->Integral(avgBkg->FindBin(xiccMass-xiccWindow),avgBkg->FindBin(xiccMass+xiccWindow)); 
-    std::cout <<"nxi = " << nxi << " nxic = "<< nxic << " nxicc = " << nxicc << " S/B = " << nxicc/(nxi+nxic) << std::endl;
-    std::cout <<"Average Bakcground values: \n" << "nbkgavg = " << nbkgavg << "S/B = " << nxicc/nbkgavg << std::endl; 
+    std::cout <<" nmb = "<< nmb << " nxicc = " << nxicc << " S/B = " << nxicc/(double)nmb << std::endl;
+    std::cout <<"Average Background values: \n" << "nbkgavg = " << nbkgavg << "S/B = " << nxicc/nbkgavg << std::endl; 
 
     p1->cd(); 
-    
-    sumHist->Draw("hist"); 
-    //sumHistBkg->Draw("histsame"); 
-    xiccHist->Draw("same"); 
+    sumHist->Draw("hist");      
     xiccHist->Draw("histsame"); 
-    xicHist->Draw("same"); 
-    xiHist->Draw("same"); 
-    sumHist->Draw("samehist"); 
+    mbHist->Draw("same"); 
     leg->Draw("same"); 
     HoldTheLine->DrawLine(xiccMass-xiccWindow, 0, xiccMass-xiccWindow, xiccHist->GetMaximum()*1.5); 
     HoldTheLine->DrawLine(xiccMass+xiccWindow, 0, xiccMass+xiccWindow, xiccHist->GetMaximum()*1.5); 
     
     TLatex* myTex = GenTex(); 
-    //myTex->DrawLatex(0.61, 0.55, TString::Format("Cut Variation %d", counter).Data());
     /*
-    myTex->DrawLatex(0.63, 0.55, TString::Format("Reduction Factors:").Data());
-    if (redXi > 0) {
-      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  %1.2e", redXi).Data());
-    } else { 
-      myTex->DrawLatex(0.63, 0.48, TString::Format("#Xi^{-}:  Complete Red.").Data()); 
-    }
-    if (redXic > 0) {
-      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: %1.2e", redXic).Data());
-    } else { 
-      myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{c}^{+}: Complete Red.").Data()); 
-    }
-    if (redXicc > 0) {
-      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
-    } else { 
-      myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
-    }
+    if (counter > 0) { 
+      //myTex->DrawLatex(0.61, 0.55, TString::Format("Cut Variation %d", counter).Data());
+      myTex->DrawLatex(0.63, 0.55, TString::Format("Reduction Factors:").Data());
+      if (redMB > 0) {
+	myTex->DrawLatex(0.63, 0.48, TString::Format("MB: %1.2e", redMB).Data());
+      } else { 
+	myTex->DrawLatex(0.63, 0.48, TString::Format("MB: Complete Red.").Data()); 
+      }
+      if (redXicc > 0) {
+	myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{cc}^{++}: %.1f", redXicc).Data());
+      } else { 
+	myTex->DrawLatex(0.63, 0.41, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
+      }
+    } 
     */
     myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}}");
   
@@ -261,7 +224,7 @@ void invariantMassXicc(TString addon) {
     leg2->Draw("same"); 
     myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}}");
     
-
+    output->cd();
     c1->Write();
     c1->Close(); 
     c2->Write();      
@@ -272,12 +235,10 @@ void invariantMassXicc(TString addon) {
     if (pT_vs_eta) pT_vs_eta->Write(); 
     if (pT_Identified) pT_Identified->Write();
     xiccHist->Write(TString::Format("xicc_%s",xiccHist->GetName())); 
-    xicHist->Write(TString::Format("xic_%s",xiccHist->GetName())); 
-    xiHist->Write(TString::Format("xi_%s",xiccHist->GetName())); 
+    mbHist->Write(TString::Format("xic_%s",xiccHist->GetName())); 
 
   }
   output->Close(); 
-  xi->Close(); 
-  xic->Close(); 
+  mb->Close(); 
   xicc->Close(); 
 }
