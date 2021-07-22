@@ -253,7 +253,7 @@ int main(int argc, char **argv) {
   
 
   //Xicc cuts
-  float xiccMass = 3.621;   
+  float xiccMass = 3.6;   
   float invMassDiffXicc = 0.120; //8 MeV/c2 mass window 
   auto decLengthXicc = [&xiccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiccMass/mom:-999; }; 
   auto invMassXiccCut = [&invMassDiffXicc, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXicc); }; 
