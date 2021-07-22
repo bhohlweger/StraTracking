@@ -711,7 +711,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_qa_dcaxy_prod_xic_pi   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_xy_prod_xic_pi", "dca xy prod", 1000, -1000, 1000},"DCAxyProdXicPi"  ); 
   auto h_df_xi_c_qa_dcaz_prod_xic_pi   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_z_prod_xic_pi", "dca z prod", 1000, -1000, 1000},"DCAzProdXicPi"  ); 
   
-  auto h_df_xi_c_xi_cc_mass_stra = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0","XicXiccDecayRadDiffStra").Histo1D({"df_xi_c_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_c_xi_cc_mass_stra = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0").Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Histo1D({"df_xi_c_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   
   //Select the Xi_cc
   auto df_xi_cc_im_c1 = df_xi_c
