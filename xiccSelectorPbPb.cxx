@@ -690,7 +690,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10")
     .Filter(invMassXiccCut, {"fXiccMassStraTrack"})
     .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtMCXiCC");  
-  auto h_df_xi_c_qa_pi_pt = df_xi_c_qa..Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
+  auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
 
   auto h_df_xi_c_qa_pi_tof_dv_expected_vs_measured    = df_xi_c_qa.Histo2D({"h_df_xi_c_qa_pi_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPiccTOFSignal", "fPiccExpectedSignal"); 
 
