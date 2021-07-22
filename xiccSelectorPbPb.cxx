@@ -347,9 +347,9 @@ int main(int argc, char **argv) {
 
   auto df_in = (
 		ExclusiveSignal?
-		df_ForceXi
+		df
 		.Filter("fTrueXicc","trueXiccs")
-		:df_ForceXi
+		:df
 		.Filter("!fTrueXicc","fakeXiccs")
 		)
     .Filter(associations,{"fTrueXicc", "fTrueXic", "fPiccUsed", "fPicUsed"}, "Associations")
