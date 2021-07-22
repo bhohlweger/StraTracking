@@ -715,7 +715,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_c_xi_cc_mass_stra = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0").Histo1D({"df_xi_c_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
   
   //Select the Xi_cc
-b  auto df_xi_cc_im_c1 = df_xi_c
+  auto df_xi_cc_im_c1 = df_xi_c
     .Filter("XicXiccDecayRadDiffStra > 0","c1_XicXiccDecayRadDiffStra")
     .Filter("fXicDaughterDCAStraTrack < 20","c1_fXicDaughterDCAStraTrack")
     .Filter("fXicDecayRadiusStraTrack > 0.004","c1_fXicDecayRadiusStraTrack")
