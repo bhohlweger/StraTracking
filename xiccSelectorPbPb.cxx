@@ -302,7 +302,7 @@ int main(int argc, char **argv) {
   std::cout << "Wrong association mode set to " << wrongAssociationMode << std::endl;
   
   if (ForceNoXi) { 
-    std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
+    std::cout << "Not using any strangeness hits, make sure you know what you doing!\n"; 
   }  else { 
     std::cout << "Utilizing the full beauty of strangeness hits, requested nHits = "<<  addedHitsMin << "\n";
   }
@@ -343,7 +343,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPiccExpectedSignal - fPiccTOFSignal) < 200", "safeteyPrecuts_out")
     ; 
 
-  auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
+  //auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
 
   auto df_in = (
 		ExclusiveSignal?
