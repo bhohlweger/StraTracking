@@ -305,7 +305,7 @@ int main(int argc, char **argv) {
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
   } else { 
-    std::cout << "Utilizing the full beauty of strangeness hits\n";
+    std::cout << "Utilizing the full beauty of strangeness hits, requested nHits = "<<  addedHitsMin << "\n";
   }
   auto df_precut = df
     .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")
@@ -464,6 +464,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
     .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
     .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
+    .Filter("TMath::Abs(fPositiveInnerExpectedSignal - fPositiveInnerTOF20Signal) < 150", "PosTOF")
+    .Filter("TMath::Abs(fNegativeInnerExpectedSignal - fNegativeInnerTOF20Signal) < 150", "NegTOF")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
@@ -533,6 +535,7 @@ int main(int argc, char **argv) {
     .Filter("fXiDecayLength > 0.02","fXiDecayLength")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
+    .Filter("TMath::Abs(fBachelorInnerExpectedSignal - fBachelorInnerTOF20Signal) < 150", "BachelorTOF")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC","df_xi_sel_h_bool").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
@@ -677,6 +680,9 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fXicPionDCAzToPV2) > 10")
     .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 10")
     .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10")
+    .Filter("TMath::Abs(fPic1ExpectedSignal - fPic1TOFSignal) < 200", "Pic1TOF")
+    .Filter("TMath::Abs(fPic2ExpectedSignal - fPic2TOFSignal) < 200", "Pic2TOF")
+    .Filter("TMath::Abs(fPiccExpectedSignal - fPiccTOFSignal) < 200", "PiccTOF")
     .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
   auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
 
