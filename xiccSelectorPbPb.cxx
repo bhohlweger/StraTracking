@@ -338,10 +338,10 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fBachelorInnerExpectedSignal - fBachelorInnerTOF20Signal) < 150", "safeteyPrecuts_27")
     .Filter("TMath::Abs(fPositiveInnerExpectedSignal - fPositiveInnerTOF20Signal) < 150", "safeteyPrecuts_28")
     .Filter("TMath::Abs(fNegativeInnerExpectedSignal - fNegativeInnerTOF20Signal) < 150", "safeteyPrecuts_29")
-    .Filter("!(fPic1TOFSignal>0)||(TMath::Abs(fPic1ExpectedSignal - fPic1TOFSignal) < 200", "safeteyPrecuts_30")
-    .Filter("!(fPic2TOFSignal>0)||(TMath::Abs(fPic2ExpectedSignal - fPic2TOFSignal) < 200", "safeteyPrecuts_31")
-    .Filter("!(fPiccTOFSignal>0)||(TMath::Abs(fPiccExpectedSignal - fPiccTOFSignal) < 200", "safeteyPrecuts_out")
-    ; 
+    .Filter("!(fPic1TOFSignal>0)||(TMath::Abs(fPic1ExpectedSignal - fPic1TOFSignal) < 200)", "safeteyPrecuts_30")
+    .Filter("!(fPic2TOFSignal>0)||(TMath::Abs(fPic2ExpectedSignal - fPic2TOFSignal) < 200)", "safeteyPrecuts_31")
+    .Filter("!(fPiccTOFSignal>0)||(TMath::Abs(fPiccExpectedSignal - fPiccTOFSignal) < 200)", "safeteyPrecuts_out")
+    ;
 
   //auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
 
