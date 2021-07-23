@@ -1,5 +1,6 @@
 void comparator(TString addon, TString mode) { 
   double xiccMass = 3.621; 
+
   double xiccWindow = 0.12;
   
   std::vector<TFile*> inFiles; 
@@ -31,7 +32,7 @@ void comparator(TString addon, TString mode) {
   } else if (mode.Contains("sgnbkgcomp")) {
     std::cout <<"You chose mode Signal/Background comparison!\n"; 
     if (xifile && mbfile) { 
-      histnames = {"p + 5#times#pi (Pythia MB)", "#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
+      histnames = {"p + 5#times#pi (Pythia MB #times 0.5)", "#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
     }  else if (xifile) { 
       histnames = {"#Xi^{#minus} + 3#times#pi_{Pythia}", "#Xi^{+}_{c} + #pi_{Pythia}", "#Xi_{cc}^{++}"}; 
     }  else {
@@ -76,7 +77,9 @@ void comparator(TString addon, TString mode) {
       }
       Hist->SetLineColor(colors[fileCounter]); 
       Hist->SetMarkerColor(colors[fileCounter]); 
-      Hist->Rebin(2); 
+      if (TString::Format("%s", it->GetName()).Contains("_mb_")) { 
+	Hist->Rebin(10);
+      } 
 
       Hist->GetYaxis()->SetTitleOffset(1.2); 
       Hist->GetXaxis()->SetNdivisions(506); 
@@ -84,8 +87,11 @@ void comparator(TString addon, TString mode) {
 	
       Hist->SetTitle(histnames[fileCounter].Data()); 
 
-      Hist->Scale(1./Hist->GetMaximum()); 
-    
+      if (TString::Format("%s", it->GetName()).Contains("_mb_")) { 
+	Hist->Scale(1./(2*Hist->GetMaximum())); 
+      } else { 
+	Hist->Scale(1./Hist->GetMaximum()); 
+      }
       Hist->GetXaxis()->SetTitle(obj->GetName()); 
       Hist->GetYaxis()->SetRangeUser(0.,2.5); 
       Hist->GetYaxis()->SetTitle("Count Normalized to Maximum"); 
