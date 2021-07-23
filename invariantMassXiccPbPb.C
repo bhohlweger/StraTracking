@@ -29,7 +29,15 @@ void invariantMassXiccPbPb(TString addon) {
   TH1D* xiccGenPt = (TH1D*)h_xiccpteta->ProjectionX("pTXiccGenerados",xicc_eta_min, xicc_eta_max);
   xiccGenPt->Sumw2(); 
   output->cd(); 
+  xiccGenPt->Rebin(4); 
   xiccGenPt->Write(); 
+  
+  TH1D* xiccidentbefcuts = (TH1D*)xicc->Get("df_xi_c_qa_xi_cc_pt"); 
+  xiccidentbefcuts->Write("identficados");
+  xiccidentbefcuts->Divide(xiccGenPt);
+  xiccidentbefcuts->Write("effciendados");
+
+  
 
   double normXicc = (1.)/(nEvtsXicc); 
   
@@ -70,6 +78,7 @@ void invariantMassXiccPbPb(TString addon) {
       pT_Identified = pT_vs_eta->ProjectionX(TString::Format("Efficiency_%s", objName.Data())); 
       pT_Identified->Sumw2();
       output->cd();
+      pT_Identified->Rebin(4); 
       pT_Identified->Write(TString::Format("pTSpectrum_%s", objName.Data())); 
       pT_Identified->Divide(xiccGenPt); 
     }

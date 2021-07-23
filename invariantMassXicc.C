@@ -43,6 +43,7 @@ void invariantMassXicc(TString addon) {
     
   TH1D* xiccGenPt = (TH1D*)h_xiccpteta->ProjectionX("pTXiccGenerados",xicc_eta_min, xicc_eta_max);
   xiccGenPt->Sumw2(); 
+  xiccGenPt->Rebin(4);
   output->cd(); 
   xiccGenPt->Write(); 
 
@@ -85,6 +86,7 @@ void invariantMassXicc(TString addon) {
     if (pT_vs_eta) { 
       pT_Identified = pT_vs_eta->ProjectionX(TString::Format("Efficiency_%s", objName.Data())); 
       pT_Identified->Sumw2();
+      pT_Identified->Rebin(4);
       pT_Identified->Divide(xiccGenPt); 
     }
     xiHist->Rebin(4);       
