@@ -317,19 +317,19 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fNegativeDCAz )> 25", "safeteyPrecuts_7")
     .Filter("TMath::Abs(fBachelorDCAxy)> 25", "safeteyPrecuts_8")
     .Filter("TMath::Abs(fBachelorDCAz )> 25", "safeteyPrecuts_9")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1     )> 10", "safeteyPrecuts_10")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1      )> 10", "safeteyPrecuts_11")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2     )> 10", "safeteyPrecuts_12")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2      )> 10", "safeteyPrecuts_13")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack )> 10", "safeteyPrecuts_14")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack  )> 10", "safeteyPrecuts_15")
+    .Filter("TMath::Abs(fPic1DCAxyToPV         )> 10", "safeteyPrecuts_10")
+    .Filter("TMath::Abs(fPic1DCAzToPV          )> 10", "safeteyPrecuts_11")
+    .Filter("TMath::Abs(fPic1DCAxyToPV         )> 10", "safeteyPrecuts_12")
+    .Filter("TMath::Abs(fPic2DCAzToPV          )> 10", "safeteyPrecuts_13")
+    .Filter("TMath::Abs(fPiccDCAxyToPV         )> 10", "safeteyPrecuts_14")
+    .Filter("TMath::Abs(fPiccDCAzToPV          )> 10", "safeteyPrecuts_15")
     .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036", "safeteyPrecuts_16")
-    .Filter("fXiPtStraTrack > 0.2", "safeteyPrecuts_17")
-    .Filter("fXiV0DauDCA   < 1000", "safeteyPrecuts_18")
+    .Filter("fPtXi > 0.2", "safeteyPrecuts_17")
+    .Filter("fV0DauDCA   < 1000", "safeteyPrecuts_18")
     .Filter("TMath::Abs(fXiMass-1.322) < 0.036", "safeteyPrecuts_19")
-    .Filter("fXiCascDauDCA < 1200", "safeteyPrecuts_20")
-    .Filter("TMath::Abs(fXicMassStraTrack-2.468) < 0.24", "safeteyPrecuts_21")
-    .Filter("TMath::Abs(fXiccMassStraTrack-3.621) < 1e4", "safeteyPrecutsOut")
+    .Filter("fXiDauDCA < 1200", "safeteyPrecuts_20")
+    .Filter("TMath::Abs(fXicMass-2.468) < 0.24", "safeteyPrecuts_21")
+    .Filter("TMath::Abs(fXiccMass-3.621) < 1e4", "safeteyPrecutsOut")
     ; 
 
   auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
@@ -343,26 +343,12 @@ int main(int argc, char **argv) {
 		)
     .Filter(associations,{"fTrueXicc", "fTrueXic", "fPiccUsed", "fPicUsed"}, "Associations")
     .Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;})
-    .Define("fXiccY", HarryPlotter::YFromMomentum, {"lPXiCCStraTrack", "lPtXiCCStraTrack", "fXiccPDGMass", "fXiCCEta"})
-    .Define("fNegBeta", beta, {"fNegativeLength", "fNegativeTOFSignal"})
-    .Define("fPosBeta", beta, {"fPositiveLength", "fPositiveTOFSignal"})
-    .Define("fBachBeta", beta, {"fBachelorLength", "fBachelorTOFSignal"}) 
-    .Define("fNegExpectedBeta", beta, {"fNegativeLength", "fNegativeExpectedSignal"})
-    .Define("fPosExpectedBeta", beta, {"fPositiveLength", "fPositiveExpectedSignal"})
-    .Define("fBachExpectedBeta", beta, {"fBachelorLength", "fBachelorExpectedSignal"})     // .Define("fPic1Beta", beta, {"fNegativeLength", "fNegativeTOFSignal"})
+    .Define("fXiccY", HarryPlotter::YFromMomentum, {"fPXiCC", "fPtXiCC", "fXiccPDGMass", "fXiCCEta"})
     .Filter("TMath::Abs(fXiCCEta)<1.5", "XiccEta")
-    // .Filter("TMath::Abs(fXiCEta)<0.5")
-    // .Filter("TMath::Abs(fXiEta)<0.5")
-    // .Filter("TMath::Abs(fPiCCEta)<0.5")
-    // .Filter("TMath::Abs(fPiC1Eta)<0.5")
-    // .Filter("TMath::Abs(fPiC2Eta)<0.5")
-    // .Filter("TMath::Abs(fBachelorEta)<0.5")
-    // .Filter("TMath::Abs(fPositiveEta)<0.5")
-    // .Filter("TMath::Abs(fNegativeEta)<0.5")
-    .Filter(pTCut, {"lPtXiCCStraTrack"}, "pTXicc")
+    .Filter(pTCut, {"fPtXiCC"}, "pTXicc")
     ;
 
-  auto h_df_in_im_xi_cc_mass_stra = df_in.Histo1D({"h_df_in_im_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_in_im_xi_cc_mass = df_in.Histo1D({"h_df_in_im_xi_cc_mass", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto in_counter = df_in.Count(); 
 
   auto df_in_qa = df_in.Filter("fFirstCandidateXiCC","df_in_h_bool"); 
@@ -381,8 +367,6 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_pos_dca_xy_vs_lmb_dl_pv = df_in_qa.Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"}).Histo2D<float,float>({"df_in_qa_pos_dca_xy_vs_lmb_dl_pv", "pos dca xy pv vs lmb decay length", 1000, -10000, 10000, 100, 0, 40}, "fPositiveDCAxy", "fLmbInvDecayLengthToPV"); 
   auto h_df_in_qa_pos_dca_xy_vs_pos_pt = df_in_qa.Histo2D<float,float>({"h_df_in_qa_pos_dca_xy_vs_pos_pt", "pos dca xy pv vs pos pt", 1000, -10000, 10000, 200, 0, 20}, "fPositiveDCAxy", "fPositivePt"); 
 
-  auto h_df_in_qa_pos_beta_vs_pos_pt = df_in_qa.Histo2D({"h_df_in_qa_pos_beta_vs_pos_pt", "pos beta vs pos pt", 200, 0, 5, 1200, 0, 1.2}, "fPositivePt", "fPosBeta"); 
-
   auto h_df_in_qa_neg_pt = df_in_qa.Histo1D({"df_in_qa_neg_pt", "neg pt", 200, 0, 20}, "fNegativePt"); 
   auto h_df_in_qa_neg_dca_xy = df_in_qa.Histo1D({"df_in_qa_neg_dca_xy", "neg dca xy pv", 1000, -1e4, 1e4}, "fNegativeDCAxy"); 
   auto h_df_in_qa_neg_dca_z = df_in_qa.Histo1D({"df_in_qa_neg_dca_z", "neg dca z pv", 1000, -1e4, 1e4}, "fNegativeDCAz"); 
@@ -397,7 +381,6 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_neg_dca_xy_vs_neg_pt = df_in_qa.Histo2D<float,float>({"h_df_in_qa_neg_dca_xy_vs_neg_pt", "neg dca xy pv vs neg pt", 1000, -10000, 10000, 200, 0, 20}, "fNegativeDCAxy", "fNegativePt"); 
   auto h_df_in_qa_neg_hits_vs_pos_hits = df_in_qa.Histo2D<int,int>({"h_df_in_qa_neg_hits_vs_pos_hits", "neg hits vs pos hits", 15, -0.5, 14.5, 15, -0.5, 14.5}, "fNegativeClusters", "fPositiveClusters"); 
   auto h_df_in_qa_neg_dca_xy_vs_pos_dca_xy = df_in_qa.Histo2D<float,float>({"df_in_qa_neg_dca_xy_vs_pos_dca_xy", "neg dca xy pv vs pos dca xy pv", 1000, -10000, 10000, 1000, -10000, 10000}, "fNegativeDCAxy", "fPositiveDCAxy"); 
-  auto h_df_in_qa_neg_beta_vs_neg_pt = df_in_qa.Histo2D({"h_df_in_qa_neg_beta_vs_neg_pt", "neg beta vs neg pt", 200, 0, 5, 1200, 0, 1.2}, "fNegativePt", "fNegBeta"); 
 
   auto h_df_in_qa_lmb_dca_xy = df_in_qa.Histo1D({"df_in_qa_lmb_dca_xy", "lmb dca xy pv", 1000, -1e4, 1e4}, "fV0DCAxyToPV");
   auto h_df_in_qa_lmb_dca_z = df_in_qa.Histo1D({"df_in_qa_lmb_dca_z", "lmb dca z pv", 1000, -1e4, 1e4}, "fV0DCAzToPV");
@@ -406,8 +389,8 @@ int main(int argc, char **argv) {
   
   auto h_df_in_qa_lmb_totp = df_in_qa.Histo1D({"df_in_qa_lmb_totp", "lmb tot p", 200, 0, 20}, "fV0TotalMomentum");   
   auto h_df_in_qa_lmb_ddist_pv = df_in_qa.Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"}).Histo1D({"df_in_qa_lmb_ddist_pv", "lmb ddist to pv", 1000, 0, 40}, "fLmbInvDecayLengthToPV");
-  auto h_df_in_qa_lmb_ddca = df_in_qa.Histo1D({"df_in_qa_lmb_ddca", "lmb prong dca", 500, 0, 100}, "fXiV0DauDCA"); 
-  auto h_df_in_qa_lmb_ddca_wide = df_in_qa.Histo1D({"df_in_qa_lmb_ddca_wide", "lmb prong dca", 500, 0, 5000}, "fXiV0DauDCA"); 
+  auto h_df_in_qa_lmb_ddca = df_in_qa.Histo1D({"df_in_qa_lmb_ddca", "lmb prong dca", 500, 0, 100}, "fV0DauDCA"); 
+  auto h_df_in_qa_lmb_ddca_wide = df_in_qa.Histo1D({"df_in_qa_lmb_ddca_wide", "lmb prong dca", 500, 0, 5000}, "fV0DauDCA"); 
   auto h_df_in_qa_lmb_trad = df_in_qa.Histo1D({"df_in_qa_lmb_trad", "lmb trad", 600, 0, 30}, "fV0DecayRadius"); 
   auto h_df_in_qa_lmb_trad_mc = df_in_qa.Histo1D({"df_in_qa_lmb_trad_mc", "lmb trad", 600, 0, 30}, "fV0DecayRadiusMC"); 
   auto h_df_in_qa_lmb_trad_diff = df_in_qa.Define("XiV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_qa_lmb_trad_diff", "lmb trad", 500, 0, 2}, "XiV0DecayRadDiff"); 
@@ -420,44 +403,25 @@ int main(int argc, char **argv) {
   auto df_lmb_im = df_in
     .Define("XiDecayRadDiff", "TMath::Abs(fXiDecayRadiusMC-fXiDecayRadius)")
     .Define("XiLmbDecayRadDiff", "fV0DecayRadius-fXiDecayRadius")
-    //.Define("XiXicDecayRadDiffTopo", "fXiDecayRadius-fXicDecayRadiusTopo")
-    .Define("XiXicDecayRadDiffStra", "fXiDecayRadius-fXicDecayRadiusStraTrack")
-    .Define("DCAxyProd"  , "fXiDCAxyToPVStraTrack*fXicPionDCAxyToPV1*fXicPionDCAxyToPV2*fXicDCAxyToPVStraTrack*fPicDCAxyToPVStraTrack") //O(1e7)
-    .Define("DCAxySqSum"  , "fXiDCAxyToPVStraTrack*fXiDCAxyToPVStraTrack+fXicPionDCAxyToPV1*fXicPionDCAxyToPV1+fXicPionDCAxyToPV2*fXicPionDCAxyToPV2+fXicDCAxyToPVStraTrack*fXicDCAxyToPVStraTrack+fPicDCAxyToPVStraTrack*fPicDCAxyToPVStraTrack") //O(1e7)
-    .Define("DCAzProd"   , "fXiDCAzToPVStraTrack*fXicPionDCAzToPV1*fXicPionDCAzToPV2*fXicDCAzToPVStraTrack*fPicDCAzToPVStraTrack")
-    .Define("DCAzSqSum"  , "fXiDCAzToPVStraTrack*fXiDCAzToPVStraTrack+fXicPionDCAzToPV1*fXicPionDCAzToPV1+fXicPionDCAzToPV2*fXicPionDCAzToPV2+fXicDCAzToPVStraTrack*fXicDCAzToPVStraTrack+fPicDCAzToPVStraTrack*fPicDCAzToPVStraTrack") //O(1e7)
-    .Define("DCAProdAdd" , "DCAxyProd*DCAxyProd+DCAzProd*DCAzProd")
-    .Define("DCAProdMult", "DCAxyProd*DCAzProd")
-    .Define("DCAxyProdXicPi", "fPicDCAxyToPVStraTrack*fXicDCAxyToPVStraTrack")
-    .Define("DCAzProdXicPi", "fPicDCAzToPVStraTrack*fXicDCAzToPVStraTrack")
+    .Define("XiXicDecayRadDiff", "fXiDecayRadius-fXicDecayRadius")
     .Define("fLmbInvDecayLengthToPV", decLengthLmb, {"fV0DecayLength", "fV0TotalMomentum"})
-    //.Define("fXicInvDecayLengthToPVTopo", decLengthXic, {"fXicDecayDistanceFromPVTopo", "lPXiCTopo"}) //Xi_c decay length from the PV topological
-    //.Define("fXiccInvDecayLengthToPVTopo", decLengthXicc, {"fXiccDecayDistanceFromPVTopo", "lPXiCCTopo"}) // Xi_cc decay length from the PV topological
-    .Define("fXicInvDecayLengthToPVStra", decLengthXic, {"fXicDecayDistanceFromPVStraTrack", "lPXiCStraTrack"})   // Xi_c decay length from the PV stra tracking 
-    .Define("fXiccInvDecayLengthToPVStra", decLengthXicc, {"fXiccDecayDistanceFromPVStraTrack", "lPXiCCStraTrack"}) // Xi_cc decay length form the PV stra tracking = this is the Xi_cc decay length! 
     .Define("fXiInvDecayLengthToPV", decLengthXi, {"fXiDecayLength", "fXiTotalMomentum"})
-    //.Define("fXiInvDecayLengthToDVTopo", decLengthXi, {"fXiCtoXiLengthTopo", "fXiTotalMomentum"}) //this is the Xi decay length 
-    //.Define("fXicInvDecayLengthToDVTopo", decLengthXic, {"fXiCCtoXiCLengthTopo", "lPXiCTopo"}) //this is the Xi_c decay length 
-    .Define("fXiInvDecayLengthToDVStra", decLengthXi, {"fXiCtoXiLengthStraTrack", "fXiTotalMomentum"}) //this is the Xi decay length 
-    .Define("fXicInvDecayLengthToDVStra", decLengthXic, {"fXiCCtoXiCLengthStraTrack", "lPXiCStraTrack"})    //this is the Xi_c decay length 
-    .Define("fPosExpPVDV", "fPositiveExpectedSignal - fPositiveExpectedSignalFromPV")
-    .Define("fNegExpPVDV", "fNegativeExpectedSignal - fNegativeExpectedSignalFromPV")
-    .Define("fBachExpPVDV", "fBachelorExpectedSignal - fBachelorExpectedSignalFromPV")
-    .Define("fPosTOFDiffOuter", "fPositiveTOFSignal-fPositiveExpectedSignal")
-    .Define("fNegTOFDiffOuter", "fNegativeTOFSignal-fNegativeExpectedSignal")
-    .Define("fBachTOFDiffOuter", "fBachelorTOFSignal-fBachelorExpectedSignal")
-    .Define("fPic1TOFDiffOuter", "fPic1TOFSignal-fPic1ExpectedSignal")
-    .Define("fPic2TOFDiffOuter", "fPic2TOFSignal-fPic2ExpectedSignal")
-    .Define("fPiccTOFDiffOuter", "fPiccTOFSignal-fPiccExpectedSignal")
+    .Define("fXicInvDecayLengthToPV", decLengthXic, {"fXicDecayDistanceFromPV", "fPXiC"})   // Xi_c decay length from the PV stra tracking 
+    .Define("fXiccInvDecayLengthToPV", decLengthXicc, {"fXiccDecayDistanceFromPV", "fPXiCC"}) // Xi_cc decay length form the PV stra tracking = this is the Xi_cc decay length! 
+
+    .Define("fXiInvDecayLengthToDV", decLengthXi, {"fXiCtoXiLength", "fXiTotalMomentum"}) //this is the Xi decay length 
+    .Define("fXicInvDecayLengthToDV", decLengthXic, {"fXiCCtoXiCLength", "fPXiC"})    //this is the Xi_c decay length 
+    
     .Define("fPosTOFDiffInner", "fPositiveInnerTOF20Signal-fPositiveInnerExpectedSignal")
     .Define("fNegTOFDiffInner", "fNegativeInnerTOF20Signal-fNegativeInnerExpectedSignal")
     .Define("fBachTOFDiffInner", "fBachelorInnerTOF20Signal-fBachelorInnerExpectedSignal")
     .Define("fPic1TOFDiffInner", "fPic1InnerTOF20Signal-fPic1InnerExpectedSignal")
     .Define("fPic2TOFDiffInner", "fPic2InnerTOF20Signal-fPic2InnerExpectedSignal")
     .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
+    
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fXiV0DauDCA < 1000","fXiV0DauDCA")
+    .Filter("fV0DauDCA < 1000","fV0DauDCA")
     .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
     .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
@@ -476,30 +440,12 @@ int main(int argc, char **argv) {
 
   //Towards the Xi for Xic->Xi+2pi 
   //Fill some Histograms
-  auto h_df_lmb_xi_cc_mass_stra = df_lmb.Histo1D({"h_df_lmb_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_lmb_xi_cc_mass = df_lmb.Histo1D({"h_df_lmb_xi_cc_mass", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
 
   auto df_lmb_qa = df_lmb.Filter("fFirstCandidateXiCC", "df_lmb_h_bool");
   
-  auto h_df_lmb_qa_pos_beta_expected_vs_pos_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_beta_expected_vs_pos_pt", "pos beta exp vs pos pt", 200, 0, 5, 1200, 0, 1.2}, "fPositivePt", "fPosExpectedBeta"); 
-  auto h_df_lmb_qa_pos_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveTOFSignal", "fPositiveExpectedSignal"); 
-  auto h_df_lmb_qa_pos_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPositiveTOFSignal", "fPositiveExpectedSignalFromPV"); 
-  auto h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fPositiveExpectedSignal","fPosExpPVDV");
-  auto h_df_lmb_qa_pos_tof_diff_outer = df_lmb_qa.Histo1D({"h_df_lmb_qa_pos_tof_diff_outer", "beta expected vs measured", 2000, -2000, 2000}, "fPosTOFDiffOuter");
   auto h_df_lmb_qa_pos_tof_diff_inner = df_lmb_qa.Histo1D({"h_df_lmb_qa_pos_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fPosTOFDiffInner");
-
-  auto h_df_lmb_qa_neg_beta_expected_vs_neg_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_beta_expected_vs_neg_pt", "neg beta exp vs neg pt", 200, 0, 5, 1200, 0, 1.2}, "fNegativePt", "fNegExpectedBeta"); 
-  auto h_df_lmb_qa_neg_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeTOFSignal", "fNegativeExpectedSignal"); 
-  auto h_df_lmb_qa_neg_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fNegativeTOFSignal", "fNegativeExpectedSignalFromPV"); 
-  auto h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fNegativeExpectedSignal","fNegExpPVDV");
-  auto h_df_lmb_qa_neg_tof_diff_outer = df_lmb_qa.Histo1D({"h_df_lmb_qa_neg_tof_diff_outer", "beta expected vs measured", 2000, -2000, 2000}, "fNegTOFDiffOuter");
   auto h_df_lmb_qa_neg_tof_diff_inner = df_lmb_qa.Histo1D({"h_df_lmb_qa_neg_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fNegTOFDiffInner");
-
-  auto h_df_lmb_qa_bach_beta_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_vs_bach_pt", "bach beta vs bach pt", 200, 0, 5, 1200, 0, 1.2}, "fBachelorPt", "fBachBeta"); 
-  auto h_df_lmb_qa_bach_beta_expected_vs_bach_pt = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_beta_expected_vs_bach_pt", "bach beta exp vs bach pt", 200, 0, 5, 1200, 0, 1.2}, "fBachelorPt", "fBachExpectedBeta"); 
-  auto h_df_lmb_qa_bach_tof_dv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorTOFSignal", "fBachelorExpectedSignal"); 
-  auto h_df_lmb_qa_bach_tof_pv_expected_vs_measured = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_pv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fBachelorTOFSignal", "fBachelorExpectedSignalFromPV"); 
-  auto h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected = df_lmb_qa.Histo2D({"h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected", "beta expected vs measured", 2000, 2500, 6500, 2000, -1000, 1000}, "fBachelorExpectedSignal", "fBachExpPVDV"); 
-  auto h_df_lmb_qa_bach_tof_diff_outer = df_lmb_qa.Histo1D({"h_df_lmb_qa_bach_tof_diff_outer", "beta expected vs measured", 2000, -2000, 2000}, "fBachTOFDiffOuter");
   auto h_df_lmb_qa_bach_tof_diff_inner = df_lmb_qa.Histo1D({"h_df_lmb_qa_bach_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fBachTOFDiffInner");
 
   auto h_df_lmb_qa_bach_pt = df_lmb_qa.Histo1D({"df_lmb_qa_bach_pt", "bach pt", 200, 0, 20}, "fBachelorPt"); 
@@ -515,10 +461,9 @@ int main(int argc, char **argv) {
   auto h_df_lmb_qa_bach_dca_xy_vs_lmb_dl_pv = df_lmb_qa.Histo2D<float,float>({"df_lmb_qa_bach_dca_xy_vs_lmb_dl_pv", "bach dca xy pv vs lmb decay length", 1000, -10000, 10000, 100, 0, 40}, "fBachelorDCAxy", "fLmbInvDecayLengthToPV"); 
   auto h_df_lmb_qa_bach_dca_xy_vs_bach_pt = df_lmb_qa.Histo2D<float,float>({"h_df_lmb_qa_bach_dca_xy_vs_bach_pt", "bach dca xy pv vs bach pt", 1000, -10000, 10000, 200, 0, 20}, "fBachelorDCAxy", "fBachelorPt"); 
   
-    
-  auto h_df_lmb_qa_xi_pt = df_lmb_qa.Histo1D({"df_lmb_qa_xi_pt", "xi pt", 200, 0, 20}, "fXiPtStraTrack"); 
+  auto h_df_lmb_qa_xi_pt = df_lmb_qa.Histo1D({"df_lmb_qa_xi_pt", "xi pt", 200, 0, 20}, "fPtXi"); 
   auto h_df_lmb_qa_xi_ddist_pv = df_lmb_qa.Histo1D({"df_lmb_qa_xi_ddist_pv", "xi ddist to pv", 1000, 0, 20}, "fXiInvDecayLengthToPV");
-  auto h_df_lmb_qa_xi_ddca = df_lmb_qa.Histo1D({"df_lmb_qa_xi_ddca", "xi prong dca", 500, 0, 2000}, "fXiCascDauDCA"); 
+  auto h_df_lmb_qa_xi_ddca = df_lmb_qa.Histo1D({"df_lmb_qa_xi_ddca", "xi prong dca", 500, 0, 2000}, "fXiDauDCA"); 
   auto h_df_lmb_qa_xi_trad = df_lmb_qa.Histo1D({"df_lmb_qa_xi_trad", "xi trad", 250, 0, 10}, "fXiDecayRadius"); 
   auto h_df_lmb_qa_xi_trad_mc = df_lmb_qa.Histo1D({"df_lmb_qa_xi_trad_mc", "xi trad", 250, 0, 10}, "fXiDecayRadiusMC"); 
   auto h_df_lmb_qa_xi_trad_diff = df_lmb_qa.Histo1D({"df_lmb_qa_xi_trad_diff", "xi trad", 250, 0, 2}, "XiDecayRadDiff"); 
@@ -531,7 +476,7 @@ int main(int argc, char **argv) {
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5","fXiDecayRadius")
     .Filter("XiLmbDecayRadDiff > 0","XiLmbDecayRadDiff")
-    .Filter("fXiCascDauDCA < 1200","fXiCascDauDCA")
+    .Filter("fXiDauDCA < 1200","fXiDauDCA")
     .Filter("fXiDecayLength > 0.02","fXiDecayLength")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
@@ -547,367 +492,312 @@ int main(int argc, char **argv) {
   
   auto h_df_xi_im_xi_mass = df_xi_im.Filter("fFirstCandidateXiCC","df_xi_im_h_bool").Histo1D({"df_xi_im_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
   
-  //auto h_df_xi_im_xi_ddist_dv_topo = df_xi_im.Filter("fFirstCandidateXiCC","df_xi_im_h_bool").Histo1D({"df_xi_im_xi_dist_dv_topo", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVTopo"); 
-  auto h_df_xi_im_xi_ddist_dv_stra = df_xi_im.Filter("fFirstCandidateXiCC","df_xi_im_h_bool").Histo1D({"df_xi_im_xi_dist_dv_stra", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDVStra"); 
+  auto h_df_xi_im_xi_ddist_dv = df_xi_im.Filter("fFirstCandidateXiCC","df_xi_im_h_bool").Histo1D({"df_xi_im_xi_dist_dv", "xi decay dist", 1500, 0, 30}, "fXiInvDecayLengthToDV"); 
 
   auto df_xi = df_xi_im
     .Filter(invMassXiCut, {"fXiMass"},"fXiMass")
     ;
-  auto h_df_xi_xi_cc_mass_stra = df_xi.Histo1D({"h_df_xi_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_xi_cc_mass = df_xi.Histo1D({"h_df_xi_xi_cc_mass", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
 
   //Towards the Xi_c for Xi_cc->Xi_c+pi: 
   //Fill some histograms 
-  //Topo
   
   auto df_xi_qa = df_xi.Filter("fFirstCandidateXiCC","df_xi_h_bool");
-  /*
-    auto h_df_xi_qa_trad_diff_xi_xi_c_topo = df_xi_qa.Histo1D({"df_xi_qa_trad_diff_xi_xi_c_topo", "xi-xi_c trad", 500, -50, 100}, "XiXicDecayRadDiffTopo") ;
 
-    auto h_df_xi_qa_xi_c_mass_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_mass_topo", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassTopo"); 
+  auto h_df_xi_qa_trad_diff_xi_xi_c = df_xi_qa.Histo1D({"df_xi_qa_trad_diff_xi_xi_c", "xi-xi_c trad", 500, -50, 200}, "XiXicDecayRadDiff") ;
   
-    auto h_df_xi_qa_xi_c_ddca_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_ddca_topo", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCATopo"); 
-    auto h_df_xi_qa_xi_c_ddist_pv_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_pv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVTopo"); 
-    auto h_df_xi_qa_xi_c_ddist_dv_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv_topo", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVTopo");   
-    auto h_df_xi_qa_xi_c_trad_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_c_trad_topo", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusTopo"); 
+  auto h_df_xi_qa_xi_c_mass = df_xi_qa.Histo1D({"df_xi_qa_xi_c_mass", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMass"); 
+  auto h_df_xi_qa_xi_c_pt = df_xi_qa.Histo1D({"df_xi_qa_xi_c_pt", "xi_c pt", 200, 0, 20}, "fPXiC");  
   
-    auto h_df_xi_qa_xi_dca_xy_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy_topo", "xi dca xy topo", 1000, -500, 500}, "fXiDCAxyToPVTopo");  
-    auto h_df_xi_qa_xi_dca_z_topo = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z_topo", "xi dca z topo", 1000, -500, 500}, "fXiDCAzToPVTopo");  
-  */
-  //Stra
-
-  auto h_df_xi_qa_trad_diff_xi_xi_c_stra = df_xi_qa.Histo1D({"df_xi_qa_trad_diff_xi_xi_c_stra", "xi-xi_c trad", 500, -50, 200}, "XiXicDecayRadDiffStra") ;
+  auto h_df_xi_qa_xi_c_ddca = df_xi_qa.Histo1D({"df_xi_qa_xi_c_ddca", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCA"); 
+  auto h_df_xi_qa_xi_c_ddist_pv = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV"); //redefine as mL/p 
+  auto h_df_xi_qa_xi_c_ddist_dv = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV"); 
+  auto h_df_xi_qa_xi_c_trad = df_xi_qa.Histo1D({"df_xi_qa_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius"); 
   
-  auto h_df_xi_qa_xi_c_mass_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_mass_stra", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassStraTrack"); 
-  auto h_df_xi_qa_xi_c_pt = df_xi_qa.Histo1D({"df_xi_qa_xi_c_pt", "xi_c pt", 200, 0, 20}, "fXicPtStraTrack");  
-  
-  auto h_df_xi_qa_xi_c_ddca_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_ddca_stra", "xi_c prong dca", 500, 0, 100}, "fXicDaughterDCAStraTrack"); 
-  auto h_df_xi_qa_xi_c_ddist_pv_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); //redefine as mL/p 
-  auto h_df_xi_qa_xi_c_ddist_dv_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
-  auto h_df_xi_qa_xi_c_trad_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack"); 
-  
-  auto h_df_xi_qa_xi_dca_xy_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy_stra", "xi dca xy stra", 1000, -500, 500}, "fXiDCAxyToPVStraTrack");  
-  auto h_df_xi_qa_xi_dca_z_stra = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z_stra", "xi dca z stra", 1000, -500, 500}, "fXiDCAzToPVStraTrack");  
+  auto h_df_xi_qa_xi_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy", "xi dca xy", 1000, -500, 500}, "fXicDCAxyToPV");  
+  auto h_df_xi_qa_xi_dca_z = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z", "xi dca z", 1000, -500, 500}, "fXicDCAzToPV");  
   
   //Pions (from the xic) 
   
-  auto h_df_xi_qa_pi_one_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_pi_one_dca_xy", "pi1 dca xy stra", 1000, -500, 500}, "fXicPionDCAxyToPV1");  
-  auto h_df_xi_qa_pi_one_dca_z = df_xi_qa.Histo1D({"df_xi_qa_pi_one_dca_z", "pi1 dca z stra", 1000, -500, 500}, "fXicPionDCAzToPV1");  
+  auto h_df_xi_qa_pi_one_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_pi_one_dca_xy", "pi1 dca xy stra", 1000, -500, 500}, "fPic1DCAxyToPV");  
+  auto h_df_xi_qa_pi_one_dca_z = df_xi_qa.Histo1D({"df_xi_qa_pi_one_dca_z", "pi1 dca z stra", 1000, -500, 500}, "fPic1DCAzToPV");  
   
-  auto h_df_xi_qa_pi_two_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_pi_two_dca_xy", "pi2 dca xy stra", 1000, -500, 500}, "fXicPionDCAxyToPV2");  
-  auto h_df_xi_qa_pi_two_dca_z = df_xi_qa.Histo1D({"df_xi_qa_pi_two_dca_z", "pi2 dca z stra", 1000, -500, 500}, "fXicPionDCAzToPV2");  
+  auto h_df_xi_qa_pi_two_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_pi_two_dca_xy", "pi2 dca xy stra", 1000, -500, 500}, "fPic2DCAxyToPV");  
+  auto h_df_xi_qa_pi_two_dca_z = df_xi_qa.Histo1D({"df_xi_qa_pi_two_dca_z", "pi2 dca z stra", 1000, -500, 500}, "fPic2DCAzToPV");  
   
   auto h_df_xi_qa_pi_one_pt = df_xi_qa.Histo1D({"df_xi_qa_pi_one_pt", "pi c pt", 200, 0, 20}, "fPiC1Pt");  
   auto h_df_xi_qa_pi_two_pt = df_xi_qa.Histo1D({"df_xi_qa_pi_two_pt", "pi c pt", 200, 0, 20}, "fPiC2Pt");  
 
-  auto h_df_xi_qa_pi_one_tof_dv_expected_vs_measured = df_xi_qa.Histo2D({"h_df_xi_qa_pi_one_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPic1TOFSignal", "fPic1ExpectedSignal"); 
-  auto h_df_xi_qa_pi_two_tof_dv_expected_vs_measured = df_xi_qa.Histo2D({"h_df_xi_qa_pi_two_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPic2TOFSignal", "fPic2ExpectedSignal"); 
-  
-  auto h_df_xi_qa_pic1_tof_diff_outer = df_xi_qa.Histo1D({"h_df_xi_qa_pic1_tof_diff_outer", "beta expected vs measured", 2000, -2000, 2000}, "fPic1TOFDiffOuter");
   auto h_df_xi_qa_pic1_tof_diff_inner = df_xi_qa.Histo1D({"h_df_xi_qa_pic1_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fPic1TOFDiffInner");
-
-  auto h_df_xi_qa_pic2_tof_diff_outer = df_xi_qa.Histo1D({"h_df_xi_qa_pic2_tof_diff_outer", "beta expected vs measured", 2000, -2000, 2000}, "fPic2TOFDiffOuter");
   auto h_df_xi_qa_pic2_tof_diff_inner = df_xi_qa.Histo1D({"h_df_xi_qa_pic2_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fPic2TOFDiffInner");
 
   //study a bit decay length + trad 
   //cut on Trad and check decay lengths to pv and to dv 
-  auto h_df_xi_qa_trad_xi_c_ddist_pv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.003","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra"); 
-  auto h_df_xi_qa_trad_xi_c_ddist_dv_stra = df_xi_qa.Filter("fXicDecayRadiusStraTrack > 0.003","corrStudy_fXicDecayRadiusStraTrack").Histo1D({"df_xi_qa_trad_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_pv = df_xi_qa.Filter("fXicDecayRadius > 0.003","corrStudy_fXicDecayRadius").Histo1D({"df_xi_qa_trad_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_dv = df_xi_qa.Filter("fXicDecayRadius > 0.003","corrStudy_fXicDecayRadius").Histo1D({"df_xi_qa_trad_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV"); 
   
   //cut on dl to pv 
-  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.002","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDVStra");
-  auto h_df_xi_qa_dl_pv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToPVStra > 0.002","corrStudy_fXicInvDecayLengthToPVStra").Histo1D({"df_xi_qa_dl_pv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv =  df_xi_qa.Filter("fXicInvDecayLengthToPV > 0.002","corrStudy_fXicInvDecayLengthToPV").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV");
+  auto h_df_xi_qa_dl_pv_xi_c_trad = df_xi_qa.Filter("fXicInvDecayLengthToPV > 0.002","corrStudy_fXicInvDecayLengthToPV").Histo1D({"df_xi_qa_dl_pv_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius");
   
   //cut on dl to dv 
-  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra =  df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.06","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv_stra", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPVStra");
-  auto h_df_xi_qa_dl_dv_xi_c_trad_stra = df_xi_qa.Filter("fXicInvDecayLengthToDVStra < 0.06","corrStudy_fXicInvDecayLengthToDVStra").Histo1D({"df_xi_qa_dl_dv_xi_c_trad_stra", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadiusStraTrack");
+  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv =  df_xi_qa.Filter("fXicInvDecayLengthToDV < 0.06","corrStudy_fXicInvDecayLengthToDV").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV");
+  auto h_df_xi_qa_dl_dv_xi_c_trad = df_xi_qa.Filter("fXicInvDecayLengthToDV < 0.06","corrStudy_fXicInvDecayLengthToDV").Histo1D({"df_xi_qa_dl_dv_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius");
 
   //Select the Xi_c 
 
   auto df_xi_c_im = df_xi
-    //.Define("XicXiccDecayRadDiffTopo", "fXicDecayRadiusTopo-fXiccDecayRadiusTopo")
-    .Define("XicXiccDecayRadDiffStra", "fXicDecayRadiusStraTrack-fXiccDecayRadiusStraTrack")
-    .Filter("XiXicDecayRadDiffStra > 0","XiXicDecayRadDiffStra")
+    .Define("XicXiccDecayRadDiff", "fXicDecayRadius-fXiccDecayRadius")
+    .Filter("XiXicDecayRadDiff > 0","XiXicDecayRadDiff")
     ;
   
-  auto h_df_xi_c_im_xi_c_mass_stra = df_xi_c_im.Filter("fFirstCandidateXiCC","df_xi_c_im_h_bool").Histo1D({"df_xi_c_im_xi_c_mass_stra", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMassStraTrack"); 
-
-  auto df_xi_c = df_xi_c_im.Filter(invMassXicCut, {"fXicMassStraTrack"},"fXicMassStraTrack");
+  auto h_df_xi_c_im_xi_c_mass = df_xi_c_im.Filter("fFirstCandidateXiCC","df_xi_c_im_h_bool").Histo1D({"df_xi_c_im_xi_c_mass", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMass"); 
+  auto df_xi_c = df_xi_c_im.Filter(invMassXicCut, {"fXicMass"},"fXicMass");
   
   auto df_xi_c_qa = df_xi_c.Filter("fFirstCandidateXiCC","df_xi_c_h_bool"); 
   
   //Towards the actual Xi_cc
   //Fill some histograms 
   
-  //Topo
-  /*
-    auto h_df_xi_c_qa_trad_diff_xi_xi_c_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_c_xi_cc_topo", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffTopo") ;
+  auto h_df_xi_c_qa_trad_diff_xi_xi_c = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_c_xi_cc", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiff") ;
 
-    auto h_df_xi_c_qa_xi_cc_ddca_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca_topo", "xi_cc prong dca", 500, 0, 500}, "fXiccDaughterDCATopo"); 
-    auto h_df_xi_c_qa_xi_cc_ddist_pv_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dist_pv_topo", "xi_cc decay dist", 3000, 0, 0.5}, "fXiccInvDecayLengthToPVTopo"); 
-    auto h_df_xi_c_qa_xi_cc_trad_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_trad_topo", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusTopo"); 
-
-    auto h_df_xi_c_qa_xi_c_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_xy_topo", "xi_c dca xy topo", 1000, -500, 500}, "fXicDCAxyToPVTopo");  
-    auto h_df_xi_c_qa_xi_c_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_z_topo", "xi_c dca z topo", 1000, -500, 500}, "fXicDCAzToPVTopo");  
-
-    auto h_df_xi_c_qa_xi_cc_dca_xy_topo = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_xy_topo", "xi_cc dca xy topo", 1000, -500, 500}, "fXiccDCAxyToPVTopo");  
-    auto h_df_xi_c_qa_xi_cc_dca_z_topo  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_z_topo", "xi_cc dca z topo", 1000, -500, 500}, "fXiccDCAzToPVTopo");  
-  */
-  //Stra
-
-  auto h_df_xi_c_qa_trad_diff_xi_xi_c_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_trad_diff_xi_c_xi_cc_stra", "xi_c-xi_cc trad", 500, -100, 150}, "XicXiccDecayRadDiffStra") ;
-
-  auto h_df_xi_c_qa_xi_cc_ddca_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca_stra", "xi_cc prong dca", 500, 0, 100}, "fXiccDaughterDCAStraTrack"); 
-  auto h_df_xi_c_qa_xi_cc_ddist_pv_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
-  auto h_df_xi_c_qa_xi_cc_trad_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadiusStraTrack"); 
+  auto h_df_xi_c_qa_xi_cc_ddca = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_ddca", "xi_cc prong dca", 500, 0, 100}, "fXiccDaughterDCA"); 
+  auto h_df_xi_c_qa_xi_cc_ddist_pv = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dist_pv", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPV"); 
+  auto h_df_xi_c_qa_xi_cc_trad = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_trad", "xi_cc trad", 2000, 0, 0.5}, "fXiccDecayRadius"); 
   
-  auto h_df_xi_c_qa_xi_c_dca_xy_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_xy_stra", "xi_c dca xy stra", 1000, -500, 500}, "fXicDCAxyToPVStraTrack");  
-  auto h_df_xi_c_qa_xi_c_dca_z_stra  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_z_stra", "xi_c dca z stra", 1000, -500, 500}, "fXicDCAzToPVStraTrack");  
+  auto h_df_xi_c_qa_xi_c_dca_xy = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_xy", "xi_c dca xy stra", 1000, -500, 500}, "fXicDCAxyToPV");  
+  auto h_df_xi_c_qa_xi_c_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_c_dca_z", "xi_c dca z stra", 1000, -500, 500}, "fXicDCAzToPV");  
   
-  auto h_df_xi_c_qa_xi_cc_dca_xy_stra = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_xy_stra", "xi_cc dca xy stra", 1000, -500, 500}, "fXiccDCAxyToPVStraTrack");  
-  auto h_df_xi_c_qa_xi_cc_dca_z_stra  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_z_stra", "xi_cc dca z stra", 1000, -500, 500}, "fXiccDCAzToPVStraTrack");  
+  auto h_df_xi_c_qa_xi_cc_dca_xy = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_xy", "xi_cc dca xy stra", 1000, -500, 500}, "fXiccDCAxyToPV");  
+  auto h_df_xi_c_qa_xi_cc_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_xi_cc_dca_z", "xi_cc dca z stra", 1000, -500, 500}, "fXiccDCAzToPV");  
 
   //Pions (from the xicc)
  
-  auto h_df_xi_c_qa_pi_dca_xy = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_xy", "xi_c dca xy stra", 1000, -500, 500}, "fPicDCAxyToPVStraTrack");  
-  auto h_df_xi_c_qa_pi_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_z", "xi_c dca z stra", 1000, -500, 500}, "fPicDCAzToPVStraTrack");  
+  auto h_df_xi_c_qa_pi_dca_xy = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_xy", "xi_c dca xy stra", 1000, -500, 500}, "fPiccDCAxyToPV");  
+  auto h_df_xi_c_qa_pi_dca_z  = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_dca_z", "xi_c dca z stra", 1000, -500, 500}, "fPiccDCAzToPV");  
 
-  auto h_df_xi_c_qa_picc_tof_diff_outer = df_xi_c_qa.Histo1D({"h_df_xi_c_qa_picc_tof_diff_outer", "beta expected vs measured", 2000, -2000, 2000}, "fPiccTOFDiffOuter");
   auto h_df_xi_c_qa_picc_tof_diff_inner = df_xi_c_qa.Histo1D({"h_df_xi_c_qa_picc_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fPiccTOFDiffInner");
   
   auto h_df_xi_c_qa_xi_cc_pt = df_xi_c_qa
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 10")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 10")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 10")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10")
-    .Filter("!(fPic1TOFSignal>0)||TMath::Abs(fPic1TOFDiffOuter) < 200", "Pic1TOF")
-    .Filter("!(fPic2TOFSignal>0)||TMath::Abs(fPic2TOFDiffOuter) < 200", "Pic2TOF")
-    .Filter("!(fPiccTOFSignal>0)||TMath::Abs(fPiccTOFDiffOuter) < 200", "PiccTOF")
-    .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "lPtXiCCStraTrack");  
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 10")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 10")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 10")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 10")
+    .Filter("TMath::Abs(fPic1TOFDiffInner) < 200", "Pic1TOF")
+    .Filter("TMath::Abs(fPic2TOFDiffInner) < 200", "Pic2TOF")
+    .Filter("TMath::Abs(fPiccTOFDiffInner) < 200", "PiccTOF")
+    .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "fPtXiCC");  
   auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
 
-  auto h_df_xi_c_qa_pi_tof_dv_expected_vs_measured    = df_xi_c_qa.Histo2D({"h_df_xi_c_qa_pi_tof_dv_expected_vs_measured", "beta expected vs measured", 2000, 2500, 6500, 2000, 2500, 6500}, "fPiccTOFSignal", "fPiccExpectedSignal"); 
-
   //cut on Trad and check decay lengths 
-  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra = df_xi_c_qa.Filter("fXiccDecayRadiusStraTrack > 0.003","corrStudy_fXiccDecayRadiusStraTrack").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv_stra", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPVStra"); 
-  
+  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv = df_xi_c_qa.Filter("fXiccDecayRadius > 0.003","corrStudy_fXiccDecayRadius").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPV"); 
   //cut on dl to pv 
-  auto h_df_xi_c_qa_dl_pv_xi_cc_trad_stra = df_xi_c_qa.Filter("(fXiccInvDecayLengthToPVStra > 0.002) && (fXiccInvDecayLengthToPVStra <  0.06)","corrStudy_fXiccInvDecayLengthToPVStra").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad_stra", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadiusStraTrack");
-  
-  //some product magic .. 
-
-  auto h_df_xi_c_qa_dcaxyProd   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_xy_prod", "dca xy prod", 1000, -1e8, 1e8},"DCAxyProd"  ); 
-  auto h_df_xi_c_qa_dcazProd    = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_z_prod", "dca z prod", 1000, -1e8, 1e8},"DCAzProd"   ); 
-  auto h_df_xi_c_qa_dcaProdAdd  = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_prod_add", "dca prod add", 1000, 0, 1e15},"DCAProdAdd" ); 
-  auto h_df_xi_c_qa_dcaProdMult = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_prod_mult", "dca prod mult", 1000, -1e9, 1e9},"DCAProdMult"); 
-  auto h_df_xi_c_qa_dcaxySqSum   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_xy_sqsum", "dca xy sqsum", 1000, 0, 1000000},"DCAxySqSum"  ); 
-  auto h_df_xi_c_qa_dcazSqSum   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_z_sqsum", "dca z sqsum", 1000, 0, 1000000},"DCAzSqSum"  ); 
-  
-  auto h_df_xi_c_qa_dcaxy_prod_xic_pi   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_xy_prod_xic_pi", "dca xy prod", 1000, -1000, 1000},"DCAxyProdXicPi"  ); 
-  auto h_df_xi_c_qa_dcaz_prod_xic_pi   = df_xi_c_qa.Histo1D({"df_xi_c_qa_dca_z_prod_xic_pi", "dca z prod", 1000, -1000, 1000},"DCAzProdXicPi"  ); 
-  
-  auto h_df_xi_c_xi_cc_mass_stra = df_xi_c.Filter("XicXiccDecayRadDiffStra > 0","XicXiccDecayRadDiffStra").Histo1D({"df_xi_c_xi_cc_mass_stra", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
+  auto h_df_xi_c_qa_dl_pv_xi_cc_trad = df_xi_c_qa.Filter("(fXiccInvDecayLengthToPV > 0.002) && (fXiccInvDecayLengthToPV <  0.06)","corrStudy_fXiccInvDecayLengthToPV").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadius");
+    
+  auto h_df_xi_c_xi_cc_mass = df_xi_c.Filter("XicXiccDecayRadDiff > 0","XicXiccDecayRadDiff").Histo1D({"df_xi_c_xi_cc_mass", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   
   //Select the Xi_cc
   auto df_xi_cc_im_c1 = df_xi_c
-    .Filter("XicXiccDecayRadDiffStra > 0","c1_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c1_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c1_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c1_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c1_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c1_fXiccDaughterDCAStraTrack")
-    .Filter("fXiccDecayRadiusStraTrack > 0.005","c1_fXiccDecayRadiusStraTrack")
-    .Filter("fXiccInvDecayLengthToPVStra > 0.004","c1_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c1_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c1_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c1_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10","c1_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c1_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c1_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c1_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c1_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c1_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10","c1_fPicDCAzToPVStraTrack")
+    .Filter("XicXiccDecayRadDiff > 0","c1_XicXiccDecayRadDiffStra")
+    .Filter("fXicDaughterDCA < 20","c1_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c1_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c1_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.1","c1_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 20","c1_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c1_fXiccDecayRadius")
+    .Filter("fXiccInvDecayLengthToPV > 0.004","c1_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c1_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c1_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c1_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c1_fXicDCAzToPV")
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c1_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c1_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c1_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 20","c1_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c1_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 10","c1_fPicDCAzToPV")
     ;
   
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c1 = df_xi_cc_im_c1.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c1", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c1_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
-  auto out_counter_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
+  auto h_df_xi_cc_im_xi_cc_mass_c1 = df_xi_cc_im_c1.Histo1D({"df_xi_cc_im_xi_cc_mass_c1", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMass"}, "c1_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
+  auto out_counter_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
   
   //Select the Xi_cc
   auto df_xi_cc_im_c2 = df_xi_c
-    .Filter("XicXiccDecayRadDiffStra > 0","c2_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 12","c2_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c2_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c2_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.06","c2_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 5","c2_fXiccDaughterDCAStraTrack")
-    .Filter("fXiccDecayRadiusStraTrack > 0.005","c2_fXiccDecayRadiusStraTrack")
-    .Filter("(fXiccInvDecayLengthToPVStra > 0.004) && (fXiccInvDecayLengthToPVStra < 0.06)","c2_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c2_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c2_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c2_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10","c2_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 20","c2_fXiccDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 20","c2_fXiccDCAzToPVStraTrack")    
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c2_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 20","c2_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c2_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c2_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c2_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10","c2_fPicDCAzToPVStraTrack")
+    .Filter("XicXiccDecayRadDiff > 0","c2_XicXiccDecayRadDiff")
+    .Filter("fXicDaughterDCA < 12","c2_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c2_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c2_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.06","c2_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 5","c2_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c2_fXiccDecayRadius")
+    .Filter("(fXiccInvDecayLengthToPV > 0.004) && (fXiccInvDecayLengthToPV < 0.06)","c2_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c2_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c2_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c2_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c2_fXicDCAzToPV")
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 20","c2_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 20","c2_fXiccDCAzToPV")    
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c2_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 20","c2_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c2_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 20","c2_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c2_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 10","c2_fPicDCAzToPV")
     ;
   
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c2 = df_xi_cc_im_c2.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c2", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c2_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c2", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_mass_c2 = df_xi_cc_im_c2.Histo1D({"df_xi_cc_im_xi_cc_mass_c2", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMass"}, "c2_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c2", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
   
-  auto out_counter_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
+  auto out_counter_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
   
   //Select the Xi_cc
   auto df_xi_cc_im_c3 = df_xi_c
-    .Filter("XicXiccDecayRadDiffStra > 0","c3_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c3_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c3_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c3_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c3_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c3_fXiccDaughterDCAStraTrack")
-    //.Filter("fXiccDecayRadiusStraTrack > 0.005","c3_fXiccDecayRadiusStraTrack")
-    //.Filter("fXiccInvDecayLengthToPVStra > 0.004","c3_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c3_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c3_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 15","c3_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 10","c3_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c3_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c3_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c3_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c3_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c3_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 10","c3_fPicDCAzToPVStraTrack")
+    .Filter("XicXiccDecayRadDiff > 0","c3_XicXiccDecayRadDiff")
+    .Filter("fXicDaughterDCA < 20","c3_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c3_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c3_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.1","c3_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 20","c3_fXiccDaughterDCA")
+    //.Filter("fXiccDecayRadius > 0.005","c3_fXiccDecayRadius")
+    //.Filter("fXiccInvDecayLengthToPV > 0.004","c3_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c3_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c3_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c3_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c3_fXicDCAzToPV")
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c3_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c3_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c3_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 20","c3_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c3_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 10","c3_fPicDCAzToPV")
     ;
   
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c3", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c3_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c3", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_mass_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_mass_c3", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMass"}, "c3_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c3", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
   
-  auto out_counter_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
+  auto out_counter_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
   
   auto df_xi_cc_im_c4 = df_xi_c
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c4_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c4_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c4_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c4_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c4_fXiccDaughterDCAStraTrack")
-    .Filter("fXiccDecayRadiusStraTrack > 0.005","c4_fXiccDecayRadiusStraTrack")
-    .Filter("fXiccInvDecayLengthToPVStra > 0.004","c4_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c4_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c4_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20","c4_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20","c4_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c4_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c4_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c4_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c4_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_fPicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c4_fPicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c4_fXiccDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c4_fXiccDCAzToPVStraTrack")    
+    .Filter("XicXiccDecayRadDiff > 0","c4_XicXiccDecayRadDiff")
+    .Filter("fXicDaughterDCA < 20","c4_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c4_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c4_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.1","c4_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 20","c4_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c4_fXiccDecayRadius")
+    .Filter("fXiccInvDecayLengthToPV > 0.004","c4_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c4_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c4_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c4_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 20","c4_fXicDCAzToPV")
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c4_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c4_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c4_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 20","c4_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c4_fPicDCAxyToPV")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 20","c4_fPicDCAzToPV")
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 50","c4_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 50","c4_fXiccDCAzToPV")    
     ;
   
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c4_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_mass_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_mass_c4", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMass"}, "c4_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
   
-  auto out_counter_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
+  auto out_counter_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMass"}).Count();
  
   auto df_xi_cc_im_c4_2Hit = df_xi_c
     .Filter("fXiHitsAdded > 1")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_2Hit_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c4_2Hit_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c4_2Hit_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c4_2Hit_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c4_2Hit_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c4_2Hit_fXiccDaughterDCAStraTrack")
-    .Filter("fXiccDecayRadiusStraTrack > 0.005","c4_2Hit_fXiccDecayRadiusStraTrack")
-    .Filter("fXiccInvDecayLengthToPVStra > 0.004","c4_2Hit_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c4_2Hit_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c4_2Hit_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20","c4_2Hit_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20","c4_2Hit_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c4_2Hit_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c4_2Hit_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c4_2Hit_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c4_2Hit_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_2Hit_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c4_2Hit_fPicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c4_2Hit_fXiccDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c4_2Hit_fXiccDCAzToPVStraTrack")    
+    .Filter("XicXiccDecayRadDiff > 0","c4_2Hit_XicXiccDecayRadDiff")
+    .Filter("fXicDaughterDCA < 20","c4_2Hit_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c4_2Hit_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c4_2Hit_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.1","c4_2Hit_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 20","c4_2Hit_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c4_2Hit_fXiccDecayRadius")
+    .Filter("fXiccInvDecayLengthToPV > 0.004","c4_2Hit_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c4_2Hit_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c4_2Hit_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c4_2Hit_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 20","c4_2Hit_fXicDCAzToPV")
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c4_2Hit_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c4_2Hit_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c4_2Hit_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 20","c4_2Hit_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c4_2Hit_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 20","c4_2Hit_fPicDCAzToPV")
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 50","c4_2Hit_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 50","c4_2Hit_fXiccDCAzToPV")    
     ;
   
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c4_2Hit = df_xi_cc_im_c4_2Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4_2Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c4_2Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_2Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
-  auto out_counter_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
+  auto h_df_xi_cc_im_xi_cc_mass_c4_2Hit = df_xi_cc_im_c4_2Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_c4_2Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMass"}, "c4_2Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_2Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
+  auto out_counter_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMass"}).Count();
   
   auto df_xi_cc_im_c4_3Hit = df_xi_c
     .Filter("fXiHitsAdded > 2")
-    .Filter("XicXiccDecayRadDiffStra > 0","c4_3Hit_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 20","c4_3Hit_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c4_3Hit_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c4_3Hit_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.1","c4_3Hit_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 20","c4_3Hit_fXiccDaughterDCAStraTrack")
-    .Filter("fXiccDecayRadiusStraTrack > 0.005","c4_3Hit_fXiccDecayRadiusStraTrack")
-    .Filter("fXiccInvDecayLengthToPVStra > 0.004","c4_3Hit_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 5","c4_3Hit_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c4_3Hit_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20","c4_3Hit_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20","c4_3Hit_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c4_3Hit_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c4_3Hit_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c4_3Hit_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 20","c4_3Hit_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c4_3Hit_fPicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c4_3Hit_fPicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 50","c4_3Hit_fXiccDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 50","c4_3Hit_fXiccDCAzToPVStraTrack")    
+    .Filter("XicXiccDecayRadDiff > 0","c4_3Hit_XicXiccDecayRadDiff")
+    .Filter("fXicDaughterDCA < 20","c4_3Hit_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c4_3Hit_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c4_3Hit_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.1","c4_3Hit_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 20","c4_3Hit_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c4_3Hit_fXiccDecayRadius")
+    .Filter("fXiccInvDecayLengthToPV > 0.004","c4_3Hit_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c4_3Hit_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c4_3Hit_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c4_3Hit_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 20","c4_3Hit_fXicDCAzToPV")
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c4_3Hit_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c4_3Hit_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c4_3Hit_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 20","c4_3Hit_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c4_3Hit_fPicDCAxyToPV")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 20","c4_3Hit_fPicDCAzToPV")
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 50","c4_3Hit_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 50","c4_3Hit_fXiccDCAzToPV")    
     ;
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c4_3Hit = df_xi_cc_im_c4_3Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c4_3Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c4_3Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_3Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
-  auto out_counter_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count();
+  auto h_df_xi_cc_im_xi_cc_mass_c4_3Hit = df_xi_cc_im_c4_3Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_c4_3Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMass"}, "c4_3Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c4_3Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
+  auto out_counter_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMass"}).Count();
 
   //Select the Xi_cc
   auto df_xi_cc_im_c5 = df_xi_c
-    .Filter("XicXiccDecayRadDiffStra > 0","c5_XicXiccDecayRadDiffStra")
-    .Filter("fXicDaughterDCAStraTrack < 10","c5_fXicDaughterDCAStraTrack")
-    .Filter("fXicDecayRadiusStraTrack > 0.004","c5_fXicDecayRadiusStraTrack")
-    .Filter("fXicInvDecayLengthToPVStra > 0.002","c5_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDVStra < 0.06","c5_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCAStraTrack < 5","c5_fXiccDaughterDCAStraTrack")
-    .Filter("fXiccDecayRadiusStraTrack > 0.005","c5_fXiccDecayRadiusStraTrack")
-    .Filter("(fXiccInvDecayLengthToPVStra > 0.004) && (fXiccInvDecayLengthToPVStra < 0.06)","c5_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPVStraTrack) > 10","c5_fXiDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiDCAzToPVStraTrack) > 10","c5_fXiDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAxyToPVStraTrack) > 20","c5_fXicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXicDCAzToPVStraTrack) > 20","c5_fXicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV1) > 10","c5_fXicPionDCAxyToPV1")
-    .Filter("TMath::Abs(fXicPionDCAzToPV1) > 15","c5_fXicPionDCAzToPV1")
-    .Filter("TMath::Abs(fXicPionDCAxyToPV2) > 10","c5_fXicPionDCAxyToPV2")
-    .Filter("TMath::Abs(fXicPionDCAzToPV2) > 15","c5_fXicPionDCAzToPV2")
-    .Filter("TMath::Abs(fPicDCAxyToPVStraTrack) > 20","c5_fPicDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fPicDCAzToPVStraTrack) > 20","c5_fPicDCAzToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAxyToPVStraTrack) < 20","c5_fXiccDCAxyToPVStraTrack")
-    .Filter("TMath::Abs(fXiccDCAzToPVStraTrack) < 20","c5_fXiccDCAzToPVStraTrack")    
+    .Filter("XicXiccDecayRadDiff > 0","c5_XicXiccDecayRadDiff")
+    .Filter("fXicDaughterDCA < 10","c5_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.004","c5_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.002","c5_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV < 0.06","c5_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 5","c5_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c5_fXiccDecayRadius")
+    .Filter("(fXiccInvDecayLengthToPV > 0.004) && (fXiccInvDecayLengthToPV < 0.06)","c5_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 10","c5_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c5_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c5_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 20","c5_fXicDCAzToPV")
+    .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c5_fXicPionDCAxyToPV1")
+    .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c5_fXicPionDCAzToPV1")
+    .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c5_fXicPionDCAxyToPV2")
+    .Filter("TMath::Abs(fPic2DCAzToPV) > 15","c5_fXicPionDCAzToPV2")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c5_fPicDCAxyToPV")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 20","c5_fPicDCAzToPV")
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 20","c5_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 20","c5_fXiccDCAzToPV")    
     ;
   
   //Fill some final histograms  
-  auto h_df_xi_cc_im_xi_cc_mass_stra_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_mass_stra_c5", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMassStraTrack"); 
-  auto h_df_xi_cc_im_xi_cc_pt_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMassStraTrack"}, "c5_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c5", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "lPtMCXiCC", "fXiccY"); 
+  auto h_df_xi_cc_im_xi_cc_mass_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_mass_c5", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
+  auto h_df_xi_cc_im_xi_cc_pt_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMass"}, "c5_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_y_c5", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
   
-  auto out_counter_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMassStraTrack"}).Count(); 
+  auto out_counter_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
 
 
   std::cout <<"==========================================================================================================\n";
@@ -959,7 +849,7 @@ int main(int argc, char **argv) {
   
   out->cd(); 
   //this is my start
-  HarryPlotter::CheckAndStore(out, h_df_in_im_xi_cc_mass_stra);
+  HarryPlotter::CheckAndStore(out, h_df_in_im_xi_cc_mass);
   //to the lmb
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_pt);
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy);
@@ -996,7 +886,7 @@ int main(int argc, char **argv) {
   
   //to xi 
   HarryPlotter::CheckAndStore(out, h_df_lmb_im_lmb_mass);
-  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_cc_mass_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_lmb_xi_cc_mass); 
 
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_pt);
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_dca_xy);
@@ -1016,10 +906,9 @@ int main(int argc, char **argv) {
   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_xi_mass);
 
-  //HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_topo); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_ddist_dv); 
   
-  HarryPlotter::CheckAndStore(out, h_df_xi_xi_cc_mass_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_xi_cc_mass);
 
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_trad_diff_lmb_xi); 
   
@@ -1027,29 +916,17 @@ int main(int argc, char **argv) {
   
   //to xi_c
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_mass);
-  /*
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass_topo); 
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c_topo);
- 
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddca_topo); 
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_pv_topo); 
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_dv_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_trad_topo); 
-    
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z_topo);
-  */
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass_stra); 
+   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass); 
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_pt); 
   
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddca_stra); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_pv_stra); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_dv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_trad_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddca); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_pv); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_ddist_dv);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_trad); 
 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_dca_z);
 
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_one_pt);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_two_pt);
@@ -1059,35 +936,25 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_two_dca_xy);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_two_dca_z);
 
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_xi_c_ddist_pv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_xi_c_ddist_dv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_pv_xi_c_ddist_dv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_pv_xi_c_trad_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_dv_xi_c_ddist_dv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_dv_xi_c_trad_stra);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_xi_c_ddist_pv);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_xi_c_ddist_dv);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_pv_xi_c_ddist_dv);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_pv_xi_c_trad);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_dv_xi_c_ddist_dv);
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_dl_dv_xi_c_trad);
   
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_im_xi_c_mass_stra); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_im_xi_c_mass); 
   
   //to xi_cc
-  /*
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_topo);
-    HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_topo);
-  */
-
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy_stra);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z_stra);
+ 
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_trad_diff_xi_xi_c);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddca);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_ddist_pv);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_trad);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy);
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z);
     
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_xi_cc_pt); 
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_pt); 
@@ -1095,36 +962,25 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_dca_xy);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_dca_z);
   
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_trad_xi_cc_ddist_pv_stra);
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dl_pv_xi_cc_trad_stra);
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_trad_xi_cc_ddist_pv);
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dl_pv_xi_cc_trad);
   
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcaxyProd  );
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcazProd   );
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcaProdAdd );
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcaProdMult);
-  
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcaxySqSum);
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcazSqSum);
-
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcaxy_prod_xic_pi);
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dcaz_prod_xic_pi);
-  
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_mass_stra); 
+  HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_mass); 
   
   //xi_cc selected
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c1); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c1); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c2); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c2); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c2); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c3); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c3); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c3); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c4); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c4); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c4_2Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c4_2Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4_2Hit); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c4_3Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c4_3Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4_3Hit); 
-  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_stra_c5); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c5); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c5); 
 
   HarryPlotter::CheckAndStore(out, h_LongTracks); 
@@ -1149,24 +1005,12 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy_vs_lmb_dl_pv);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_dca_xy_vs_pos_pt);   
 
-  HarryPlotter::CheckAndStore(out, h_df_in_qa_pos_beta_vs_pos_pt);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_beta_expected_vs_pos_pt);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_dv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_pv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_dv_expected_vs_pv_expected);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_diff_outer);   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_pos_tof_diff_inner);   
       
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_hits);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_lmb_dl_pv);   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_dca_xy_vs_neg_pt);   
 
-  HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_beta_vs_neg_pt);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_beta_expected_vs_neg_pt);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_dv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_pv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_dv_expected_vs_pv_expected);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_diff_outer);   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_neg_tof_diff_inner);   
   
   HarryPlotter::CheckAndStore(out, h_df_in_qa_neg_hits_vs_pos_hits);   
@@ -1176,28 +1020,13 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_dca_xy_vs_lmb_dl_pv);   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_dca_xy_vs_bach_pt);   
 
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_beta_vs_bach_pt);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_beta_expected_vs_bach_pt);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_dv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_pv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_dv_expected_vs_pv_expected);   
-  HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_diff_outer);   
   HarryPlotter::CheckAndStore(out, h_df_lmb_qa_bach_tof_diff_inner);   
   
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_one_tof_dv_expected_vs_measured);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pi_two_tof_dv_expected_vs_measured);   
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_pi_tof_dv_expected_vs_measured); 
-
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pic1_tof_diff_outer);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pic1_tof_diff_inner);
-  HarryPlotter::CheckAndStore(out, h_df_xi_qa_pic2_tof_diff_outer);
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_pic2_tof_diff_inner);
   
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_picc_tof_diff_outer);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_picc_tof_diff_inner);
   
-
-
   out->Close(); 
   timer.Stop();
   timer.Print();
