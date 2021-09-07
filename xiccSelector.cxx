@@ -307,6 +307,12 @@ int main(int argc, char **argv) {
   } else { 
     std::cout << "Utilizing the full beauty of strangeness hits, requested nHits = "<<  addedHitsMin << "\n";
   }
+  
+  auto h_df_identified = df
+    .Define("fXiccPDGMass", [&xiccMass]() {return xiccMass;})
+    .Define("fXiccY", HarryPlotter::YFromMomentum, {"fPXiCC", "fPtXiCC", "fXiccPDGMass", "fXiCCEta"})
+    .Histo2D({"df_pt_vs_y_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiccY"); 
+
   auto df_precut = df
     .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")
     .Filter("fXiDecayRadius > 0.45", "safeteyPrecuts_2")
@@ -966,7 +972,15 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dl_pv_xi_cc_trad);
   
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_mass); 
-  
+  HarryPlotter::CheckAndStore(out,h_df_identified); 
+  auto h_df_xi_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"));
+  auto h_df_pT_Generated = h_gen_xi_cc_pt_y_counter->ProjectionX("pTXiccGenerados",h_gen_xi_cc_pt_y_counter->GetYaxis()->FindBin(-1.5),h_gen_xi_cc_pt_y_counter->GetYaxis()->FindBin(+1.5));
+  h_df_pT_Generated->Rebin(4);
+  h_df_xi_c_efficiency->Rebin(4);
+  h_df_xi_c_efficiency->Divide(h_df_pT_Generated); 
+  HarryPlotter::CheckAndStore(out, h_df_pT_Generated); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_efficiency); 
+
   //xi_cc selected
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c1); 
