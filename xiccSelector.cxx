@@ -520,8 +520,8 @@ int main(int argc, char **argv) {
   auto h_df_xi_qa_xi_c_ddist_dv = df_xi_qa.Histo1D({"df_xi_qa_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV"); 
   auto h_df_xi_qa_xi_c_trad = df_xi_qa.Histo1D({"df_xi_qa_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius"); 
   
-  auto h_df_xi_qa_xi_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy", "xi dca xy", 1000, -500, 500}, "fXicDCAxyToPV");  
-  auto h_df_xi_qa_xi_dca_z = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z", "xi dca z", 1000, -500, 500}, "fXicDCAzToPV");  
+  auto h_df_xi_qa_xi_dca_xy = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_xy", "xi dca xy", 1000, -500, 500}, "fXiDCAxyToPV");  
+  auto h_df_xi_qa_xi_dca_z = df_xi_qa.Histo1D({"df_xi_qa_xi_dca_z", "xi dca z", 1000, -500, 500}, "fXiDCAzToPV");  
   
   //Pions (from the xic) 
   
