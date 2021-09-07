@@ -68,6 +68,9 @@ target_link_libraries(HitStudiesXi StraTrack_Helpers)
 add_executable(xiccSelector ${PROJECT_SOURCE_DIR}/xiccSelector.cxx)
 target_link_libraries(xiccSelector StraTrack_Helpers)
 
+add_executable(omegacccSelector ${PROJECT_SOURCE_DIR}/omegacccSelector.cxx)
+target_link_libraries(omegacccSelector StraTrack_Helpers)
+
 add_executable(xiccSelectorPbPb ${PROJECT_SOURCE_DIR}/xiccSelectorPbPb.cxx)
 target_link_libraries(xiccSelectorPbPb StraTrack_Helpers)
 
