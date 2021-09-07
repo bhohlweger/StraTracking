@@ -346,31 +346,34 @@ int main(int argc, char **argv) {
   
   //TODO: REDO 
   auto df_precut = df
-    // .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")
-    // .Filter("fOmegaDecayRadius > 0.45", "safeteyPrecuts_2")
-    // .Filter("TMath::Abs(fPositiveDCAxy)> 25", "safeteyPrecuts_3")
-    // .Filter("TMath::Abs(fPositiveDCAxy)< 5000", "safeteyPrecuts_4")
-    // .Filter("TMath::Abs(fPositiveDCAz )> 25", "safeteyPrecuts_5")
-    // .Filter("TMath::Abs(fNegativeDCAxy)> 25", "safeteyPrecuts_6")
-    // .Filter("TMath::Abs(fNegativeDCAz )> 25", "safeteyPrecuts_7")
-    // .Filter("TMath::Abs(fBachelorDCAxy)> 25", "safeteyPrecuts_8")
-    // .Filter("TMath::Abs(fBachelorDCAz )> 25", "safeteyPrecuts_9")
-    // .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_10")
-    // .Filter("TMath::Abs(fPicDCAzToPV          )> 10", "safeteyPrecuts_11")
-    // .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_12")
-    // .Filter("TMath::Abs(fPic2DCAzToPV          )> 10", "safeteyPrecuts_13")
-    // .Filter("TMath::Abs(fPiccDCAxyToPV         )> 10", "safeteyPrecuts_14")
-    // .Filter("TMath::Abs(fPiccDCAzToPV          )> 10", "safeteyPrecuts_15")
-    // .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036", "safeteyPrecuts_16")
-    // .Filter("fOmegaPt > 0.2", "safeteyPrecuts_17")
-    // .Filter("fV0DauDCA   < 1000", "safeteyPrecuts_18")
-    // .Filter("TMath::Abs(fOmegaMass-1.322) < 0.036", "safeteyPrecuts_19")
-    // .Filter("fOmegaDauDCA < 1200", "safeteyPrecuts_20")
-    // .Filter("TMath::Abs(fOmegacMass-2.468) < 0.24", "safeteyPrecuts_21")
+    /*
+    .Filter("fV0DecayRadius > 0.475", "safeteyPrecuts_1")
+    .Filter("fOmegaDecayRadius > 0.475", "safeteyPrecuts_2")
+    .Filter("TMath::Abs(fPositiveDCAxy)> 60", "safeteyPrecuts_3")
+    .Filter("TMath::Abs(fPositiveDCAxy)< 5000", "safeteyPrecuts_4")
+    .Filter("TMath::Abs(fPositiveDCAz )> 60", "safeteyPrecuts_5")
+    .Filter("TMath::Abs(fNegativeDCAxy)> 60", "safeteyPrecuts_6")
+    .Filter("TMath::Abs(fNegativeDCAz )> 60", "safeteyPrecuts_7")
+    .Filter("TMath::Abs(fBachelorDCAxy)> 40", "safeteyPrecuts_8")
+    .Filter("TMath::Abs(fBachelorDCAz )> 40", "safeteyPrecuts_9")
+    .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_10")
+    .Filter("TMath::Abs(fPicDCAzToPV          )> 10", "safeteyPrecuts_11")
+    .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_12")
+    .Filter("TMath::Abs(fPic2DCAzToPV          )> 10", "safeteyPrecuts_13")
+    .Filter("TMath::Abs(fPiccDCAxyToPV         )> 10", "safeteyPrecuts_14")
+    .Filter("TMath::Abs(fPiccDCAzToPV          )> 10", "safeteyPrecuts_15")
+    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036", "safeteyPrecuts_16")
+    .Filter("fOmegaPt > 0.2", "safeteyPrecuts_17")
+    .Filter("fV0DauDCA   < 1000", "safeteyPrecuts_18")
+    .Filter("TMath::Abs(fOmegaMass-1.322) < 0.036", "safeteyPrecuts_19")
+    .Filter("fOmegaDauDCA < 1200", "safeteyPrecuts_20")
+    .Filter("TMath::Abs(fOmegacMass-2.468) < 0.24", "safeteyPrecuts_21")
+    */
     .Filter("TMath::Abs(fOmegaccMass-4.797) < 1e4", "safeteyPrecutsOut")
     ; 
 
-  auto df_ForceOmega = ForceNoOmega?df_precut.Filter("!fTrueOmega","noTrueOmegas"):df_precut.Filter("fTrueOmega||!fTrueOmega","TrueAndFalseOmegas");
+  //auto df_ForceOmega = ForceNoOmega?df_precut.Filter("!fTrueOmega","noTrueOmegas"):df_precut.Filter("fTrueOmega||!fTrueOmega","TrueAndFalseOmegas");
+  auto df_ForceOmega = df_precut.Filter("fTrueOmega||!fTrueOmega","TrueAndFalseOmegas");
 
   auto df_in = (
 		ExclusiveSignal?
@@ -605,8 +608,8 @@ int main(int argc, char **argv) {
   auto h_df_omega_c_qa_omega_cc_ddist_dv = df_omega_c_qa.Histo1D({"df_omega_c_qa_omega_cc_dist_dv", "omega_cc decay dist", 1500, 0, 0.30}, "fOmegaccInvDecayLengthToDV"); 
   auto h_df_omega_c_qa_omega_cc_trad = df_omega_c_qa.Histo1D({"df_omega_c_qa_omega_cc_trad", "omega_cc trad", 2000, 0, 0.4}, "fOmegaccDecayRadius"); 
   
-  auto h_df_omega_c_qa_omega_c_dca_xy = df_omega_c_qa.Histo1D({"df_omega_c_qa_omega_dca_xy", "omega dca xy", 1000, -500, 500}, "fOmegacDCAxyToPV");  
-  auto h_df_omega_c_qa_omega_c_dca_z = df_omega_c_qa.Histo1D({"df_omega_c_qa_omega_dca_z", "omega dca z", 1000, -500, 500}, "fOmegacDCAzToPV");  
+  auto h_df_omega_c_qa_omega_c_dca_xy = df_omega_c_qa.Histo1D({"df_omega_c_qa_omega_c_dca_xy", "omega dca xy", 1000, -500, 500}, "fOmegacDCAxyToPV");  
+  auto h_df_omega_c_qa_omega_c_dca_z = df_omega_c_qa.Histo1D({"df_omega_c_qa_omega_c_dca_z", "omega dca z", 1000, -500, 500}, "fOmegacDCAzToPV");  
   
   //Pion (from the omegacc) 
   
