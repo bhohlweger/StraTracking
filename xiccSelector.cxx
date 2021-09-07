@@ -973,7 +973,7 @@ int main(int argc, char **argv) {
   
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_mass); 
   HarryPlotter::CheckAndStore(out,h_df_identified); 
-  auto h_df_xi_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"));
+  auto h_df_xi_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"), h_df_identified->GetYaxis()->FindBin(-1.5),h_df_identified->GetYaxis()->FindBin(+1.5));
   auto h_df_pT_Generated = h_gen_xi_cc_pt_y_counter->ProjectionX("pTXiccGenerados",h_gen_xi_cc_pt_y_counter->GetYaxis()->FindBin(-1.5),h_gen_xi_cc_pt_y_counter->GetYaxis()->FindBin(+1.5));
   h_df_pT_Generated->Rebin(4);
   h_df_xi_c_efficiency->Rebin(4);
