@@ -277,7 +277,7 @@ int main(int argc, char **argv) {
   auto invMassOmegacCut = [&invMassDiffOmegac, &omegacMass](float invMass) { return (TMath::Abs(invMass-omegacMass) < invMassDiffOmegac); }; 
   
   //omegacc cuts
-  float omegaccMass = 3.713;   
+  float omegaccMass = 3.746;   
   float invMassDiffOmegacc = 0.120; //8 MeV/c2 mass window 
   auto decLengthOmegacc = [&omegaccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*omegaccMass/mom:-999; }; 
   auto invMassOmegaccCut = [&invMassDiffOmegacc, &omegaccMass](float invMass) { return (TMath::Abs(invMass-omegaccMass) < invMassDiffOmegacc); }; 
@@ -346,11 +346,17 @@ int main(int argc, char **argv) {
   
   //TODO: REDO 
   auto df_precut = df
-    /*
+    .Define("fPosTOFDiffInner", "fPositiveInnerTOF20Signal-fPositiveInnerExpectedSignal")
+    .Define("fNegTOFDiffInner", "fNegativeInnerTOF20Signal-fNegativeInnerExpectedSignal")
+    .Define("fBachTOFDiffInner", "fBachelorInnerTOF20Signal-fBachelorInnerExpectedSignal")
+    .Define("fPicTOFDiffInner", "fPicInnerTOF20Signal-fPicInnerExpectedSignal")
+    .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
+    .Define("fPicccTOFDiffInner", "fPicccInnerTOF20Signal-fPicccInnerExpectedSignal")
+
     .Filter("fV0DecayRadius > 0.475", "safeteyPrecuts_1")
     .Filter("fOmegaDecayRadius > 0.475", "safeteyPrecuts_2")
     .Filter("TMath::Abs(fPositiveDCAxy)> 60", "safeteyPrecuts_3")
-    .Filter("TMath::Abs(fPositiveDCAxy)< 5000", "safeteyPrecuts_4")
+    .Filter("TMath::Abs(fPositiveDCAxy)< 12000", "safeteyPrecuts_4")
     .Filter("TMath::Abs(fPositiveDCAz )> 60", "safeteyPrecuts_5")
     .Filter("TMath::Abs(fNegativeDCAxy)> 60", "safeteyPrecuts_6")
     .Filter("TMath::Abs(fNegativeDCAz )> 60", "safeteyPrecuts_7")
@@ -358,18 +364,30 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fBachelorDCAz )> 40", "safeteyPrecuts_9")
     .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_10")
     .Filter("TMath::Abs(fPicDCAzToPV          )> 10", "safeteyPrecuts_11")
-    .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_12")
-    .Filter("TMath::Abs(fPic2DCAzToPV          )> 10", "safeteyPrecuts_13")
-    .Filter("TMath::Abs(fPiccDCAxyToPV         )> 10", "safeteyPrecuts_14")
-    .Filter("TMath::Abs(fPiccDCAzToPV          )> 10", "safeteyPrecuts_15")
-    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036", "safeteyPrecuts_16")
-    .Filter("fOmegaPt > 0.2", "safeteyPrecuts_17")
-    .Filter("fV0DauDCA   < 1000", "safeteyPrecuts_18")
-    .Filter("TMath::Abs(fOmegaMass-1.322) < 0.036", "safeteyPrecuts_19")
+    .Filter("TMath::Abs(fPiccDCAxyToPV        )> 5", "safeteyPrecuts_12")
+    .Filter("TMath::Abs(fPiccDCAzToPV         )> 5", "safeteyPrecuts_13")
+    .Filter("TMath::Abs(fPicccDCAxyToPV       )> 5", "safeteyPrecuts_14")
+    .Filter("TMath::Abs(fPicccDCAzToPV        )> 5", "safeteyPrecuts_15")
+    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.012", "safeteyPrecuts_16")
+    .Filter("fOmegaPt > 0.4", "safeteyPrecuts_17")
+    .Filter("fV0DauDCA   < 1500", "safeteyPrecuts_18")
+    .Filter("TMath::Abs(fOmegaMass-1.672) < 0.012", "safeteyPrecuts_19")
     .Filter("fOmegaDauDCA < 1200", "safeteyPrecuts_20")
-    .Filter("TMath::Abs(fOmegacMass-2.468) < 0.24", "safeteyPrecuts_21")
-    */
-    .Filter("TMath::Abs(fOmegaccMass-4.797) < 1e4", "safeteyPrecutsOut")
+    .Filter("TMath::Abs(fPosTOFDiffInner) < 100", "safeteyPrecuts_21")
+    .Filter("TMath::Abs(fNegTOFDiffInner) < 100", "safeteyPrecuts_22")
+    .Filter("TMath::Abs(fBachTOFDiffInner) < 100", "safeteyPrecuts_23")
+    .Filter("TMath::Abs(fPicTOFDiffInner) < 100", "safeteyPrecuts_24")
+    .Filter("TMath::Abs(fPiccTOFDiffInner) < 100", "safeteyPrecuts_25")
+    .Filter("TMath::Abs(fPicccTOFDiffInner) < 100", "safeteyPrecuts_26")
+    .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 200", "safeteyPrecuts_27")
+    .Filter("TMath::Abs(fOmegacccDCAzToPV) < 200", "safeteyPrecuts_28")
+    .Filter("fOmegacDauDCA < 200", "safeteyPrecuts_29") 
+    .Filter("fOmegaccDauDCA < 150", "safeteyPrecuts_30") 
+    .Filter("fOmegacccDauDCA < 125", "safeteyPrecuts_31") 
+    .Filter("fOmegacDecayDistanceFromPV > 0.0050", "safeteyPrecuts_32") 
+    .Filter("TMath::Abs(fOmegacMass-2.695) < 0.06", "safeteyPrecuts_33")
+    .Filter("TMath::Abs(fOmegaccMass-3.746) < 0.06", "safeteyPrecuts_34")
+    .Filter("TMath::Abs(fOmegacccMass-4.797) < 0.6", "safeteyPrecutsOut")
     ; 
 
   //auto df_ForceOmega = ForceNoOmega?df_precut.Filter("!fTrueOmega","noTrueOmegas"):df_precut.Filter("fTrueOmega||!fTrueOmega","TrueAndFalseOmegas");
@@ -454,24 +472,18 @@ int main(int argc, char **argv) {
     .Define("fOmegacInvDecayLengthToDV", decLengthOmegac, {"fOmegaCCtoOmegaCLength", "fOmegacP"})    //this is the Omega_c decay length 
     .Define("fOmegaccInvDecayLengthToDV", decLengthOmegacc, {"fOmegaCCCtoOmegaCCLength", "fOmegaccP"})    //this is the Omega_cc decay length 
     
-    .Define("fPosTOFDiffInner", "fPositiveInnerTOF20Signal-fPositiveInnerExpectedSignal")
-    .Define("fNegTOFDiffInner", "fNegativeInnerTOF20Signal-fNegativeInnerExpectedSignal")
-    .Define("fBachTOFDiffInner", "fBachelorInnerTOF20Signal-fBachelorInnerExpectedSignal")
-    .Define("fPicTOFDiffInner", "fPicInnerTOF20Signal-fPicInnerExpectedSignal")
-    .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
-    .Define("fPicccTOFDiffInner", "fPicccInnerTOF20Signal-fPicccInnerExpectedSignal")
     
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fV0DauDCA < 1000","fV0DauDCA")
+    .Filter("fV0DauDCA < 400","fV0DauDCA")
     .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
     .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
     .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
     .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
     .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
-    .Filter("TMath::Abs(fPosTOFDiffInner) < 150", "PosTOF")
-    .Filter("TMath::Abs(fNegTOFDiffInner) < 150", "NegTOF")
+    .Filter("TMath::Abs(fPosTOFDiffInner) < 50", "PosTOF")
+    .Filter("TMath::Abs(fNegTOFDiffInner) < 50", "NegTOF")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateOmegaCCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
@@ -518,11 +530,11 @@ int main(int argc, char **argv) {
   auto df_omega_sel = df_lmb
     .Filter("fOmegaDecayRadius > 0.5","fOmegaDecayRadius")
     .Filter("OmegaLmbDecayRadDiff > 0","OmegaLmbDecayRadDiff")
-    .Filter("fOmegaDauDCA < 1200","fOmegaDauDCA")
-    .Filter("fOmegaDecayLength > 0.02","fOmegaDecayLength")
+    .Filter("fOmegaDauDCA < 400","fOmegaDauDCA")
+    //.Filter("fOmegaDecayLength > 0.02","fOmegaDecayLength")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
-    .Filter("TMath::Abs(fBachTOFDiffInner) < 150", "BachelorTOF")
+    .Filter("TMath::Abs(fBachTOFDiffInner) < 50", "BachelorTOF")
     ;
 
   auto h_df_omega_sel_omega_mass = df_omega_sel.Filter("fFirstCandidateOmegaCCC","df_omega_sel_h_bool").Histo1D({"df_omega_sel_omega_mass", "omega inv mass", 750, 1.4, 2.2}, "fOmegaMass"); 
@@ -585,6 +597,7 @@ int main(int argc, char **argv) {
 
   auto df_omega_c_im = df_omega
     .Define("OmegacOmegaccDecayRadDiff", "fOmegacDecayRadius-fOmegaccDecayRadius")
+    .Filter("TMath::Abs(fPicTOFDiffInner) < 50", "PicTOF")
     .Filter("OmegaOmegacDecayRadDiff > 0","OmegaOmegacDecayRadDiff")
     ;
   
@@ -637,6 +650,7 @@ int main(int argc, char **argv) {
 
   auto df_omega_cc_im = df_omega_c
     .Define("OmegaccOmegacccDecayRadDiff", "fOmegaccDecayRadius-fOmegacccDecayRadius")
+    .Filter("TMath::Abs(fPiccTOFDiffInner) < 50", "PiccTOF")
     .Filter("OmegacOmegaccDecayRadDiff > 0","OmegacOmegaccDecayRadDiff")
     ;
   
@@ -678,9 +692,9 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPiccDCAzToPV) > 10")
     .Filter("TMath::Abs(fPicccDCAxyToPV) > 10")
     .Filter("TMath::Abs(fPicccDCAzToPV) > 10")
-    .Filter("TMath::Abs(fPicTOFDiffInner) < 200", "PicTOF")
-    .Filter("TMath::Abs(fPiccTOFDiffInner) < 200", "PiccTOF")
-    .Filter("TMath::Abs(fPicccTOFDiffInner) < 200", "PicccTOF")
+    .Filter("TMath::Abs(fPicTOFDiffInner) < 50", "PicTOF")
+    .Filter("TMath::Abs(fPiccTOFDiffInner) < 50", "PiccTOF")
+    .Filter("TMath::Abs(fPicccTOFDiffInner) < 50", "PicccTOF")
     .Histo1D({"df_omega_cc_qa_omega_ccc_pt", "omega_ccc pt", 200, 0, 20}, "fOmegacccPt");  
 	    
   auto h_df_omega_cc_qa_pi_pt = df_omega_cc_qa.Histo1D({"df_omega_cc_qa_pi_pt", "pi ccc pt", 200, 0, 20}, "fPicccPt");  
