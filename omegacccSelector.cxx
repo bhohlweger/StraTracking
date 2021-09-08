@@ -720,11 +720,11 @@ int main(int argc, char **argv) {
     .Filter("fOmegaccDecayRadius > 0.002","c1_fOmegaccDecayRadius")
     .Filter("fOmegaccInvDecayLengthToPV > 0.002","c1_fOmegaccInvDecayLengthToPVStra")
 
-    .Filter("fOmegacDauDCA < 10","c1_fOmegacDaughterDCA")
-    .Filter("fOmegacDecayRadius > 0.002","c1_fOmegacDecayRadius")
-    .Filter("fOmegacInvDecayLengthToPV > 0.002","c1_fOmegacInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fOmegacDCAxyToPV) < 20","c1_fOmegaDCAxyToPV")
-    .Filter("TMath::Abs(fOmegacDCAzToPV) < 20","c1_fOmegaDCAzToPV")
+    .Filter("fOmegacccDauDCA < 10","c1_fOmegacccDaughterDCA")
+    .Filter("fOmegacccDecayRadius > 0.002","c1_fOmegacccDecayRadius")
+    .Filter("fOmegacccInvDecayLengthToPV > 0.002","c1_fOmegacccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 20","c1_fOmegaDCAxyToPV")
+    .Filter("TMath::Abs(fOmegacccDCAzToPV) < 20","c1_fOmegaDCAzToPV")
 
     .Filter("TMath::Abs(fPicDCAxyToPV) > 10","c1_fOmegacPionDCAxyToPV")
     .Filter("TMath::Abs(fPicDCAzToPV) > 10","c1_fOmegacPionDCAzToPV")
