@@ -254,14 +254,14 @@ int main(int argc, char **argv) {
   float radDiffMax = 1.; //cm 
 
   float lmbMass = 1.116; 
-  float invMassDiffLmb = 0.012; //8 MeV/c2 mass window 
+  float invMassDiffLmb = 0.005; //8 MeV/c2 mass window 
   auto invMassLmbCut = [&invMassDiffLmb, &lmbMass](float invMass) { return (TMath::Abs(invMass-lmbMass) < invMassDiffLmb); }; 
   auto radCut = [&radDiffMax](float radDiff) { return (radDiff < radDiffMax);};
   auto decLengthLmb = [&lmbMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*lmbMass/mom:-999; }; 
   
   //Omega cuts
   float omegaMass = 1.672; 
-  float invMassDiffOmega = 0.012; 
+  float invMassDiffOmega = 0.005; 
   int addedHitsMin = ForceNoOmega?0:1; 
   
   auto invMassOmegaCut = [&invMassDiffOmega, &omegaMass](float invMass) { return (TMath::Abs(invMass-omegaMass) < invMassDiffOmega); }; 
@@ -453,8 +453,8 @@ int main(int argc, char **argv) {
   auto h_df_in_qa_lmb_trad_mc = df_in_qa.Histo1D({"df_in_qa_lmb_trad_mc", "lmb trad", 600, 0, 30}, "fV0DecayRadiusMC"); 
   auto h_df_in_qa_lmb_trad_diff = df_in_qa.Define("OmegaV0DecayRadDiff", "TMath::Abs(fV0DecayRadiusMC-fV0DecayRadius)").Histo1D({"df_in_qa_lmb_trad_diff", "lmb trad", 500, 0, 2}, "OmegaV0DecayRadDiff"); 
   
-  auto h_df_in_qa_lmb_mass = df_in_qa.Histo1D({"df_in_qa_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
-  auto h_df_in_qa_omega_mass = df_in_qa.Histo1D({"df_in_qa_omega_mass", "omega inv mass", 750, 1.4, 2.2}, "fOmegaMass"); 
+  auto h_df_in_qa_lmb_mass = df_in_qa.Histo1D({"df_in_qa_lmb_mass", "lmb inv mass", 750, 1., 1.4}, "fLambdaMass"); 
+  auto h_df_in_qa_omega_mass = df_in_qa.Histo1D({"df_in_qa_omega_mass", "omega inv mass", 750, 1.4, 2.}, "fOmegaMass"); 
   
   //Define future variables and select Lambdas 
 
@@ -475,7 +475,7 @@ int main(int argc, char **argv) {
     
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fV0DauDCA < 400","fV0DauDCA")
+    .Filter("fV0DauDCA < 200","fV0DauDCA")
     .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
     .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
@@ -486,7 +486,7 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fNegTOFDiffInner) < 50", "NegTOF")
     ;
 
-  auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateOmegaCCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
+  auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateOmegaCCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.4}, "fLambdaMass"); 
 
   auto df_lmb =  df_lmb_im
     .Filter(invMassLmbCut, {"fLambdaMass"}, "fLambdaMass")
@@ -524,27 +524,28 @@ int main(int argc, char **argv) {
 
   auto h_df_lmb_qa_trad_diff_lmb_omega = df_lmb_qa.Histo1D({"df_lmb_qa_trad_diff_lmb_omega", "lmb-omega trad", 500, -100, 150}, "OmegaLmbDecayRadDiff"); 
 
-  auto h_df_lmb_qa_omega_mass = df_lmb_qa.Histo1D({"df_lmb_qa_omega_mass", "omega inv mass", 750, 1.4, 2.2}, "fOmegaMass"); 
+  auto h_df_lmb_qa_omega_mass = df_lmb_qa.Histo1D({"df_lmb_qa_omega_mass", "omega inv mass", 750, 1.4, 2.}, "fOmegaMass"); 
   
   //Select Omegas excluding hits to avoid cheating 
   auto df_omega_sel = df_lmb
     .Filter("fOmegaDecayRadius > 0.5","fOmegaDecayRadius")
     .Filter("OmegaLmbDecayRadDiff > 0","OmegaLmbDecayRadDiff")
-    .Filter("fOmegaDauDCA < 400","fOmegaDauDCA")
-    //.Filter("fOmegaDecayLength > 0.02","fOmegaDecayLength")
+    .Filter("fOmegaDauDCA < 200","fOmegaDauDCA")
+    .Filter("fOmegaInvDecayLengthToPV > 0.3","")
+    .Filter("fOmegaDecayRadius > 0.5","")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
     .Filter("TMath::Abs(fBachTOFDiffInner) < 50", "BachelorTOF")
     ;
 
-  auto h_df_omega_sel_omega_mass = df_omega_sel.Filter("fFirstCandidateOmegaCCC","df_omega_sel_h_bool").Histo1D({"df_omega_sel_omega_mass", "omega inv mass", 750, 1.4, 2.2}, "fOmegaMass"); 
+  auto h_df_omega_sel_omega_mass = df_omega_sel.Filter("fFirstCandidateOmegaCCC","df_omega_sel_h_bool").Histo1D({"df_omega_sel_omega_mass", "omega inv mass", 750, 1.4, 2.}, "fOmegaMass"); 
 
   //Select Omegas including Hits
   auto df_omega_im = df_omega_sel.
     Filter(hitsCut, {"fOmegaHitsAdded"},"fOmegaHitsAdded")
     ; 
   
-  auto h_df_omega_im_omega_mass = df_omega_im.Filter("fFirstCandidateOmegaCCC","df_omega_im_h_bool").Histo1D({"df_omega_im_omega_mass", "omega inv mass", 750, 1.4, 2.2}, "fOmegaMass"); 
+  auto h_df_omega_im_omega_mass = df_omega_im.Filter("fFirstCandidateOmegaCCC","df_omega_im_h_bool").Histo1D({"df_omega_im_omega_mass", "omega inv mass", 750, 1.4, 2.}, "fOmegaMass"); 
   
   auto h_df_omega_im_omega_ddist_dv = df_omega_im.Filter("fFirstCandidateOmegaCCC","df_omega_im_h_bool").Histo1D({"df_omega_im_omega_dist_dv", "omega decay dist", 1500, 0, 30}, "fOmegaInvDecayLengthToDV"); 
 
