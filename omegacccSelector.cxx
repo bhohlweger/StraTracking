@@ -271,20 +271,20 @@ int main(int argc, char **argv) {
 
   //Omegac cuts
   float omegacMass = 2.695; 
-  float invMassDiffOmegac = 0.12; //8 MeV/c2 mass window 
+  float invMassDiffOmegac = 0.024; //8 MeV/c2 mass window 
   auto decLengthOmegac = [&omegacMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*omegacMass/mom:-999; }; 
   
   auto invMassOmegacCut = [&invMassDiffOmegac, &omegacMass](float invMass) { return (TMath::Abs(invMass-omegacMass) < invMassDiffOmegac); }; 
   
   //omegacc cuts
   float omegaccMass = 3.746;   
-  float invMassDiffOmegacc = 0.120; //8 MeV/c2 mass window 
+  float invMassDiffOmegacc = 0.024; //8 MeV/c2 mass window 
   auto decLengthOmegacc = [&omegaccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*omegaccMass/mom:-999; }; 
   auto invMassOmegaccCut = [&invMassDiffOmegacc, &omegaccMass](float invMass) { return (TMath::Abs(invMass-omegaccMass) < invMassDiffOmegacc); }; 
 
   //omegaccc cuts
   float omegacccMass = 4.797;   
-  float invMassDiffOmegaccc = 0.120; //8 MeV/c2 mass window 
+  float invMassDiffOmegaccc = 0.024; //8 MeV/c2 mass window 
   auto decLengthOmegaccc = [&omegacccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*omegacccMass/mom:-999; }; 
   auto invMassOmegacccCut = [&invMassDiffOmegaccc, &omegacccMass](float invMass) { return (TMath::Abs(invMass-omegacccMass) < invMassDiffOmegaccc); }; 
 
@@ -710,11 +710,14 @@ int main(int argc, char **argv) {
   //Select the Omega_cc
   auto df_omega_ccc_im_c1 = df_omega_cc
     .Filter("OmegaccOmegacccDecayRadDiff > 0","c1_OmegacOmegaccDecayRadDiffStra")
+    .Filter("TMath::Abs(fOmegaDCAxyToPV) > 10","c1_fOmegaDCAxyToPV")
+    .Filter("TMath::Abs(fOmegaDCAzToPV) > 10","c1_fOmegaDCAzToPV")
+    
     .Filter("fOmegacDauDCA < 20","c1_fOmegacDaughterDCA")
     .Filter("fOmegacDecayRadius > 0.006","c1_fOmegacDecayRadius")
     .Filter("fOmegacInvDecayLengthToPV > 0.006","c1_fOmegacInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fOmegacDCAxyToPV) > 10","c1_fOmegaDCAxyToPV")
-    .Filter("TMath::Abs(fOmegacDCAzToPV) > 10","c1_fOmegaDCAzToPV")
+    .Filter("TMath::Abs(fOmegacDCAxyToPV) > 10","c1_fOmegacDCAxyToPV")
+    .Filter("TMath::Abs(fOmegacDCAzToPV) > 10","c1_fOmegacDCAzToPV")
     
     .Filter("fOmegaccDauDCA < 10","c1_fOmegaccDaughterDCA")
     .Filter("fOmegaccDecayRadius > 0.002","c1_fOmegaccDecayRadius")
@@ -726,17 +729,20 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 20","c1_fOmegaDCAxyToPV")
     .Filter("TMath::Abs(fOmegacccDCAzToPV) < 20","c1_fOmegaDCAzToPV")
 
-    .Filter("TMath::Abs(fPicDCAxyToPV) > 10","c1_fOmegacPionDCAxyToPV")
-    .Filter("TMath::Abs(fPicDCAzToPV) > 10","c1_fOmegacPionDCAzToPV")
-    .Filter("TMath::Abs(fPiccDCAxyToPV) > 10","c1_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPiccDCAzToPV) > 10","c1_fPicDCAzToPV")
-    .Filter("TMath::Abs(fPicccDCAxyToPV) > 10","c1_fPicDCAxyToPVTopo")
-    .Filter("TMath::Abs(fPicccDCAzToPV) > 10","c1_fPicDCAzToPV")
+    .Filter("TMath::Abs(fPicDCAxyToPV) > 10","c1_fPicDCAxyToPV")
+    .Filter("TMath::Abs(fPicDCAzToPV) > 10","c1_fPicDCAzToPV")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 10","c1_fPiccDCAxyToPV")
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 10","c1_fPiccDCAzToPV")
+    .Filter("TMath::Abs(fPicccDCAxyToPV) > 10","c1_fPicccDCAxyToPV")
+    .Filter("TMath::Abs(fPicccDCAzToPV) > 10","c1_fPicccDCAzToPV")
     ;
   
   //Fill some final histograms  
   auto h_df_omega_ccc_im_omega_ccc_mass_c1 = df_omega_ccc_im_c1.Histo1D({"df_omega_cc_im_omega_cc_mass_c1", "omega_cc inv mass", 700, 3.6, 5.8}, "fOmegacccMass"); 
-  auto h_df_omega_ccc_im_omega_ccc_pt_c1 = df_omega_ccc_im_c1.Filter(invMassOmegacccCut, {"fOmegacccMass"}, "c1_Ivm").Histo2D({"df_omega_cc_im_omega_ccc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccY"); 
+  auto h_df_omega_ccc_im_omega_ccc_pt_c1 = df_omega_ccc_im_c1
+    .Filter(invMassOmegacccCut, {"fOmegacccMass"}, "c1_Ivm")
+    .Histo2D({"df_omega_cc_im_omega_ccc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccY"); 
+  
   auto out_counter_c1 = df_omega_ccc_im_c1.Filter(invMassOmegacccCut, {"fOmegacccMass"}).Count(); 
 
 
