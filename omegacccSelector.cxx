@@ -709,22 +709,29 @@ int main(int argc, char **argv) {
   
   //Select the Omega_cc
   auto df_omega_ccc_im_c1 = df_omega_cc
-    .Filter("OmegacOmegaccDecayRadDiff > 0","c1_OmegacOmegaccDecayRadDiffStra")
+    .Filter("OmegaccOmegacccDecayRadDiff > 0","c1_OmegacOmegaccDecayRadDiffStra")
     .Filter("fOmegacDauDCA < 20","c1_fOmegacDaughterDCA")
-    .Filter("fOmegacDecayRadius > 0.004","c1_fOmegacDecayRadius")
-    .Filter("fOmegacInvDecayLengthToPV > 0.002","c1_fOmegacInvDecayLengthToPVStra")
-    .Filter("fOmegacInvDecayLengthToDV < 0.1","c1_fOmegacInvDecayLengthToDVStra")
-    .Filter("fOmegaccDauDCA < 20","c1_fOmegaccDaughterDCA")
-    .Filter("fOmegaccDecayRadius > 0.005","c1_fOmegaccDecayRadius")
-    .Filter("fOmegaccInvDecayLengthToPV > 0.004","c1_fOmegaccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fOmegacDCAxyToPV) > 5","c1_fOmegaDCAxyToPV")
+    .Filter("fOmegacDecayRadius > 0.006","c1_fOmegacDecayRadius")
+    .Filter("fOmegacInvDecayLengthToPV > 0.006","c1_fOmegacInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fOmegacDCAxyToPV) > 10","c1_fOmegaDCAxyToPV")
     .Filter("TMath::Abs(fOmegacDCAzToPV) > 10","c1_fOmegaDCAzToPV")
-    .Filter("TMath::Abs(fOmegacDCAxyToPV) > 15","c1_fOmegacDCAxyToPV")
-    .Filter("TMath::Abs(fOmegacDCAzToPV) > 10","c1_fOmegacDCAzToPV")
+    
+    .Filter("fOmegaccDauDCA < 10","c1_fOmegaccDaughterDCA")
+    .Filter("fOmegaccDecayRadius > 0.002","c1_fOmegaccDecayRadius")
+    .Filter("fOmegaccInvDecayLengthToPV > 0.002","c1_fOmegaccInvDecayLengthToPVStra")
+
+    .Filter("fOmegacDauDCA < 10","c1_fOmegacDaughterDCA")
+    .Filter("fOmegacDecayRadius > 0.002","c1_fOmegacDecayRadius")
+    .Filter("fOmegacInvDecayLengthToPV > 0.002","c1_fOmegacInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fOmegacDCAxyToPV) < 20","c1_fOmegaDCAxyToPV")
+    .Filter("TMath::Abs(fOmegacDCAzToPV) < 20","c1_fOmegaDCAzToPV")
+
     .Filter("TMath::Abs(fPicDCAxyToPV) > 10","c1_fOmegacPionDCAxyToPV")
-    .Filter("TMath::Abs(fPicDCAzToPV) > 15","c1_fOmegacPionDCAzToPV")
-    .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c1_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicDCAzToPV) > 10","c1_fOmegacPionDCAzToPV")
+    .Filter("TMath::Abs(fPiccDCAxyToPV) > 10","c1_fPicDCAxyToPVTopo")
     .Filter("TMath::Abs(fPiccDCAzToPV) > 10","c1_fPicDCAzToPV")
+    .Filter("TMath::Abs(fPicccDCAxyToPV) > 10","c1_fPicDCAxyToPVTopo")
+    .Filter("TMath::Abs(fPicccDCAzToPV) > 10","c1_fPicDCAzToPV")
     ;
   
   //Fill some final histograms  
