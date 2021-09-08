@@ -230,14 +230,14 @@ int main(int argc, char **argv) {
   float radDiffMax = 1.; //cm 
 
   float lmbMass = 1.116; 
-  float invMassDiffLmb = 0.012; //8 MeV/c2 mass window 
+  float invMassDiffLmb = 0.005; //8 MeV/c2 mass window 
   auto invMassLmbCut = [&invMassDiffLmb, &lmbMass](float invMass) { return (TMath::Abs(invMass-lmbMass) < invMassDiffLmb); }; 
   auto radCut = [&radDiffMax](float radDiff) { return (radDiff < radDiffMax);};
   auto decLengthLmb = [&lmbMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*lmbMass/mom:-999; }; 
   
   //Xi cuts
   float xiMass = 1.322; 
-  float invMassDiffXi = 0.012; 
+  float invMassDiffXi = 0.005; 
   int addedHitsMin = ForceNoXi?0:1; 
   
   auto invMassXiCut = [&invMassDiffXi, &xiMass](float invMass) { return (TMath::Abs(invMass-xiMass) < invMassDiffXi); }; 
@@ -247,7 +247,7 @@ int main(int argc, char **argv) {
 
   //Xic cuts
   float xicMass = 2.468; 
-  float invMassDiffXic = 0.12; //8 MeV/c2 mass window 
+  float invMassDiffXic = 0.021; //8 MeV/c2 mass window 
   auto decLengthXic = [&xicMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xicMass/mom:-999; }; 
   
   auto invMassXicCut = [&invMassDiffXic, &xicMass](float invMass) { return (TMath::Abs(invMass-xicMass) < invMassDiffXic); }; 
@@ -255,7 +255,7 @@ int main(int argc, char **argv) {
 
   //Xicc cuts
   float xiccMass = 3.621;   
-  float invMassDiffXicc = 0.120; //8 MeV/c2 mass window 
+  float invMassDiffXicc = 0.030; //8 MeV/c2 mass window 
   auto decLengthXicc = [&xiccMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiccMass/mom:-999; }; 
   auto invMassXiccCut = [&invMassDiffXicc, &xiccMass](float invMass) { return (TMath::Abs(invMass-xiccMass) < invMassDiffXicc); }; 
 
@@ -434,8 +434,8 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
     .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
     .Filter("TMath::Abs(fNegativeDCAz) > 50","fNegativeDCAz")
-    .Filter("TMath::Abs(fPosTOFDiffInner) < 150", "PosTOF")
-    .Filter("TMath::Abs(fNegTOFDiffInner) < 150", "NegTOF")
+    .Filter("TMath::Abs(fPosTOFDiffInner) < 50", "PosTOF")
+    .Filter("TMath::Abs(fNegTOFDiffInner) < 50", "NegTOF")
     ;
 
   auto h_df_lmb_im_lmb_mass = df_lmb_im.Filter("fFirstCandidateXiCC","df_lmb_im_h_bool").Histo1D({"df_lmb_im_lmb_mass", "lmb inv mass", 750, 1., 1.8}, "fLambdaMass"); 
@@ -486,7 +486,7 @@ int main(int argc, char **argv) {
     .Filter("fXiDecayLength > 0.02","fXiDecayLength")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
-    .Filter("TMath::Abs(fBachTOFDiffInner) < 150", "BachelorTOF")
+    .Filter("TMath::Abs(fBachTOFDiffInner) < 50", "BachelorTOF")
     ;
 
   auto h_df_xi_sel_xi_mass = df_xi_sel.Filter("fFirstCandidateXiCC","df_xi_sel_h_bool").Histo1D({"df_xi_sel_xi_mass", "xi inv mass", 750, 1.2, 2}, "fXiMass"); 
@@ -558,7 +558,12 @@ int main(int argc, char **argv) {
     ;
   
   auto h_df_xi_c_im_xi_c_mass = df_xi_c_im.Filter("fFirstCandidateXiCC","df_xi_c_im_h_bool").Histo1D({"df_xi_c_im_xi_c_mass", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMass"); 
-  auto df_xi_c = df_xi_c_im.Filter(invMassXicCut, {"fXicMass"},"fXicMass");
+  auto df_xi_c = df_xi_c_im
+    .Filter(invMassXicCut, {"fXicMass"},"fXicMass")
+    .Filter("TMath::Abs(fPic1TOFDiffInner) < 50", "Pic1TOF")
+    .Filter("TMath::Abs(fPic2TOFDiffInner) < 50", "Pic2TOF")
+    .Filter("TMath::Abs(fPiccTOFDiffInner) < 50", "PiccTOF")
+    ;
   
   auto df_xi_c_qa = df_xi_c.Filter("fFirstCandidateXiCC","df_xi_c_h_bool"); 
   
@@ -591,9 +596,6 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPic2DCAzToPV) > 10")
     .Filter("TMath::Abs(fPiccDCAxyToPV) > 10")
     .Filter("TMath::Abs(fPiccDCAzToPV) > 10")
-    .Filter("TMath::Abs(fPic1TOFDiffInner) < 200", "Pic1TOF")
-    .Filter("TMath::Abs(fPic2TOFDiffInner) < 200", "Pic2TOF")
-    .Filter("TMath::Abs(fPiccTOFDiffInner) < 200", "PiccTOF")
     .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "fPtXiCC");  
   auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
 
