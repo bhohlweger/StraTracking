@@ -1,6 +1,6 @@
 void invariantMassXicc(TString addon) { 
   double xiccMass = 3.621; 
-  double xiccWindow = 0.12;
+  double xiccWindow = 0.030;
   
   TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
   TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
