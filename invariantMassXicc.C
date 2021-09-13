@@ -41,9 +41,9 @@ void invariantMassXicc(TString addon) {
   int nEvtsXicc = h_xiccpteta->ProjectionY()->Integral(xicc_eta_min, xicc_eta_max); 
   std::cout <<" nEvts xicc: " << nEvtsXicc << std::endl;
     
-  TH1D* xiccGenPt = (TH1D*)h_xiccpteta->ProjectionX("pTXiccGenerados",xicc_eta_min, xicc_eta_max);
+  TH1D* xiccGenPt = (TH1D*)xicc->Get("pTXiccGenerados"); 
   xiccGenPt->Sumw2(); 
-  xiccGenPt->Rebin(4);
+  //xiccGenPt->Rebin(4);
   output->cd(); 
   xiccGenPt->Write(); 
 
@@ -76,14 +76,24 @@ void invariantMassXicc(TString addon) {
     TH1D* xicHist = (TH1D*)xic->Get(obj->GetName()); 
     TH1D* xiccHist = (TH1D*)xicc->Get(obj->GetName()); 
 
-    TString toReplace = "mass_stra"; 
-    TString replacement = "pt_vs_y"; 
+    if (!xiHist) { 
+      std::cout << "xi hist missing \n"; 
+    }
+    if (!xicHist) { 
+      std::cout << "xic hist missing \n"; 
+    }
+    if (!xiccHist) { 
+      std::cout << "xicc hist missing \n"; 
+    }
+    
+    TString toReplace = "mass"; 
+    TString replacement = "pt_vs_eta"; 
     
     TString pTIdent = objName.ReplaceAll(toReplace, toReplace.Length(), replacement, replacement.Length()); 
-    
+    std::cout << "pTIdent: " << pTIdent.Data() << std::endl; 
     TH2D* pT_vs_eta = (TH2D*)xicc->Get(pTIdent.Data()); 
     TH1D* pT_Identified = nullptr; 
-    if (pT_vs_eta) { 
+    if (pT_vs_eta && pTIdent.Contains("df_xi_cc_im_xi_cc_pt_vs_eta_")) { 
       pT_Identified = pT_vs_eta->ProjectionX(TString::Format("Efficiency_%s", objName.Data())); 
       pT_Identified->Sumw2();
       pT_Identified->Rebin(4);

@@ -340,9 +340,7 @@ int main(int argc, char **argv) {
   }
   
   auto h_df_identified = df
-    .Define("fOmegacccPDGMass", [&omegacccMass]() {return omegacccMass;})
-    .Define("fOmegacccY", HarryPlotter::YFromMomentum, {"fOmegacccP", "fOmegacccPt", "fOmegacccPDGMass", "fOmegacccEta"})
-    .Histo2D({"df_pt_vs_y_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccY"); 
+    .Histo2D({"df_pt_vs_y_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccEta"); 
   
   //TODO: REDO 
   auto df_precut = df
@@ -741,7 +739,7 @@ int main(int argc, char **argv) {
   auto h_df_omega_ccc_im_omega_ccc_mass_c1 = df_omega_ccc_im_c1.Histo1D({"df_omega_cc_im_omega_cc_mass_c1", "omega_cc inv mass", 700, 3.6, 5.8}, "fOmegacccMass"); 
   auto h_df_omega_ccc_im_omega_ccc_pt_c1 = df_omega_ccc_im_c1
     .Filter(invMassOmegacccCut, {"fOmegacccMass"}, "c1_Ivm")
-    .Histo2D({"df_omega_cc_im_omega_ccc_pt_vs_y_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccY"); 
+    .Histo2D({"df_omega_cc_im_omega_ccc_pt_vs_eta_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccEta"); 
   
   auto out_counter_c1 = df_omega_ccc_im_c1.Filter(invMassOmegacccCut, {"fOmegacccMass"}).Count(); 
 
@@ -916,8 +914,11 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out,h_df_identified); 
   auto h_df_omega_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"));
-  auto h_df_pT_Generated = h_gen_omega_cc_pt_y_counter->ProjectionX("pTOmegaccGenerados",h_gen_omega_cc_pt_y_counter->GetYaxis()->FindBin(-1.5),h_gen_omega_cc_pt_y_counter->GetYaxis()->FindBin(+1.5));
+  auto h_df_pT_Generated = h_gen_omega_cc_pt_eta_counter->ProjectionX("pTOmegaccGenerados",h_gen_omega_cc_pt_eta_counter->GetYaxis()->FindBin(-1.5),h_gen_omega_cc_pt_eta_counter->GetYaxis()->FindBin(+1.5));
+
+  h_df_pT_Generated->Sumw2(); 
   h_df_pT_Generated->Rebin(4);
+  h_df_omega_c_efficiency->Sumw2(); 
   h_df_omega_c_efficiency->Rebin(4);
   h_df_omega_c_efficiency->Divide(h_df_pT_Generated); 
   HarryPlotter::CheckAndStore(out, h_df_pT_Generated); 
