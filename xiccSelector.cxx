@@ -309,7 +309,7 @@ int main(int argc, char **argv) {
   }
   
   auto h_df_identified = df
-    .Histo2D({"df_pt_vs_y_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
+    .Histo2D({"df_pt_vs_eta_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
 
   auto df_precut = df
     .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")

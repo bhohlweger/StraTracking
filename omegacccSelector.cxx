@@ -340,7 +340,7 @@ int main(int argc, char **argv) {
   }
   
   auto h_df_identified = df
-    .Histo2D({"df_pt_vs_y_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccEta"); 
+    .Histo2D({"df_pt_vs_eta_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccEta"); 
   
   //TODO: REDO 
   auto df_precut = df
@@ -913,7 +913,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out,h_df_omega_cc_omega_ccc_mass); 
 
   HarryPlotter::CheckAndStore(out,h_df_identified); 
-  auto h_df_omega_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"));
+  auto h_df_omega_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"), 0, 30);
   auto h_df_pT_Generated = h_gen_omega_cc_pt_eta_counter->ProjectionX("pTOmegaccGenerados",h_gen_omega_cc_pt_eta_counter->GetYaxis()->FindBin(-1.5),h_gen_omega_cc_pt_eta_counter->GetYaxis()->FindBin(+1.5));
 
   h_df_pT_Generated->Sumw2(); 
