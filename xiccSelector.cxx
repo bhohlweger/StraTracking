@@ -150,7 +150,7 @@ int main(int argc, char **argv) {
     bool oneTimeError = true; 
     for (auto fileObj : *files)  {
       auto file = (TSystemFile*) fileObj;
-      TString inSubDirFile = TString::Format("%s/%s/treeoutput.root", filePath.Data(), file->GetName()).Data(); 
+      TString inSubDirFile = TString::Format("%s/%s/xicc.treeoutput.root", filePath.Data(), file->GetName()).Data(); 
       if (!gSystem->AccessPathName(inSubDirFile)) { 
 	TFile *inFile = TFile::Open(inSubDirFile);
 	if (!inFile) { 
