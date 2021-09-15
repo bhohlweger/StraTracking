@@ -248,7 +248,7 @@ int main(int argc, char **argv) {
   auto decLengthXi = [&xiMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xiMass/mom:-999; }; 
 
   //Xic cuts
-  float xicMass = 2.468; 
+  float xicMass = 2.46793; 
   float invMassDiffXic = 0.021; //8 MeV/c2 mass window 
   auto decLengthXic = [&xicMass](float len, float mom){ return TMath::Abs(mom)>1e-4?len*xicMass/mom:-999; }; 
   
@@ -316,26 +316,39 @@ int main(int argc, char **argv) {
   auto df_precut = df
     .Filter("fV0DecayRadius > 0.45", "safeteyPrecuts_1")
     .Filter("fXiDecayRadius > 0.45", "safeteyPrecuts_2")
-    .Filter("TMath::Abs(fPositiveDCAxy)> 25", "safeteyPrecuts_3")
-    .Filter("TMath::Abs(fPositiveDCAxy)< 5000", "safeteyPrecuts_4")
-    .Filter("TMath::Abs(fPositiveDCAz )> 25", "safeteyPrecuts_5")
-    .Filter("TMath::Abs(fNegativeDCAxy)> 25", "safeteyPrecuts_6")
-    .Filter("TMath::Abs(fNegativeDCAz )> 25", "safeteyPrecuts_7")
-    .Filter("TMath::Abs(fBachelorDCAxy)> 25", "safeteyPrecuts_8")
-    .Filter("TMath::Abs(fBachelorDCAz )> 25", "safeteyPrecuts_9")
+    .Filter("TMath::Abs(fPositiveDCAxy)> 50", "safeteyPrecuts_3")
+    .Filter("TMath::Abs(fPositiveDCAz )> 40", "safeteyPrecuts_5")
+    .Filter("TMath::Abs(fNegativeDCAxy)> 100", "safeteyPrecuts_6")
+    .Filter("TMath::Abs(fNegativeDCAz )> 50", "safeteyPrecuts_7")
+    .Filter("TMath::Abs(fBachelorDCAxy)> 40", "safeteyPrecuts_8")
+    .Filter("TMath::Abs(fBachelorDCAz )> 40", "safeteyPrecuts_9")
     .Filter("TMath::Abs(fPic1DCAxyToPV         )> 10", "safeteyPrecuts_10")
     .Filter("TMath::Abs(fPic1DCAzToPV          )> 10", "safeteyPrecuts_11")
     .Filter("TMath::Abs(fPic1DCAxyToPV         )> 10", "safeteyPrecuts_12")
     .Filter("TMath::Abs(fPic2DCAzToPV          )> 10", "safeteyPrecuts_13")
     .Filter("TMath::Abs(fPiccDCAxyToPV         )> 10", "safeteyPrecuts_14")
     .Filter("TMath::Abs(fPiccDCAzToPV          )> 10", "safeteyPrecuts_15")
-    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.036", "safeteyPrecuts_16")
-    .Filter("fPtXi > 0.2", "safeteyPrecuts_17")
-    .Filter("fV0DauDCA   < 1000", "safeteyPrecuts_18")
-    .Filter("TMath::Abs(fXiMass-1.322) < 0.036", "safeteyPrecuts_19")
-    .Filter("fXiDauDCA < 1200", "safeteyPrecuts_20")
-    .Filter("TMath::Abs(fXicMass-2.468) < 0.24", "safeteyPrecuts_21")
-    .Filter("TMath::Abs(fXiccMass-3.621) < 1e4", "safeteyPrecutsOut")
+    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.005", "safeteyPrecuts_16")
+    .Filter("fPtXi > 0.", "safeteyPrecuts_17")
+    .Filter("fV0DauDCA   < 400", "safeteyPrecuts_18")
+    .Filter("TMath::Abs(fXiMass-1.322) < 0.005", "safeteyPrecuts_19")
+    .Filter("fXiDauDCA < 400", "safeteyPrecuts_20")
+    .Filter("TMath::Abs(fXicMass-2.468) < 0.030", "safeteyPrecuts_21")
+    .Define("fPosTOFDiffInner",  "fPositiveInnerTOF20Signal-fPositiveInnerExpectedSignal")
+    .Filter("fPosTOFDiffInner < 75", "safeteyPrecuts_22")
+    .Define("fNegTOFDiffInner",  "fNegativeInnerTOF20Signal-fNegativeInnerExpectedSignal")
+    .Filter("fNegTOFDiffInner < 75", "safeteyPrecuts_23")
+    .Define("fBachTOFDiffInner", "fBachelorInnerTOF20Signal-fBachelorInnerExpectedSignal")
+    .Filter("fBachTOFDiffInner < 75", "safeteyPrecuts_24")
+    .Define("fPic1TOFDiffInner", "fPic1InnerTOF20Signal-fPic1InnerExpectedSignal")
+    .Filter("fPic1TOFDiffInner < 75", "safeteyPrecuts_25")
+    .Define("fPic2TOFDiffInner", "fPic2InnerTOF20Signal-fPic2InnerExpectedSignal")
+    .Filter("fPic2TOFDiffInner < 75", "safeteyPrecuts_26")
+    .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
+    .Filter("fPiccTOFDiffInner < 75", "safeteyPrecuts_27")
+    .Filter("fXicDaughterDCA < 50", "safeteyPrecuts_28")
+    .Filter("fXiccDaughterDCA < 30", "safeteyPrecuts_28")
+    .Filter("TMath::Abs(fXiccMass-3.621) < 0.65", "safeteyPrecutsOut")
     ; 
 
   auto df_ForceXi = ForceNoXi?df_precut.Filter("!fTrueXi","noTrueXis"):df_precut.Filter("fTrueXi||!fTrueXi","TrueAndFalseXis");
@@ -418,18 +431,11 @@ int main(int argc, char **argv) {
     .Define("fXiInvDecayLengthToDV", decLengthXi, {"fXiCtoXiLength", "fXiTotalMomentum"}) //this is the Xi decay length 
     .Define("fXicInvDecayLengthToDV", decLengthXic, {"fXiCCtoXiCLength", "fPXiC"})    //this is the Xi_c decay length 
     
-    .Define("fPosTOFDiffInner", "fPositiveInnerTOF20Signal-fPositiveInnerExpectedSignal")
-    .Define("fNegTOFDiffInner", "fNegativeInnerTOF20Signal-fNegativeInnerExpectedSignal")
-    .Define("fBachTOFDiffInner", "fBachelorInnerTOF20Signal-fBachelorInnerExpectedSignal")
-    .Define("fPic1TOFDiffInner", "fPic1InnerTOF20Signal-fPic1InnerExpectedSignal")
-    .Define("fPic2TOFDiffInner", "fPic2InnerTOF20Signal-fPic2InnerExpectedSignal")
-    .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
-    
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fV0DauDCA < 1000","fV0DauDCA")
+    .Filter("fV0DauDCA < 300","fV0DauDCA")
     .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
-    //.Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
+    .Filter("fLmbInvDecayLengthToPV <  15","fLmbInvDecayLengthToPV")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
     .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
     .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
@@ -482,8 +488,8 @@ int main(int argc, char **argv) {
   auto df_xi_sel = df_lmb
     .Filter("fXiDecayRadius > 0.5","fXiDecayRadius")
     .Filter("XiLmbDecayRadDiff > 0","XiLmbDecayRadDiff")
-    .Filter("fXiDauDCA < 1200","fXiDauDCA")
-    .Filter("fXiDecayLength > 0.02","fXiDecayLength")
+    .Filter("fXiDauDCA < 300","fXiDauDCA")
+    .Filter("fXiInvDecayLengthToPV < 12","fXiInvDecayLengthToPV")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
     .Filter("TMath::Abs(fBachTOFDiffInner) < 50", "BachelorTOF")
@@ -616,8 +622,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccDaughterDCA < 20","c1_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c1_fXiccDecayRadius")
     .Filter("fXiccInvDecayLengthToPV > 0.004","c1_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c1_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c1_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c1_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c1_fXiDCAzToPV")
     .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c1_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 10","c1_fXicDCAzToPV")
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c1_fXicPionDCAxyToPV1")
@@ -636,19 +642,26 @@ int main(int argc, char **argv) {
   //Select the Xi_cc
   auto df_xi_cc_im_c2 = df_xi_c
     .Filter("XicXiccDecayRadDiff > 0","c2_XicXiccDecayRadDiff")
+    
     .Filter("fXicDaughterDCA < 12","c2_fXicDaughterDCA")
     .Filter("fXicDecayRadius > 0.004","c2_fXicDecayRadius")
+    
     .Filter("fXicInvDecayLengthToPV > 0.002","c2_fXicInvDecayLengthToPVStra")
     .Filter("fXicInvDecayLengthToDV < 0.06","c2_fXicInvDecayLengthToDVStra")
+    
     .Filter("fXiccDaughterDCA < 5","c2_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c2_fXiccDecayRadius")
     .Filter("(fXiccInvDecayLengthToPV > 0.004) && (fXiccInvDecayLengthToPV < 0.06)","c2_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c2_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c2_fXiDCAzToPV")
+    
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c2_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c2_fXiDCAzToPV")
+    
     .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c2_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 10","c2_fXicDCAzToPV")
+    
     .Filter("TMath::Abs(fXiccDCAxyToPV) < 20","c2_fXiccDCAxyToPV")
     .Filter("TMath::Abs(fXiccDCAzToPV) < 20","c2_fXiccDCAzToPV")    
+    
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c2_fXicPionDCAxyToPV1")
     .Filter("TMath::Abs(fPic1DCAzToPV) > 20","c2_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c2_fXicPionDCAxyToPV2")
@@ -673,8 +686,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccDaughterDCA < 20","c3_fXiccDaughterDCA")
     //.Filter("fXiccDecayRadius > 0.005","c3_fXiccDecayRadius")
     //.Filter("fXiccInvDecayLengthToPV > 0.004","c3_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c3_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c3_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c3_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c3_fXiDCAzToPV")
     .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c3_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 10","c3_fXicDCAzToPV")
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c3_fXicPionDCAxyToPV1")
@@ -700,8 +713,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccDaughterDCA < 20","c4_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c4_fXiccDecayRadius")
     .Filter("fXiccInvDecayLengthToPV > 0.004","c4_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c4_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c4_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c4_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c4_fXiDCAzToPV")
     .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c4_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 20","c4_fXicDCAzToPV")
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c4_fXicPionDCAxyToPV1")
@@ -730,8 +743,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccDaughterDCA < 20","c4_2Hit_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c4_2Hit_fXiccDecayRadius")
     .Filter("fXiccInvDecayLengthToPV > 0.004","c4_2Hit_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c4_2Hit_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c4_2Hit_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c4_2Hit_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c4_2Hit_fXiDCAzToPV")
     .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c4_2Hit_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 20","c4_2Hit_fXicDCAzToPV")
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c4_2Hit_fXicPionDCAxyToPV1")
@@ -759,8 +772,8 @@ int main(int argc, char **argv) {
     .Filter("fXiccDaughterDCA < 20","c4_3Hit_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c4_3Hit_fXiccDecayRadius")
     .Filter("fXiccInvDecayLengthToPV > 0.004","c4_3Hit_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 5","c4_3Hit_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c4_3Hit_fXiDCAzToPV")
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c4_3Hit_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c4_3Hit_fXiDCAzToPV")
     .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c4_3Hit_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 20","c4_3Hit_fXicDCAzToPV")
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c4_3Hit_fXicPionDCAxyToPV1")
@@ -780,23 +793,29 @@ int main(int argc, char **argv) {
   //Select the Xi_cc
   auto df_xi_cc_im_c5 = df_xi_c
     .Filter("XicXiccDecayRadDiff > 0","c5_XicXiccDecayRadDiff")
+    
     .Filter("fXicDaughterDCA < 10","c5_fXicDaughterDCA")
     .Filter("fXicDecayRadius > 0.004","c5_fXicDecayRadius")
     .Filter("fXicInvDecayLengthToPV > 0.002","c5_fXicInvDecayLengthToPVStra")
     .Filter("fXicInvDecayLengthToDV < 0.06","c5_fXicInvDecayLengthToDVStra")
+    
     .Filter("fXiccDaughterDCA < 5","c5_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c5_fXiccDecayRadius")
     .Filter("(fXiccInvDecayLengthToPV > 0.004) && (fXiccInvDecayLengthToPV < 0.06)","c5_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 10","c5_fXiDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 10","c5_fXiDCAzToPV")
+    
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 10","c5_fXiDCAxyToPV")
+    .Filter("TMath::Abs(fXiDCAzToPV) > 10","c5_fXiDCAzToPV")
+    
     .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c5_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 20","c5_fXicDCAzToPV")
+    
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c5_fXicPionDCAxyToPV1")
     .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c5_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c5_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fPic2DCAzToPV) > 15","c5_fXicPionDCAzToPV2")
     .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c5_fPicDCAxyToPV")
     .Filter("TMath::Abs(fPiccDCAzToPV) > 20","c5_fPicDCAzToPV")
+    
     .Filter("TMath::Abs(fXiccDCAxyToPV) < 20","c5_fXiccDCAxyToPV")
     .Filter("TMath::Abs(fXiccDCAzToPV) < 20","c5_fXiccDCAzToPV")    
     ;
