@@ -61,11 +61,14 @@ int main(int argc, char **argv) {
     std::cout << "Crashing cause the requested pT bin is out of range ( requested = " << pTbin << " , max. available = " << ptbins.size()-1 << " )\n";
     return -999; 
   }
-  int wrongAssociationMode = argv[5]?atoi(argv[5]):0; 
+  
+  int addedHitsMin = argv[5]?atoi(argv[5]):1; 
   
   int noXi = argv[6]?atoi(argv[6]):0; 
   bool ForceNoXi = (noXi==0)?false:true; 
-  
+      
+  int wrongAssociationMode = argv[7]?atoi(argv[7]):0; 
+    
   HarryPlotter::StyleBox(); 
  
   ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
@@ -238,7 +241,6 @@ int main(int argc, char **argv) {
   //Xi cuts
   float xiMass = 1.322; 
   float invMassDiffXi = 0.005; 
-  int addedHitsMin = ForceNoXi?0:1; 
   
   auto invMassXiCut = [&invMassDiffXi, &xiMass](float invMass) { return (TMath::Abs(invMass-xiMass) < invMassDiffXi); }; 
   auto hitsCut = [&addedHitsMin](int AddedHits) { return (AddedHits >= addedHitsMin); }; 
@@ -304,9 +306,9 @@ int main(int argc, char **argv) {
 
   if (ForceNoXi) { 
     std::cout << "Rejecting Xis, make sure you know what you doing!\n"; 
-  } else { 
-    std::cout << "Utilizing the full beauty of strangeness hits, requested nHits = "<<  addedHitsMin << "\n";
   }
+  
+  std::cout << "Utilizing the full beauty of strangeness hits, requested nHits = "<<  addedHitsMin << "\n";
   
   auto h_df_identified = df
     .Histo2D({"df_pt_vs_eta_ident", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
