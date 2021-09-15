@@ -595,15 +595,20 @@ int main(int argc, char **argv) {
 
   auto h_df_xi_c_qa_picc_tof_diff_inner = df_xi_c_qa.Histo1D({"h_df_xi_c_qa_picc_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fPiccTOFDiffInner");
   
-  auto h_df_xi_c_qa_xi_cc_pt = df_xi_c_qa
+  auto df_xi_cc_qa = df_xi_c_qa
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10")
     .Filter("TMath::Abs(fPic1DCAzToPV) > 10")
     .Filter("TMath::Abs(fPic2DCAxyToPV) > 10")
     .Filter("TMath::Abs(fPic2DCAzToPV) > 10")
     .Filter("TMath::Abs(fPiccDCAxyToPV) > 10")
-    .Filter("TMath::Abs(fPiccDCAzToPV) > 10")
-    .Histo1D({"df_xi_c_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "fPtXiCC");  
-  auto h_df_xi_c_qa_pi_pt = df_xi_c_qa.Histo1D({"df_xi_c_qa_pi_pt", "pi cc pt", 200, 0, 20}, "fPiCCPt");  
+    .Filter("TMath::Abs(fPiccDCAzToPV) > 10"); 
+
+
+  auto h_df_xi_cc_qa_xi_cc_pt = df_xi_cc_qa.Histo1D({"df_xi_cc_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "fPtXiCC");  
+  
+  auto h_df_xi_cc_qa_pi_c1_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_c1_pt", "pi c1 pt", 200, 0, 20, 200, 0, 20}, "fPiC1Pt", "fPtXiCC");  
+  auto h_df_xi_cc_qa_pi_c2_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_c2_pt", "pi c2 pt", 200, 0, 20, 200, 0, 20}, "fPiC2Pt", "fPtXiCC");  
+  auto h_df_xi_cc_qa_pi_cc_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_cc_pt", "pi cc pt", 200, 0, 20, 200, 0, 20}, "fPiCCPt", "fPtXiCC");  
 
   //cut on Trad and check decay lengths 
   auto h_df_xi_c_qa_trad_xi_cc_ddist_pv = df_xi_c_qa.Filter("fXiccDecayRadius > 0.003","corrStudy_fXiccDecayRadius").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPV"); 
@@ -981,10 +986,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_xy);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_c_dca_z);
   HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_xy);
-  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z);
-    
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_xi_cc_pt); 
-  HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_pt); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_c_qa_xi_cc_dca_z);    
 
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_dca_xy);
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_pi_dca_z);
@@ -1001,10 +1003,31 @@ int main(int argc, char **argv) {
   h_df_pT_Generated->Rebin(4);
   h_df_xi_c_efficiency->Rebin(4);
   h_df_xi_c_efficiency->Divide(h_df_pT_Generated); 
+  
   HarryPlotter::CheckAndStore(out, h_df_pT_Generated); 
   HarryPlotter::CheckAndStore(out, h_df_xi_c_efficiency); 
 
   //xi_cc selected
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_xi_cc_pt); 
+  
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_c1_pt); 
+  auto h_df_xi_cc_qa_pi_c1_pt_1  = h_df_xi_cc_qa_pi_c1_pt->ProjectionX("h_df_xicc_qa_pi_c1_pt_1", h_df_xi_cc_qa_pi_c1_pt->GetYaxis()->FindBin(0.) ,h_df_xi_cc_qa_pi_c1_pt->GetYaxis()->FindBin(4.5));
+  auto h_df_xi_cc_qa_pi_c1_pt_2  = h_df_xi_cc_qa_pi_c1_pt->ProjectionX("h_df_xicc_qa_pi_c1_pt_2", h_df_xi_cc_qa_pi_c1_pt->GetYaxis()->FindBin(4.5) ,h_df_xi_cc_qa_pi_c1_pt->GetYaxis()->FindBin(20));
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_c1_pt_1); 
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_c1_pt_2); 
+
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_c2_pt); 
+  auto h_df_xi_cc_qa_pi_c2_pt_1  = h_df_xi_cc_qa_pi_c2_pt->ProjectionX("h_df_xicc_qa_pi_c2_pt_1", h_df_xi_cc_qa_pi_c2_pt->GetYaxis()->FindBin(0.) ,h_df_xi_cc_qa_pi_c2_pt->GetYaxis()->FindBin(4.5));
+  auto h_df_xi_cc_qa_pi_c2_pt_2  = h_df_xi_cc_qa_pi_c2_pt->ProjectionX("h_df_xicc_qa_pi_c2_pt_2", h_df_xi_cc_qa_pi_c2_pt->GetYaxis()->FindBin(4.5) ,h_df_xi_cc_qa_pi_c2_pt->GetYaxis()->FindBin(20));
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_c2_pt_1); 
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_c2_pt_2); 
+  
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_cc_pt); 
+  auto h_df_xi_cc_qa_pi_cc_pt_1  = h_df_xi_cc_qa_pi_cc_pt->ProjectionX("h_df_xicc_qa_pi_cc_pt_1", h_df_xi_cc_qa_pi_cc_pt->GetYaxis()->FindBin(0.) ,h_df_xi_cc_qa_pi_cc_pt->GetYaxis()->FindBin(4.5));
+  auto h_df_xi_cc_qa_pi_cc_pt_2  = h_df_xi_cc_qa_pi_cc_pt->ProjectionX("h_df_xicc_qa_pi_cc_pt_2", h_df_xi_cc_qa_pi_cc_pt->GetYaxis()->FindBin(4.5) ,h_df_xi_cc_qa_pi_cc_pt->GetYaxis()->FindBin(20));
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_cc_pt_1); 
+  HarryPlotter::CheckAndStore(out,h_df_xi_cc_qa_pi_cc_pt_2);
+  
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c2); 
