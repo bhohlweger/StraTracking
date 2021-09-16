@@ -352,42 +352,39 @@ int main(int argc, char **argv) {
     .Define("fPicTOFDiffInner", "fPicInnerTOF20Signal-fPicInnerExpectedSignal")
     .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
     .Define("fPicccTOFDiffInner", "fPicccInnerTOF20Signal-fPicccInnerExpectedSignal")
-
     .Filter("fV0DecayRadius > 0.475", "safeteyPrecuts_1")
     .Filter("fOmegaDecayRadius > 0.475", "safeteyPrecuts_2")
-    .Filter("TMath::Abs(fPositiveDCAxy)> 60", "safeteyPrecuts_3")
-    .Filter("TMath::Abs(fPositiveDCAxy)< 12000", "safeteyPrecuts_4")
-    .Filter("TMath::Abs(fPositiveDCAz )> 60", "safeteyPrecuts_5")
-    .Filter("TMath::Abs(fNegativeDCAxy)> 60", "safeteyPrecuts_6")
-    .Filter("TMath::Abs(fNegativeDCAz )> 60", "safeteyPrecuts_7")
-    .Filter("TMath::Abs(fBachelorDCAxy)> 40", "safeteyPrecuts_8")
-    .Filter("TMath::Abs(fBachelorDCAz )> 40", "safeteyPrecuts_9")
-    .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_10")
-    .Filter("TMath::Abs(fPicDCAzToPV          )> 10", "safeteyPrecuts_11")
-    .Filter("TMath::Abs(fPiccDCAxyToPV        )> 5", "safeteyPrecuts_12")
-    .Filter("TMath::Abs(fPiccDCAzToPV         )> 5", "safeteyPrecuts_13")
-    .Filter("TMath::Abs(fPicccDCAxyToPV       )> 5", "safeteyPrecuts_14")
-    .Filter("TMath::Abs(fPicccDCAzToPV        )> 5", "safeteyPrecuts_15")
-    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.012", "safeteyPrecuts_16")
-    .Filter("fOmegaPt > 0.4", "safeteyPrecuts_17")
-    .Filter("fV0DauDCA   < 1500", "safeteyPrecuts_18")
-    .Filter("TMath::Abs(fOmegaMass-1.672) < 0.012", "safeteyPrecuts_19")
-    .Filter("fOmegaDauDCA < 1200", "safeteyPrecuts_20")
-    .Filter("TMath::Abs(fPosTOFDiffInner) < 100", "safeteyPrecuts_21")
-    .Filter("TMath::Abs(fNegTOFDiffInner) < 100", "safeteyPrecuts_22")
-    .Filter("TMath::Abs(fBachTOFDiffInner) < 100", "safeteyPrecuts_23")
-    .Filter("TMath::Abs(fPicTOFDiffInner) < 100", "safeteyPrecuts_24")
-    .Filter("TMath::Abs(fPiccTOFDiffInner) < 100", "safeteyPrecuts_25")
-    .Filter("TMath::Abs(fPicccTOFDiffInner) < 100", "safeteyPrecuts_26")
-    .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 200", "safeteyPrecuts_27")
-    .Filter("TMath::Abs(fOmegacccDCAzToPV) < 200", "safeteyPrecuts_28")
-    .Filter("fOmegacDauDCA < 200", "safeteyPrecuts_29") 
-    .Filter("fOmegaccDauDCA < 150", "safeteyPrecuts_30") 
-    .Filter("fOmegacccDauDCA < 125", "safeteyPrecuts_31") 
-    .Filter("fOmegacDecayDistanceFromPV > 0.0050", "safeteyPrecuts_32") 
-    .Filter("TMath::Abs(fOmegacMass-2.695) < 0.06", "safeteyPrecuts_33")
-    .Filter("TMath::Abs(fOmegaccMass-3.746) < 0.06", "safeteyPrecuts_34")
-    .Filter("TMath::Abs(fOmegacccMass-4.797) < 0.6", "safeteyPrecutsOut")
+    .Filter("TMath::Abs(fPositiveDCAxy)> 60", "safeteyPrecuts_3") 
+    .Filter("TMath::Abs(fPositiveDCAz )> 60", "safeteyPrecuts_4") 
+    .Filter("TMath::Abs(fNegativeDCAxy)> 60", "safeteyPrecuts_5") 
+    .Filter("TMath::Abs(fNegativeDCAz )> 60", "safeteyPrecuts_6") 
+    .Filter("TMath::Abs(fBachelorDCAxy)> 40", "safeteyPrecuts_7")  
+    .Filter("TMath::Abs(fBachelorDCAz )> 40", "safeteyPrecuts_8") 
+    .Filter("TMath::Abs(fPicDCAxyToPV         )> 10", "safeteyPrecuts_9")
+    .Filter("TMath::Abs(fPicDCAzToPV          )> 10", "safeteyPrecuts_10")
+    .Filter("TMath::Abs(fPiccDCAxyToPV        )> 5", "safeteyPrecuts_11")
+    .Filter("TMath::Abs(fPiccDCAzToPV         )> 5", "safeteyPrecuts_12")
+    .Filter("TMath::Abs(fPicccDCAxyToPV       )> 5", "safeteyPrecuts_13")
+    .Filter("TMath::Abs(fPicccDCAzToPV        )> 5", "safeteyPrecuts_14")
+    .Filter("TMath::Abs(fPosTOFDiffInner) < 75", "safeteyPrecuts_15")  
+    .Filter("TMath::Abs(fNegTOFDiffInner) < 75", "safeteyPrecuts_16")  
+    .Filter("TMath::Abs(fBachTOFDiffInner) < 75", "safeteyPrecuts_17") 
+    .Filter("TMath::Abs(fPicTOFDiffInner) < 75", "safeteyPrecuts_18")  
+    .Filter("TMath::Abs(fPiccTOFDiffInner) < 75", "safeteyPrecuts_19") 
+    .Filter("TMath::Abs(fPicccTOFDiffInner) < 75", "safeteyPrecuts_20")
+    .Filter("fV0DauDCA   < 400", "safeteyPrecuts_21") 
+    .Filter("fOmegaPt > 0.", "safeteyPrecuts_22")  
+    .Filter("fOmegaDauDCA < 400", "safeteyPrecuts_23") 
+    .Filter("fOmegacDauDCA < 40", "safeteyPrecuts_24")  
+    .Filter("fOmegaccDauDCA < 40", "safeteyPrecuts_25") 
+    .Filter("fOmegacccDauDCA < 40", "safeteyPrecuts_26")
+    .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 100", "safeteyPrecuts_27") 
+    .Filter("TMath::Abs(fOmegacccDCAzToPV) < 100", "safeteyPrecuts_28")  
+    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.005", "safeteyPrecuts_29") 
+    .Filter("TMath::Abs(fOmegaMass-1.672) < 0.005", "safeteyPrecuts_30")  
+    .Filter("TMath::Abs(fOmegacMass-2.695) < 0.03", "safeteyPrecuts_31")  
+    .Filter("TMath::Abs(fOmegaccMass-3.746) < 0.03", "safeteyPrecuts_32") 
+    .Filter("TMath::Abs(fOmegacccMass-4.797) < 0.65", "safeteyPrecutsOut")
     ; 
 
   //auto df_ForceOmega = ForceNoOmega?df_precut.Filter("!fTrueOmega","noTrueOmegas"):df_precut.Filter("fTrueOmega||!fTrueOmega","TrueAndFalseOmegas");
@@ -475,9 +472,9 @@ int main(int argc, char **argv) {
     
     .Filter("TMath::Abs(fV0DCAxyToPV) < 5000", "fV0DCAxyToPV")
     .Filter("TMath::Abs(fV0DCAzToPV) < 7000", "fV0DCAzToPV")
-    .Filter("fV0DauDCA < 200","fV0DauDCA")
+    .Filter("fV0DauDCA < 300","fV0DauDCA")
     .Filter("fV0DecayRadius > 0.5","fV0DecayRadius")
-    .Filter("fLmbInvDecayLengthToPV > 0.04","fLmbInvDecayLengthToPV")
+    .Filter("fLmbInvDecayLengthToPV <  15","fLmbInvDecayLengthToPV")
     .Filter("TMath::Abs(fPositiveDCAxy) > 50","fPositiveDCAxy")
     .Filter("TMath::Abs(fPositiveDCAz) > 40","fPositiveDCAz")
     .Filter("TMath::Abs(fNegativeDCAxy) > 100","fNegativeDCAxy")
@@ -530,9 +527,9 @@ int main(int argc, char **argv) {
   auto df_omega_sel = df_lmb
     .Filter("fOmegaDecayRadius > 0.5","fOmegaDecayRadius")
     .Filter("OmegaLmbDecayRadDiff > 0","OmegaLmbDecayRadDiff")
-    .Filter("fOmegaDauDCA < 200","fOmegaDauDCA")
-    .Filter("fOmegaInvDecayLengthToPV > 0.3","")
-    .Filter("fOmegaDecayRadius > 0.5","")
+    .Filter("fOmegaDauDCA < 300","fOmegaDauDCA")
+    .Filter("fOmegaInvDecayLengthToPV < 7","fOmegaInvDecayLengthToPV")
+    .Filter("fOmegaDecayRadius >  0.5","fOmegaDecayRadius")
     .Filter("TMath::Abs(fBachelorDCAxy) > 40","fBachelorDCAxy")
     .Filter("TMath::Abs(fBachelorDCAz) > 40","fBachelorDCAz")
     .Filter("TMath::Abs(fBachTOFDiffInner) < 50", "BachelorTOF")
@@ -686,7 +683,9 @@ int main(int argc, char **argv) {
 
   auto h_df_omega_cc_qa_piccc_tof_diff_inner = df_omega_cc_qa.Histo1D({"h_df_omega_cc_qa_piccc_tof_diff_inner", "beta expected vs measured", 2000, -2000, 2000}, "fPicccTOFDiffInner");
   
-  auto h_df_omega_cc_qa_omega_ccc_pt = df_omega_cc_qa
+  auto h_df_omega_cc_qa_pi_pt = df_omega_cc_qa.Histo1D({"df_omega_cc_qa_pi_pt", "pi ccc pt", 200, 0, 20}, "fPicccPt");  
+
+  auto df_omega_ccc_qa = df_omega_cc_qa
     .Filter("TMath::Abs(fPicDCAxyToPV) > 10")
     .Filter("TMath::Abs(fPicDCAzToPV) > 10")
     .Filter("TMath::Abs(fPiccDCAxyToPV) > 10")
@@ -695,11 +694,13 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPicccDCAzToPV) > 10")
     .Filter("TMath::Abs(fPicTOFDiffInner) < 50", "PicTOF")
     .Filter("TMath::Abs(fPiccTOFDiffInner) < 50", "PiccTOF")
-    .Filter("TMath::Abs(fPicccTOFDiffInner) < 50", "PicccTOF")
-    .Histo1D({"df_omega_cc_qa_omega_ccc_pt", "omega_ccc pt", 200, 0, 20}, "fOmegacccPt");  
-	    
-  auto h_df_omega_cc_qa_pi_pt = df_omega_cc_qa.Histo1D({"df_omega_cc_qa_pi_pt", "pi ccc pt", 200, 0, 20}, "fPicccPt");  
-
+    .Filter("TMath::Abs(fPicccTOFDiffInner) < 50", "PicccTOF"); 
+    
+  auto h_df_omega_ccc_qa_omega_ccc_pt = df_omega_ccc_qa.Histo1D({"df_omega_ccc_qa_omega_ccc_pt", "omega_ccc pt", 200, 0, 20}, "fOmegacccPt");  
+  
+  auto h_df_omega_ccc_qa_pi_c_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_c_pt", "pi c pt", 800, 0, 20, 200, 0, 20}, "fPicPt", "fOmegacccPt");  
+  auto h_df_omega_ccc_qa_pi_cc_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_cc_pt", "pi cc pt", 800, 0, 20, 200, 0, 20}, "fPiccPt", "fOmegacccPt");  
+  auto h_df_omega_ccc_qa_pi_ccc_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_cc_pt", "pi ccc pt", 800, 0, 20, 200, 0, 20}, "fPicccPt", "fOmegacccPt");  
   //cut on Trad and check decay lengths 
   auto h_df_omega_cc_qa_trad_omega_ccc_ddist_pv = df_omega_cc_qa.Filter("fOmegacccDecayRadius > 0.003","corrStudy_fOmegacccDecayRadius").Histo1D({"df_omega_cc_qa_trad_omega_ccc_dist_pv", "omega_ccc decay dist", 3000, 0, 0.50}, "fOmegacccInvDecayLengthToPV"); 
   //cut on dl to pv 
@@ -726,8 +727,8 @@ int main(int argc, char **argv) {
     .Filter("fOmegacccDauDCA < 10","c1_fOmegacccDaughterDCA")
     .Filter("fOmegacccDecayRadius > 0.002","c1_fOmegacccDecayRadius")
     .Filter("fOmegacccInvDecayLengthToPV > 0.002","c1_fOmegacccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 20","c1_fOmegaDCAxyToPV")
-    .Filter("TMath::Abs(fOmegacccDCAzToPV) < 20","c1_fOmegaDCAzToPV")
+    .Filter("TMath::Abs(fOmegacccDCAxyToPV) < 20","c1_fOmegacccDCAxyToPV")
+    .Filter("TMath::Abs(fOmegacccDCAzToPV) < 20","c1_fOmegacccDCAzToPV")
 
     .Filter("TMath::Abs(fPicDCAxyToPV) > 10","c1_fPicDCAxyToPV")
     .Filter("TMath::Abs(fPicDCAzToPV) > 10","c1_fPicDCAzToPV")
@@ -902,9 +903,28 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_omega_cc_qa_omega_cc_dca_z);
   HarryPlotter::CheckAndStore(out, h_df_omega_cc_qa_omega_ccc_dca_xy);
   HarryPlotter::CheckAndStore(out, h_df_omega_cc_qa_omega_ccc_dca_z);
-    
-  HarryPlotter::CheckAndStore(out,h_df_omega_cc_qa_omega_ccc_pt); 
+
   HarryPlotter::CheckAndStore(out,h_df_omega_cc_qa_pi_pt); 
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_omega_ccc_pt); 
+
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_c_pt); 
+  auto h_df_omega_ccc_qa_pi_c_pt_1  = h_df_omega_ccc_qa_pi_c_pt->ProjectionX("h_df_omegaccc_qa_pi_c_pt_1", h_df_omega_ccc_qa_pi_c_pt->GetYaxis()->FindBin(0.) ,h_df_omega_ccc_qa_pi_c_pt->GetYaxis()->FindBin(4.5));
+  auto h_df_omega_ccc_qa_pi_c_pt_2  = h_df_omega_ccc_qa_pi_c_pt->ProjectionX("h_df_omegaccc_qa_pi_c_pt_2", h_df_omega_ccc_qa_pi_c_pt->GetYaxis()->FindBin(4.5) ,h_df_omega_ccc_qa_pi_c_pt->GetYaxis()->FindBin(20));
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_c_pt_1); 
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_c_pt_2); 
+
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_cc_pt); 
+  auto h_df_omega_ccc_qa_pi_cc_pt_1  = h_df_omega_ccc_qa_pi_cc_pt->ProjectionX("h_df_omegaccc_qa_pi_cc_pt_1", h_df_omega_ccc_qa_pi_cc_pt->GetYaxis()->FindBin(0.) ,h_df_omega_ccc_qa_pi_cc_pt->GetYaxis()->FindBin(4.5));
+  auto h_df_omega_ccc_qa_pi_cc_pt_2  = h_df_omega_ccc_qa_pi_cc_pt->ProjectionX("h_df_omegaccc_qa_pi_cc_pt_2", h_df_omega_ccc_qa_pi_cc_pt->GetYaxis()->FindBin(4.5) ,h_df_omega_ccc_qa_pi_cc_pt->GetYaxis()->FindBin(20));
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_cc_pt_1); 
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_cc_pt_2); 
+  
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_ccc_pt); 
+  auto h_df_omega_ccc_qa_pi_ccc_pt_1  = h_df_omega_ccc_qa_pi_ccc_pt->ProjectionX("h_df_omegaccc_qa_pi_ccc_pt_1", h_df_omega_ccc_qa_pi_ccc_pt->GetYaxis()->FindBin(0.) ,h_df_omega_ccc_qa_pi_ccc_pt->GetYaxis()->FindBin(4.5));
+  auto h_df_omega_ccc_qa_pi_ccc_pt_2  = h_df_omega_ccc_qa_pi_ccc_pt->ProjectionX("h_df_omegaccc_qa_pi_ccc_pt_2", h_df_omega_ccc_qa_pi_ccc_pt->GetYaxis()->FindBin(4.5) ,h_df_omega_ccc_qa_pi_ccc_pt->GetYaxis()->FindBin(20));
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_ccc_pt_1); 
+  HarryPlotter::CheckAndStore(out,h_df_omega_ccc_qa_pi_ccc_pt_2);
+  
 
   HarryPlotter::CheckAndStore(out,h_df_omega_cc_qa_pi_dca_xy);
   HarryPlotter::CheckAndStore(out,h_df_omega_cc_qa_pi_dca_z);
