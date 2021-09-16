@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
     
   HarryPlotter::StyleBox(); 
  
-  ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel          
+  ROOT::EnableImplicitMT(5); // Tell ROOT you want to go parallel          
   TString filePath = TString::Format("%s", fileName); 
   
   auto h_LongTracks = new TH1D("NLongTrack", "NLongTrack", 10000, 0, 10000); 
@@ -322,32 +322,35 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fNegativeDCAz )> 50", "safeteyPrecuts_7")
     .Filter("TMath::Abs(fBachelorDCAxy)> 40", "safeteyPrecuts_8")
     .Filter("TMath::Abs(fBachelorDCAz )> 40", "safeteyPrecuts_9")
-    .Filter("TMath::Abs(fPic1DCAxyToPV         )> 10", "safeteyPrecuts_10")
-    .Filter("TMath::Abs(fPic1DCAzToPV          )> 10", "safeteyPrecuts_11")
-    .Filter("TMath::Abs(fPic1DCAxyToPV         )> 10", "safeteyPrecuts_12")
-    .Filter("TMath::Abs(fPic2DCAzToPV          )> 10", "safeteyPrecuts_13")
-    .Filter("TMath::Abs(fPiccDCAxyToPV         )> 10", "safeteyPrecuts_14")
-    .Filter("TMath::Abs(fPiccDCAzToPV          )> 10", "safeteyPrecuts_15")
-    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.005", "safeteyPrecuts_16")
-    .Filter("fPtXi > 0.", "safeteyPrecuts_17")
-    .Filter("fV0DauDCA   < 400", "safeteyPrecuts_18")
-    .Filter("TMath::Abs(fXiMass-1.322) < 0.005", "safeteyPrecuts_19")
-    .Filter("fXiDauDCA < 400", "safeteyPrecuts_20")
-    .Filter("TMath::Abs(fXicMass-2.468) < 0.030", "safeteyPrecuts_21")
+    .Filter("TMath::Abs(fPic1DCAxyToPV         )>10", "safeteyPrecuts_10")
+    .Filter("TMath::Abs(fPic1DCAzToPV          )>10", "safeteyPrecuts_11")
+    .Filter("TMath::Abs(fPic2DCAxyToPV         )>10", "safeteyPrecuts_12")
+    .Filter("TMath::Abs(fPic2DCAzToPV          )>10", "safeteyPrecuts_13")
+    .Filter("TMath::Abs(fPiccDCAxyToPV         )>10", "safeteyPrecuts_14")
+    .Filter("TMath::Abs(fPiccDCAzToPV          )>10", "safeteyPrecuts_15")
+    // .Filter("fPiC1Pt > 0.15", "safeteyPrecuts_16")
+    // .Filter("fPiC2Pt > 0.15", "safeteyPrecuts_17")
+    // .Filter("fPiCCPt > 0.3", "safeteyPrecuts_18")
+    .Filter("TMath::Abs(fLambdaMass-1.116) < 0.005", "safeteyPrecuts_19")
+    .Filter("fPtXi > 0.", "safeteyPrecuts_20")
+    .Filter("fV0DauDCA   < 400", "safeteyPrecuts_21")
+    .Filter("TMath::Abs(fXiMass-1.322) < 0.005", "safeteyPrecuts_22")
+    .Filter("fXiDauDCA < 400", "safeteyPrecuts_23")
+    .Filter("TMath::Abs(fXicMass-2.468) < 0.030", "safeteyPrecuts_24")
     .Define("fPosTOFDiffInner",  "fPositiveInnerTOF20Signal-fPositiveInnerExpectedSignal")
-    .Filter("fPosTOFDiffInner < 75", "safeteyPrecuts_22")
+    .Filter("fPosTOFDiffInner < 75", "safeteyPrecuts_25")
     .Define("fNegTOFDiffInner",  "fNegativeInnerTOF20Signal-fNegativeInnerExpectedSignal")
-    .Filter("fNegTOFDiffInner < 75", "safeteyPrecuts_23")
+    .Filter("fNegTOFDiffInner < 75", "safeteyPrecuts_26")
     .Define("fBachTOFDiffInner", "fBachelorInnerTOF20Signal-fBachelorInnerExpectedSignal")
-    .Filter("fBachTOFDiffInner < 75", "safeteyPrecuts_24")
+    .Filter("fBachTOFDiffInner < 75", "safeteyPrecuts_27")
     .Define("fPic1TOFDiffInner", "fPic1InnerTOF20Signal-fPic1InnerExpectedSignal")
-    .Filter("fPic1TOFDiffInner < 75", "safeteyPrecuts_25")
+    .Filter("fPic1TOFDiffInner < 75", "safeteyPrecuts_28")
     .Define("fPic2TOFDiffInner", "fPic2InnerTOF20Signal-fPic2InnerExpectedSignal")
-    .Filter("fPic2TOFDiffInner < 75", "safeteyPrecuts_26")
+    .Filter("fPic2TOFDiffInner < 75", "safeteyPrecuts_29")
     .Define("fPiccTOFDiffInner", "fPiccInnerTOF20Signal-fPiccInnerExpectedSignal")
-    .Filter("fPiccTOFDiffInner < 75", "safeteyPrecuts_27")
-    .Filter("fXicDaughterDCA < 50", "safeteyPrecuts_28")
-    .Filter("fXiccDaughterDCA < 30", "safeteyPrecuts_28")
+    .Filter("fPiccTOFDiffInner < 75", "safeteyPrecuts_30")
+    .Filter("fXicDaughterDCA < 50", "safeteyPrecuts_31")
+    .Filter("fXiccDaughterDCA < 30", "safeteyPrecuts_32")
     .Filter("TMath::Abs(fXiccMass-3.621) < 0.65", "safeteyPrecutsOut")
     ; 
 
@@ -606,9 +609,9 @@ int main(int argc, char **argv) {
 
   auto h_df_xi_cc_qa_xi_cc_pt = df_xi_cc_qa.Histo1D({"df_xi_cc_qa_xi_cc_pt", "xi_cc pt", 200, 0, 20}, "fPtXiCC");  
   
-  auto h_df_xi_cc_qa_pi_c1_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_c1_pt", "pi c1 pt", 200, 0, 20, 200, 0, 20}, "fPiC1Pt", "fPtXiCC");  
-  auto h_df_xi_cc_qa_pi_c2_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_c2_pt", "pi c2 pt", 200, 0, 20, 200, 0, 20}, "fPiC2Pt", "fPtXiCC");  
-  auto h_df_xi_cc_qa_pi_cc_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_cc_pt", "pi cc pt", 200, 0, 20, 200, 0, 20}, "fPiCCPt", "fPtXiCC");  
+  auto h_df_xi_cc_qa_pi_c1_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_c1_pt", "pi c1 pt", 800, 0, 20, 200, 0, 20}, "fPiC1Pt", "fPtXiCC");  
+  auto h_df_xi_cc_qa_pi_c2_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_c2_pt", "pi c2 pt", 800, 0, 20, 200, 0, 20}, "fPiC2Pt", "fPtXiCC");  
+  auto h_df_xi_cc_qa_pi_cc_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_cc_pt", "pi cc pt", 800, 0, 20, 200, 0, 20}, "fPiCCPt", "fPtXiCC");  
 
   //cut on Trad and check decay lengths 
   auto h_df_xi_c_qa_trad_xi_cc_ddist_pv = df_xi_c_qa.Filter("fXiccDecayRadius > 0.003","corrStudy_fXiccDecayRadius").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPV"); 
@@ -995,6 +998,7 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out,h_df_xi_c_qa_dl_pv_xi_cc_trad);
   
   HarryPlotter::CheckAndStore(out,h_df_xi_c_xi_cc_mass); 
+  
   HarryPlotter::CheckAndStore(out,h_df_identified); 
   auto h_df_xi_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"), h_df_identified->GetYaxis()->FindBin(-1.5),h_df_identified->GetYaxis()->FindBin(+1.5));
   auto h_df_pT_Generated = h_gen_xi_cc_pt_eta_counter->ProjectionX("pTXiccGenerados",h_gen_xi_cc_pt_eta_counter->GetYaxis()->FindBin(-1.5),h_gen_xi_cc_pt_eta_counter->GetYaxis()->FindBin(+1.5));
