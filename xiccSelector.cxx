@@ -328,9 +328,9 @@ int main(int argc, char **argv) {
     .Filter("TMath::Abs(fPic2DCAzToPV          )>10", "safeteyPrecuts_13")
     .Filter("TMath::Abs(fPiccDCAxyToPV         )>10", "safeteyPrecuts_14")
     .Filter("TMath::Abs(fPiccDCAzToPV          )>10", "safeteyPrecuts_15")
-    // .Filter("fPiC1Pt > 0.15", "safeteyPrecuts_16")
-    // .Filter("fPiC2Pt > 0.15", "safeteyPrecuts_17")
-    // .Filter("fPiCCPt > 0.3", "safeteyPrecuts_18")
+    .Filter("fPiC1Pt > 0.15", "safeteyPrecuts_16")
+    .Filter("fPiC2Pt > 0.15", "safeteyPrecuts_17")
+    .Filter("fPiCCPt > 0.3", "safeteyPrecuts_18")
     .Filter("TMath::Abs(fLambdaMass-1.116) < 0.005", "safeteyPrecuts_19")
     .Filter("fPtXi > 0.", "safeteyPrecuts_20")
     .Filter("fV0DauDCA   < 400", "safeteyPrecuts_21")
@@ -548,16 +548,16 @@ int main(int argc, char **argv) {
 
   //study a bit decay length + trad 
   //cut on Trad and check decay lengths to pv and to dv 
-  auto h_df_xi_qa_trad_xi_c_ddist_pv = df_xi_qa.Filter("fXicDecayRadius > 0.003","corrStudy_fXicDecayRadius").Histo1D({"df_xi_qa_trad_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV"); 
-  auto h_df_xi_qa_trad_xi_c_ddist_dv = df_xi_qa.Filter("fXicDecayRadius > 0.003","corrStudy_fXicDecayRadius").Histo1D({"df_xi_qa_trad_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_pv = df_xi_qa.Filter("fXicDecayRadius > 0.01","corrStudy_fXicDecayRadius").Histo1D({"df_xi_qa_trad_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV"); 
+  auto h_df_xi_qa_trad_xi_c_ddist_dv = df_xi_qa.Filter("fXicDecayRadius > 0.01","corrStudy_fXicDecayRadius").Histo1D({"df_xi_qa_trad_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV"); 
   
   //cut on dl to pv 
-  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv =  df_xi_qa.Filter("fXicInvDecayLengthToPV > 0.002","corrStudy_fXicInvDecayLengthToPV").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV");
-  auto h_df_xi_qa_dl_pv_xi_c_trad = df_xi_qa.Filter("fXicInvDecayLengthToPV > 0.002","corrStudy_fXicInvDecayLengthToPV").Histo1D({"df_xi_qa_dl_pv_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius");
+  auto h_df_xi_qa_dl_pv_xi_c_ddist_dv =  df_xi_qa.Filter("fXicInvDecayLengthToPV > 0.003","corrStudy_fXicInvDecayLengthToPV").Histo1D({"df_xi_qa_dl_pv_xi_c_dist_dv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToDV");
+  auto h_df_xi_qa_dl_pv_xi_c_trad = df_xi_qa.Filter("fXicInvDecayLengthToPV > 0.003","corrStudy_fXicInvDecayLengthToPV").Histo1D({"df_xi_qa_dl_pv_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius");
   
   //cut on dl to dv 
-  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv =  df_xi_qa.Filter("fXicInvDecayLengthToDV < 0.06","corrStudy_fXicInvDecayLengthToDV").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV");
-  auto h_df_xi_qa_dl_dv_xi_c_trad = df_xi_qa.Filter("fXicInvDecayLengthToDV < 0.06","corrStudy_fXicInvDecayLengthToDV").Histo1D({"df_xi_qa_dl_dv_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius");
+  auto h_df_xi_qa_dl_dv_xi_c_ddist_dv =  df_xi_qa.Filter("fXicInvDecayLengthToDV > 0.002","corrStudy_fXicInvDecayLengthToDV").Histo1D({"df_xi_qa_dl_dv_xi_c_dist_pv", "xi_c decay dist", 1500, 0, 0.30}, "fXicInvDecayLengthToPV");
+  auto h_df_xi_qa_dl_dv_xi_c_trad = df_xi_qa.Filter("fXicInvDecayLengthToDV > 0.002","corrStudy_fXicInvDecayLengthToDV").Histo1D({"df_xi_qa_dl_dv_xi_c_trad", "xi_c trad", 2000, 0, 0.4}, "fXicDecayRadius");
 
   //Select the Xi_c 
 
@@ -614,9 +614,9 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_qa_pi_cc_pt = df_xi_cc_qa.Histo2D({"df_xi_cc_qa_pi_cc_pt", "pi cc pt", 800, 0, 20, 200, 0, 20}, "fPiCCPt", "fPtXiCC");  
 
   //cut on Trad and check decay lengths 
-  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv = df_xi_c_qa.Filter("fXiccDecayRadius > 0.003","corrStudy_fXiccDecayRadius").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPV"); 
+  auto h_df_xi_c_qa_trad_xi_cc_ddist_pv = df_xi_c_qa.Filter("fXiccDecayRadius > 0.005","corrStudy_fXiccDecayRadius").Histo1D({"df_xi_c_qa_trad_xi_cc_dist_pv", "xi_cc decay dist", 3000, 0, 0.50}, "fXiccInvDecayLengthToPV"); 
   //cut on dl to pv 
-  auto h_df_xi_c_qa_dl_pv_xi_cc_trad = df_xi_c_qa.Filter("(fXiccInvDecayLengthToPV > 0.002) && (fXiccInvDecayLengthToPV <  0.06)","corrStudy_fXiccInvDecayLengthToPV").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadius");
+  auto h_df_xi_c_qa_dl_pv_xi_cc_trad = df_xi_c_qa.Filter("(fXiccInvDecayLengthToPV > 0.003) && (fXiccInvDecayLengthToPV <  0.06)","corrStudy_fXiccInvDecayLengthToPV").Histo1D({"df_xi_c_qa_dl_pv_xi_cc_trad", "xi_cc trad", 2000, 0, 0.4}, "fXiccDecayRadius");
     
   auto h_df_xi_c_xi_cc_mass = df_xi_c.Filter("XicXiccDecayRadDiff > 0","XicXiccDecayRadDiff").Histo1D({"df_xi_c_xi_cc_mass", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   
@@ -686,18 +686,20 @@ int main(int argc, char **argv) {
   
   //Select the Xi_cc
   auto df_xi_cc_im_c3 = df_xi_c
-    .Filter("XicXiccDecayRadDiff > 0","c3_XicXiccDecayRadDiff")
-    .Filter("fXicDaughterDCA < 20","c3_fXicDaughterDCA")
-    .Filter("fXicDecayRadius > 0.004","c3_fXicDecayRadius")
-    .Filter("fXicInvDecayLengthToPV > 0.002","c3_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDV < 0.1","c3_fXicInvDecayLengthToDVStra")
-    .Filter("fXiccDaughterDCA < 20","c3_fXiccDaughterDCA")
-    //.Filter("fXiccDecayRadius > 0.005","c3_fXiccDecayRadius")
-    //.Filter("fXiccInvDecayLengthToPV > 0.004","c3_fXiccInvDecayLengthToPVStra")
-    .Filter("TMath::Abs(fXiDCAxyToPV) > 5","c3_fXiDCAxyToPV")
+    .Filter("XicXiccDecayRadDiff > 0","c3_XicXiccDecayRadDiffStra")
+    .Filter("fXicDaughterDCA < 12","c3_fXicDaughterDCA")
+    .Filter("fXicDecayRadius > 0.01","c3_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.003","c3_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV > 0.002","c3_fXicInvDecayLengthToDVStra")
+    .Filter("fXiccDaughterDCA < 8","c3_fXiccDaughterDCA")
+    .Filter("fXiccDecayRadius > 0.005","c3_fXiccDecayRadius")
+    .Filter("fXiccInvDecayLengthToPV > 0.003","c3_fXiccInvDecayLengthToPVStra")
+    .Filter("TMath::Abs(fXiDCAxyToPV) > 10","c3_fXiDCAxyToPV")
     .Filter("TMath::Abs(fXiDCAzToPV) > 10","c3_fXiDCAzToPV")
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c3_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 10","c3_fXicDCAxyToPV")
     .Filter("TMath::Abs(fXicDCAzToPV) > 10","c3_fXicDCAzToPV")
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 15","c3_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 15","c3_fXiccDCAzToPV")    
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c3_fXicPionDCAxyToPV1")
     .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c3_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c3_fXicPionDCAxyToPV2")
@@ -801,31 +803,25 @@ int main(int argc, char **argv) {
   //Select the Xi_cc
   auto df_xi_cc_im_c5 = df_xi_c
     .Filter("XicXiccDecayRadDiff > 0","c5_XicXiccDecayRadDiff")
-    
     .Filter("fXicDaughterDCA < 10","c5_fXicDaughterDCA")
-    .Filter("fXicDecayRadius > 0.004","c5_fXicDecayRadius")
-    .Filter("fXicInvDecayLengthToPV > 0.002","c5_fXicInvDecayLengthToPVStra")
-    .Filter("fXicInvDecayLengthToDV < 0.06","c5_fXicInvDecayLengthToDVStra")
-    
+    .Filter("fXicDecayRadius > 0.01","c5_fXicDecayRadius")
+    .Filter("fXicInvDecayLengthToPV > 0.003","c5_fXicInvDecayLengthToPVStra")
+    .Filter("fXicInvDecayLengthToDV > 0.002","c5_fXicInvDecayLengthToDVStra")
     .Filter("fXiccDaughterDCA < 5","c5_fXiccDaughterDCA")
     .Filter("fXiccDecayRadius > 0.005","c5_fXiccDecayRadius")
-    .Filter("(fXiccInvDecayLengthToPV > 0.004) && (fXiccInvDecayLengthToPV < 0.06)","c5_fXiccInvDecayLengthToPVStra")
-    
+    .Filter("(fXiccInvDecayLengthToPV > 0.003) && (fXiccInvDecayLengthToPV < 0.06)","c5_fXiccInvDecayLengthToPVStra")
     .Filter("TMath::Abs(fXiDCAxyToPV) > 10","c5_fXiDCAxyToPV")
     .Filter("TMath::Abs(fXiDCAzToPV) > 10","c5_fXiDCAzToPV")
-    
-    .Filter("TMath::Abs(fXicDCAxyToPV) > 20","c5_fXicDCAxyToPV")
-    .Filter("TMath::Abs(fXicDCAzToPV) > 20","c5_fXicDCAzToPV")
-    
+    .Filter("TMath::Abs(fXicDCAxyToPV) > 15","c5_fXicDCAxyToPV")
+    .Filter("TMath::Abs(fXicDCAzToPV) > 15","c5_fXicDCAzToPV")
     .Filter("TMath::Abs(fPic1DCAxyToPV) > 10","c5_fXicPionDCAxyToPV1")
     .Filter("TMath::Abs(fPic1DCAzToPV) > 15","c5_fXicPionDCAzToPV1")
     .Filter("TMath::Abs(fPic2DCAxyToPV) > 10","c5_fXicPionDCAxyToPV2")
     .Filter("TMath::Abs(fPic2DCAzToPV) > 15","c5_fXicPionDCAzToPV2")
     .Filter("TMath::Abs(fPiccDCAxyToPV) > 20","c5_fPicDCAxyToPV")
     .Filter("TMath::Abs(fPiccDCAzToPV) > 20","c5_fPicDCAzToPV")
-    
-    .Filter("TMath::Abs(fXiccDCAxyToPV) < 20","c5_fXiccDCAxyToPV")
-    .Filter("TMath::Abs(fXiccDCAzToPV) < 20","c5_fXiccDCAzToPV")    
+    .Filter("TMath::Abs(fXiccDCAxyToPV) < 10","c5_fXiccDCAxyToPV")
+    .Filter("TMath::Abs(fXiccDCAzToPV) < 10","c5_fXiccDCAzToPV")    
     ;
   
   //Fill some final histograms  
