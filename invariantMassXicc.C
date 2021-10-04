@@ -2,9 +2,9 @@ void invariantMassXicc(TString addon) {
   double xiccMass = 3.621; 
   double xiccWindow = 0.030;
   
-  TFile* xi = TFile::Open(    TString::Format("outxiccSelector_xi%s.root"  , addon.Data()), "read"); 
-  TFile* xic = TFile::Open(   TString::Format("outxiccSelector_xic%s.root" , addon.Data()), "read"); 
-  TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_xicc%s.root", addon.Data()), "read"); 
+  TFile* xi = TFile::Open(    TString::Format("outxiccSelector_%s.xi.root"  , addon.Data()), "read"); 
+  TFile* xic = TFile::Open(   TString::Format("outxiccSelector_%s.xic.root" , addon.Data()), "read"); 
+  TFile* xicc = TFile::Open(  TString::Format("outxiccSelector_%s.xicc.root", addon.Data()), "read"); 
   TFile* output = TFile::Open(TString::Format("outIMXicc%s.root"         , addon.Data()), "recreate"); 
   
   TH1D* h_xiRedCounter = (TH1D*)xi->Get("cutCounter");
@@ -265,13 +265,13 @@ void invariantMassXicc(TString addon) {
       myTex->DrawLatex(0.63, 0.34, TString::Format("#Xi_{cc}^{++}: Complete Red.").Data()); 
     }
     */
-    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}}");
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Hybrid Simulation}{Pythia pp #sqrt{s} = 14 TeV + GEANT3}}");
   
     p2->cd(); 
     avgBkg->Draw("hist"); 
     xiccHist->Draw("sameHist"); 
     leg2->Draw("same"); 
-    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Full Simulation}{Pythia pp #sqrt{s} = 13 TeV + GEANT3}}");
+    myTex->DrawLatex(0.18,0.75,"#splitline{ALICE 3 Study (Layout v1)}{#splitline{Hybrid Simulation}{Pythia pp #sqrt{s} = 14 TeV + GEANT3}}");
     
 
     c1->Write();
