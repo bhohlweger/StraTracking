@@ -240,6 +240,10 @@ int main(int argc, char **argv) {
 	  h_gen_omega_cc_pt_eta_counter->Add(ptOmegaccpteta); 
 	  h_gen_omega_cc_pt_y_counter->Add(ptOmegaccpty); 
 
+	  h_gen_omega_ccc_counter->Add(ptOmegacccGen); 	
+	  h_gen_omega_ccc_pt_eta_counter->Add(ptOmegacccpteta); 
+	  h_gen_omega_ccc_pt_y_counter->Add(ptOmegacccpty); 
+	  
 	  input.Add(inSubDirFile);
 	  inputFiles++;
 	  inFile->Close();
@@ -700,7 +704,7 @@ int main(int argc, char **argv) {
   
   auto h_df_omega_ccc_qa_pi_c_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_c_pt", "pi c pt", 800, 0, 20, 200, 0, 20}, "fPicPt", "fOmegacccPt");  
   auto h_df_omega_ccc_qa_pi_cc_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_cc_pt", "pi cc pt", 800, 0, 20, 200, 0, 20}, "fPiccPt", "fOmegacccPt");  
-  auto h_df_omega_ccc_qa_pi_ccc_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_cc_pt", "pi ccc pt", 800, 0, 20, 200, 0, 20}, "fPicccPt", "fOmegacccPt");  
+  auto h_df_omega_ccc_qa_pi_ccc_pt = df_omega_ccc_qa.Histo2D({"df_omega_ccc_qa_pi_ccc_pt", "pi ccc pt", 800, 0, 20, 200, 0, 20}, "fPicccPt", "fOmegacccPt");  
   //cut on Trad and check decay lengths 
   auto h_df_omega_cc_qa_trad_omega_ccc_ddist_pv = df_omega_cc_qa.Filter("fOmegacccDecayRadius > 0.003","corrStudy_fOmegacccDecayRadius").Histo1D({"df_omega_cc_qa_trad_omega_ccc_dist_pv", "omega_ccc decay dist", 3000, 0, 0.50}, "fOmegacccInvDecayLengthToPV"); 
   //cut on dl to pv 
@@ -936,7 +940,7 @@ int main(int argc, char **argv) {
 
   HarryPlotter::CheckAndStore(out,h_df_identified); 
   auto h_df_omega_c_efficiency = h_df_identified->ProjectionX(TString::Format("EfficiencyNoCutting"), 0, 30);
-  auto h_df_pT_Generated = h_gen_omega_cc_pt_eta_counter->ProjectionX("pTOmegaccGenerados",h_gen_omega_cc_pt_eta_counter->GetYaxis()->FindBin(-1.5),h_gen_omega_cc_pt_eta_counter->GetYaxis()->FindBin(+1.5));
+  auto h_df_pT_Generated = h_gen_omega_ccc_pt_eta_counter->ProjectionX("pTOmegacccGenerados",h_gen_omega_ccc_pt_eta_counter->GetYaxis()->FindBin(-1.5),h_gen_omega_ccc_pt_eta_counter->GetYaxis()->FindBin(+1.5));
 
   h_df_pT_Generated->Sumw2(); 
   h_df_pT_Generated->Rebin(4);
