@@ -257,6 +257,26 @@ int main(int argc, char **argv) {
   float clight = 0.0299; //cm/ps
   auto beta = [&clight](float length, float time) { return length/(clight*time);};
 
+  //Zentralitaet - returns one of the bin centers of the following bins: 
+  //0-10, 10-20, 20-40, 40-60, 60-80, 80-100 ... almost identical for 2 T and 0.5 T 
+  auto zentrumality = [](int nLongTracksPrimary) {
+    int zentrum = -1; 
+    if (nLongTracksPrimary > 3855.29) { 
+      zentrum = 5; 
+    } else if (nLongTracksPrimary > 2794.53) { 
+      zentrum  = 15;
+    } else if (nLongTracksPrimary > 1344.33) { 
+      zentrum  = 30;
+    } else if (nLongTracksPrimary > 488.85) { 
+      zentrum  = 50;
+    } else if (nLongTracksPrimary > 99.3046) { 
+      zentrum  = 70;
+    } else if (nLongTracksPrimary > 0) { 
+      zentrum = 90;
+    }
+    return zentrum; 
+  };
+  const double ZentralitaetBins[7] = {0, 10, 20, 40, 60, 80, 100};
   //Lmb cuts
   float radDiffMax = 1.; //cm 
 
@@ -658,8 +678,9 @@ int main(int argc, char **argv) {
   
   auto h_df_omega_cc_im_omega_cc_mass = df_omega_cc_im.Filter("fFirstCandidateOmegaCCC","df_omega_cc_im_h_bool").Histo1D({"df_omega_cc_im_omega_cc_mass", "omega_cc inv mass", 700, 2.9, 4.5}, "fOmegaccMass"); 
   
-  auto df_omega_cc = df_omega_cc_im.
-    Filter(invMassOmegaccCut, {"fOmegaccMass"},"fOmegaccMass");
+  auto df_omega_cc = df_omega_cc_im
+    .Define("Zentralitaet", zentrumality, {"fNLongPrimaryTracks"})
+    .Filter(invMassOmegaccCut, {"fOmegaccMass"},"fOmegaccMass");
   
   auto df_omega_cc_qa = df_omega_cc.Filter("fFirstCandidateOmegaCCC","df_omega_cc_h_bool"); 
 
@@ -747,7 +768,8 @@ int main(int argc, char **argv) {
   auto h_df_omega_ccc_im_omega_ccc_pt_c1 = df_omega_ccc_im_c1
     .Filter(invMassOmegacccCut, {"fOmegacccMass"}, "c1_Ivm")
     .Histo2D({"df_omega_cc_im_omega_ccc_pt_vs_eta_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fOmegacccPtMC", "fOmegacccEta"); 
-  
+  auto h_df_omega_ccc_im_omega_ccc_bkg_pt_c1 = df_omega_ccc_im_c1.Filter(invMassOmegacccCut, {"fOmegacccMass"}, "c1_Ivm").Histo1D({"df_omega_ccc_im_omega_ccc_pt_bkg_c1", "pt selected", 200, 0, 20}, "fOmegacccPt"); 
+  auto h_df_omega_ccc_im_omega_ccc_mass_cent_c1 = df_omega_ccc_im_c1.Histo2D({"df_omega_ccc_im_omega_ccc_mass_cent_c1", "pt selected", 700, 3.6, 5.8, 6, ZentralitaetBins}, "fOmegacccMass", "Zentralitaet");   
   auto out_counter_c1 = df_omega_ccc_im_c1.Filter(invMassOmegacccCut, {"fOmegacccMass"}).Count(); 
 
 
@@ -953,6 +975,8 @@ int main(int argc, char **argv) {
   //omega_ccc selected
   HarryPlotter::CheckAndStore(out, h_df_omega_ccc_im_omega_ccc_mass_c1); 
   HarryPlotter::CheckAndStore(out, h_df_omega_ccc_im_omega_ccc_pt_c1); 
+  HarryPlotter::CheckAndStore(out, h_df_omega_ccc_im_omega_ccc_bkg_pt_c1); 
+  HarryPlotter::CheckAndStore(out, h_df_omega_ccc_im_omega_ccc_mass_cent_c1); 
   HarryPlotter::CheckAndStore(out, h_LongTracks); 
   
   HarryPlotter::CheckAndStore(out, h_cand_counter); 

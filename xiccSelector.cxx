@@ -229,6 +229,26 @@ int main(int argc, char **argv) {
   float clight = 0.0299; //cm/ps
   auto beta = [&clight](float length, float time) { return length/(clight*time);};
 
+  //Zentralitaet - returns one of the bin centers of the following bins: 
+  //0-10, 10-20, 20-40, 40-60, 60-80, 80-100 ... almost identical for 2 T and 0.5 T 
+  auto zentrumality = [](int nLongTracksPrimary) {
+    int zentrum = -1; 
+    if (nLongTracksPrimary > 3855.29) { 
+      zentrum = 5; 
+    } else if (nLongTracksPrimary > 2794.53) { 
+      zentrum  = 15;
+    } else if (nLongTracksPrimary > 1344.33) { 
+      zentrum  = 30;
+    } else if (nLongTracksPrimary > 488.85) { 
+      zentrum  = 50;
+    } else if (nLongTracksPrimary > 99.3046) { 
+      zentrum  = 70;
+    } else if (nLongTracksPrimary > 0) { 
+      zentrum = 90;
+    }
+    return zentrum; 
+  };
+  const double ZentralitaetBins[7] = {0, 10, 20, 40, 60, 80, 100};
   //Lmb cuts
   float radDiffMax = 1.; //cm 
 
@@ -568,6 +588,7 @@ int main(int argc, char **argv) {
   
   auto h_df_xi_c_im_xi_c_mass = df_xi_c_im.Filter("fFirstCandidateXiCC","df_xi_c_im_h_bool").Histo1D({"df_xi_c_im_xi_c_mass", "xi_c inv mass", 700, 1.6, 3.2}, "fXicMass"); 
   auto df_xi_c = df_xi_c_im
+    .Define("Zentralitaet", zentrumality, {"fNLongPrimaryTracks"})
     .Filter(invMassXicCut, {"fXicMass"},"fXicMass")
     .Filter("TMath::Abs(fPic1TOFDiffInner) < 50", "Pic1TOF")
     .Filter("TMath::Abs(fPic2TOFDiffInner) < 50", "Pic2TOF")
@@ -646,6 +667,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c1 = df_xi_cc_im_c1.Histo1D({"df_xi_cc_im_xi_cc_mass_c1", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMass"}, "c1_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c1", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMass"}, "c1_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c1", "pt selected", 200, 0, 20}, "fPtXiCC"); 
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c1 = df_xi_cc_im_c1.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c1", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c1 = df_xi_cc_im_c1.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
   
   //Select the Xi_cc
@@ -683,6 +705,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c2 = df_xi_cc_im_c2.Histo1D({"df_xi_cc_im_xi_cc_mass_c2", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMass"}, "c2_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c2", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMass"}, "c2_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c2", "pt selected", 200, 0, 20}, "fPtXiCC"); 
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c2 = df_xi_cc_im_c2.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c2", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c2 = df_xi_cc_im_c2.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
   
   //Select the Xi_cc
@@ -713,6 +736,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c3 = df_xi_cc_im_c3.Histo1D({"df_xi_cc_im_xi_cc_mass_c3", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMass"}, "c3_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c3", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMass"}, "c3_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c3", "pt selected", 200, 0, 20}, "fPtXiCC"); 
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c3 = df_xi_cc_im_c3.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c3", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c3 = df_xi_cc_im_c3.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
   
   auto df_xi_cc_im_c4 = df_xi_c
@@ -742,6 +766,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c4 = df_xi_cc_im_c4.Histo1D({"df_xi_cc_im_xi_cc_mass_c4", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMass"}, "c4_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c4", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMass"}, "c4_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c4", "pt selected", 200, 0, 20}, "fPtXiCC"); 
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c4 = df_xi_cc_im_c4.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c4", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c4 = df_xi_cc_im_c4.Filter(invMassXiccCut, {"fXiccMass"}).Count();
  
   auto df_xi_cc_im_c4_2Hit = df_xi_c
@@ -772,6 +797,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c4_2Hit = df_xi_cc_im_c4_2Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_c4_2Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMass"}, "c4_2Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c4_2Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMass"}, "c4_2Hit_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c4_2Hit", "pt selected", 200, 0, 20}, "fPtXiCC"); 
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c4_2Hit = df_xi_cc_im_c4_2Hit.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c4_2Hit", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c4_2Hit = df_xi_cc_im_c4_2Hit.Filter(invMassXiccCut, {"fXiccMass"}).Count();
   
   auto df_xi_cc_im_c4_3Hit = df_xi_c
@@ -801,6 +827,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c4_3Hit = df_xi_cc_im_c4_3Hit.Histo1D({"df_xi_cc_im_xi_cc_mass_c4_3Hit", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMass"}, "c4_3Hit_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c4_3Hit", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMass"}, "c4_3Hit_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c4_3Hit", "pt selected", 200, 0, 20}, "fPtXiCC"); 
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c4_3Hit = df_xi_cc_im_c4_3Hit.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c4_3Hit", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c4_3Hit = df_xi_cc_im_c4_3Hit.Filter(invMassXiccCut, {"fXiccMass"}).Count();
 
   //Select the Xi_cc
@@ -831,6 +858,7 @@ int main(int argc, char **argv) {
   auto h_df_xi_cc_im_xi_cc_mass_c5 = df_xi_cc_im_c5.Histo1D({"df_xi_cc_im_xi_cc_mass_c5", "xi_cc inv mass", 700, 2.6, 4.6}, "fXiccMass"); 
   auto h_df_xi_cc_im_xi_cc_pt_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMass"}, "c5_Ivm").Histo2D({"df_xi_cc_im_xi_cc_pt_vs_eta_c5", "pt selected", 200, 0, 20, 30, -1.5, 1.5}, "fPtMCXiCC", "fXiCCEta"); 
   auto h_df_xi_cc_im_xi_cc_bkg_pt_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMass"}, "c5_Ivm").Histo1D({"df_xi_cc_im_xi_cc_pt_bkg_c5", "pt selected", 200, 0, 20}, "fPtXiCC");   
+  auto h_df_xi_cc_im_xi_cc_mass_cent_c5 = df_xi_cc_im_c5.Histo2D({"df_xi_cc_im_xi_cc_mass_cent_c5", "pt selected", 700, 2.6, 4.6, 6, ZentralitaetBins}, "fXiccMass", "Zentralitaet"); 
   auto out_counter_c5 = df_xi_cc_im_c5.Filter(invMassXiccCut, {"fXiccMass"}).Count(); 
 
 
@@ -846,7 +874,7 @@ int main(int argc, char **argv) {
   std::cout <<"You can open your eyes again! \n";
   std::cout <<"==========================================================================================================\n";
   
- 
+  
   auto cutCounter  = new TH1D("cutCounter", "cutCounter", 20, 0, 20); 
   double inputCounter = *in_counter; 
 
@@ -950,7 +978,7 @@ int main(int argc, char **argv) {
   
   //to xi_c
   HarryPlotter::CheckAndStore(out, h_df_xi_im_xi_mass);
-   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_mass); 
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_xi_c_pt); 
   
   HarryPlotter::CheckAndStore(out, h_df_xi_qa_trad_diff_xi_xi_c);
@@ -1034,25 +1062,31 @@ int main(int argc, char **argv) {
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c1); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c1); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c1);
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c2); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c2); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c2); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c2);
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c3); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c3); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c3); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c3);
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c4); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c4); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c4);
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c4_2Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4_2Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c4_2Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c4_2Hit);
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c4_3Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c4_3Hit); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c4_3Hit); 
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c4_3Hit);
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_c5); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_pt_c5); 
   HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_bkg_pt_c5); 
-
+  HarryPlotter::CheckAndStore(out, h_df_xi_cc_im_xi_cc_mass_cent_c5);
   HarryPlotter::CheckAndStore(out, h_LongTracks); 
   
   HarryPlotter::CheckAndStore(out, h_cand_counter); 
