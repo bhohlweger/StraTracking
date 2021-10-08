@@ -38,6 +38,8 @@ void efficiencies(TString infile) {
     TH1D* pT_Identified = (TH1D*)pT_vs_eta->ProjectionX(TString::Format("Eff%s", objName.Data())); 
     pT_Identified->Sumw2();
     pT_Identified->Rebin(4);
+    double numEff = pT_Identified->Integral() / xiccGenPt->Integral();
+    
     pT_Identified->Divide(xiccGenPt); 
     
     double SumWeight = 0; 
@@ -47,7 +49,7 @@ void efficiencies(TString infile) {
       WeightedAverage += binWeight*pT_Identified->GetBinContent(iBin); 
       SumWeight += binWeight; 
     }
-    std::cout << "For " << objName.Data() << " the average efficiency is " << WeightedAverage/(double)SumWeight << " including xicc and xic BR: " << WeightedAverage/(double)SumWeight*0.05*0.0286  << std::endl;
+    std::cout << "For " << objName.Data() << " the average efficiency is " << WeightedAverage/(double)SumWeight << " (" << numEff <<") including xicc and xic BR: " << WeightedAverage/(double)SumWeight*0.05*0.0286  << std::endl;
     out->cd(); 
     pT_Identified->Write(); 
   }
